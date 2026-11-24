@@ -1,0 +1,37 @@
+{
+  "name": "bun-and-co",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.9",
+  "description": "Borne de commande tactile pour l'enseigne Bun & Co",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "contrastes": "node scripts/verifier-contrastes.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "nuxt": "^4.7.0",
+    "sass-embedded": "^1.108.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.14"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "@parcel/watcher"
+    ]
+  },
+  "dependencies": {
+    "vue": "^3.5.46",
+    "vue-router": "^5.5.1"
+  }
+}

@@ -2,7 +2,7 @@
 // =============================================================================
 // Vérification des contrastes de la palette
 // =============================================================================
-// Lit les custom properties de `assets/scss/1-settings/_couleurs.scss`, calcule
+// Lit les custom properties de `app/assets/scss/1-settings/_couleurs.scss`, calcule
 // le rapport de contraste de chaque paire déclarée ci-dessous, et échoue si une
 // paire descend sous son seuil.
 //
@@ -17,7 +17,7 @@
 
 import { readFileSync } from 'node:fs'
 
-const FICHIER = 'assets/scss/1-settings/_couleurs.scss'
+const FICHIER = 'app/assets/scss/1-settings/_couleurs.scss'
 
 // Paires réellement utilisées par l'interface. Une paire absente de cette liste
 // n'est pas vérifiée : ajouter une combinaison de couleurs dans un composant

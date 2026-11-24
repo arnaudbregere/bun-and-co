@@ -1,0 +1,50 @@
+// =============================================================================
+// Settings — couleurs
+// =============================================================================
+// Direction visuelle « artisanal chaleureux » : terracotta, crème, vert olive.
+//
+// Les valeurs de contraste en commentaire sont mesurées par
+// `node scripts/verifier-contrastes.mjs`, qui lit ce fichier et échoue si une
+// paire déclarée descend sous son seuil. Toute modification d'une valeur
+// ci-dessous doit être suivie d'une exécution de ce script.
+//
+// Seuils appliqués, issus de WCAG 2.2 niveau AA :
+//   - 4.5:1 pour le texte courant, notre corps à 20 px n'étant pas du « grand
+//     texte » au sens de la norme, qui commence à 24 px en graisse normale ;
+//   - 3:1 pour les composants d'interface et les bordures porteuses de sens ;
+//   - 3:1 pour l'indicateur de focus contre les couleurs adjacentes.
+
+@layer settings {
+  :root {
+    // --- Surfaces ---------------------------------------------------------------
+    --couleur-fond: #fbf6ee;          // crème, fond général
+    --couleur-surface: #ffffff;        // cartes produit
+    --couleur-surface-sourde: #f2e9db; // zones secondaires, en-têtes de catégorie
+    --couleur-bordure: #8c7a60;        // bordures porteuses de sens, 3.85:1 sur le fond
+    --couleur-bordure-discrete: #e2d7c6; // séparateurs décoratifs, hors seuil
+
+    // --- Texte ------------------------------------------------------------------
+    --couleur-encre: #241d19;          // texte principal
+    --couleur-encre-sourde: #574c43;   // texte secondaire, mentions
+    --couleur-encre-inversee: #fffdf9; // texte sur fonds accentués
+
+    // --- Accent principal -------------------------------------------------------
+    --couleur-accent: #9b3412;         // terracotta, actions principales
+    --couleur-accent-appuye: #76270c;  // état actif
+    --couleur-accent-sourd: #f6e4da;   // fond de mise en avant discrète
+
+    // --- Accent secondaire ------------------------------------------------------
+    --couleur-olive: #3f5218;          // confirmations, disponibilité
+    --couleur-olive-sourd: #e8ecd9;    // fond de confirmation
+
+    // --- États ------------------------------------------------------------------
+    --couleur-erreur: #a01b12;         // erreurs et refus
+    --couleur-erreur-sourd: #fbe4e2;   // fond d'erreur
+    --couleur-desactive: #6b6159;      // texte d'un élément indisponible
+    --couleur-desactive-fond: #ece5da; // fond d'un élément indisponible
+
+    // --- Focus ------------------------------------------------------------------
+    --couleur-focus: #1b1a18;          // anneau de focus
+    --couleur-focus-halo: #fffdf9;     // liseré intercalaire, lisible sur accent
+  }
+}

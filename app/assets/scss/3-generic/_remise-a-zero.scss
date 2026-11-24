@@ -1,0 +1,29 @@
+// =============================================================================
+// Generic — remise à zéro
+// =============================================================================
+// Règles de portée large, sans classe ni élément ciblé précisément.
+
+@layer generic {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  // Respecte le réglage système de réduction des animations. Une borne en veille
+  // anime son invite d'accueil : cette animation doit pouvoir être désactivée.
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

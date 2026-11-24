@@ -2,7 +2,7 @@
 
 Direction visuelle, tokens et règles de conception de la borne de commande.
 
-Les tokens vivent dans `assets/scss/1-settings/`. Ce document explique les choix ; le
+Les tokens vivent dans `app/assets/scss/1-settings/`. Ce document explique les choix ; le
 code en est la source de vérité.
 
 ## Direction
@@ -110,7 +110,7 @@ Le critère WCAG 2.5.8 n'exige que 24 px. Nos valeurs sont volontairement au-del
 ## Cascade
 
 L'ordre ITCSS est appliqué par les couches natives `@layer`, déclarées dans
-`assets/scss/_couches.scss` :
+`app/assets/scss/_couches.scss` :
 
 ```scss
 @layer settings, tools, generic, elements, objects, components, utilities;
@@ -144,6 +144,29 @@ vérification ne la voit pas et le contrôle devient décoratif.
 
 **Pas de nouvelle combinaison de couleurs sans déclaration.** Ajouter une paire dans un
 composant impose de l'ajouter à `scripts/verifier-contrastes.mjs`.
+
+## Polices
+
+Archivo pour l'interface, Petrona pour les titres.
+
+Inter et Fraunces étaient le premier choix. Le détecteur de design les a signalées comme
+omniprésentes, au point de ne plus porter d'identité : elles reviennent sur une grande part
+des interfaces récentes. Archivo est une grotesque dessinée pour la lisibilité en petit
+corps, Petrona une antique à contraste doux, cohérente avec le positionnement artisanal.
+
+## Écart assumé au détecteur de design
+
+Le détecteur signale la règle `cream-palette` sur notre fond crème : un blanc cassé chaud
+est devenu la surface par défaut des interfaces générées, choisie par réflexe.
+
+La règle est désactivée dans `.impeccable/config.json`, et voici pourquoi. Le fond crème
+n'est pas ici un réflexe mais une décision de direction, prise avec la palette terracotta
+et vert olive, et chaque paire de couleurs est mesurée. La règle n'accepte pas d'exception
+par valeur, seulement par fichier ou par règle, d'où la désactivation complète.
+
+L'alternative, si cet écart devenait gênant, serait un fond neutre teinté de vert olive
+plutôt que de terre cuite. Elle sortirait de la direction retenue et imposerait de
+revérifier toutes les paires de contraste.
 
 ## Vérification
 

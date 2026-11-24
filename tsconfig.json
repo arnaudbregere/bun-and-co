@@ -1,0 +1,10 @@
+{
+  "// Ce fichier ne contient aucune option": "Nuxt génère les configurations réelles dans .nuxt/ au moment du `nuxt prepare`. Ce fichier ne sert qu'à les référencer, pour que l'éditeur et `vue-tsc` trouvent un point d'entrée à la racine. Les options de compilation du projet sont déclarées dans nuxt.config.ts, sous typescript.tsConfig.",
+  "files": [],
+  "references": [
+    { "path": "./.nuxt/tsconfig.app.json" },
+    { "path": "./.nuxt/tsconfig.server.json" },
+    { "path": "./.nuxt/tsconfig.shared.json" },
+    { "path": "./.nuxt/tsconfig.node.json" }
+  ]
+}

@@ -1,0 +1,89 @@
+// =============================================================================
+// Elements — éléments HTML nus
+// =============================================================================
+// Styles des balises sans classe. Aucun sélecteur de classe dans cette couche.
+
+@layer elements {
+  html {
+    // Pas de taille en pixels ici : la valeur par défaut du navigateur est
+    // conservée, pour que le réglage de taille de police de l'utilisateur
+    // continue de s'appliquer. L'échelle du projet part de `--taille-corps`.
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--couleur-fond);
+    color: var(--couleur-encre);
+    font-family: var(--police-interface);
+    font-size: var(--taille-corps);
+    line-height: var(--interligne-corps);
+    -webkit-font-smoothing: antialiased;
+
+    // Supprime le délai de 300 millisecondes appliqué par les navigateurs
+    // mobiles avant de confirmer un appui, pour tenir le budget d'interaction.
+    touch-action: manipulation;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--police-titre);
+    font-weight: var(--graisse-titre);
+    line-height: var(--interligne-titre);
+    letter-spacing: var(--interlettre-titre);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--taille-titre-ecran);
+  }
+
+  h2 {
+    font-size: var(--taille-titre-section);
+  }
+
+  h3 {
+    font-size: var(--taille-intertitre);
+  }
+
+  p {
+    max-width: var(--mesure-ligne);
+    text-wrap: pretty;
+  }
+
+  // Indicateur de focus à deux tons, lisible sur toutes les surfaces de la
+  // palette : l'anneau sombre porte le contraste sur les fonds clairs, le
+  // liseré clair le porte sur les fonds accentués. `:focus-visible` et non
+  // `:focus`, pour ne pas marquer un appui à la souris ou au doigt.
+  :focus-visible {
+    outline: var(--epaisseur-focus) solid var(--couleur-focus);
+    outline-offset: var(--decalage-focus);
+    box-shadow: 0 0 0 calc(var(--decalage-focus) + var(--epaisseur-focus)) var(--couleur-focus-halo);
+  }
+
+  // Le mode contraste élevé des systèmes d'exploitation écrase les couleurs.
+  // L'indicateur de focus doit y rester visible.
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  img,
+  picture,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}

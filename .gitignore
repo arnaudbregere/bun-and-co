@@ -7,6 +7,9 @@ node_modules/
 .output/
 .data/
 dist/
+# `nuxt generate` crée un lien symbolique `dist` vers .output/public ; le motif
+# avec barre oblique ne couvre que les dossiers, pas le lien.
+dist
 
 # Tests
 coverage/
@@ -27,3 +30,6 @@ blob-report/
 
 # Réglages Claude Code propres à une machine
 .claude/settings.local.json
+
+# Réglages Impeccable propres à une machine
+.impeccable/config.local.json

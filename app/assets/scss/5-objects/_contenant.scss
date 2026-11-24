@@ -1,0 +1,29 @@
+// =============================================================================
+// Objects — contenant
+// =============================================================================
+// Motif de mise en page sans habillage. Aucune couleur, aucune bordure : un
+// objet décrit une structure, pas une apparence.
+
+@use '../1-settings/points-de-rupture' as rupture;
+
+@layer objects {
+  .o-contenant {
+    width: 100%;
+    max-width: rupture.$rupture-borne;
+    margin-inline: auto;
+
+    // Gouttière latérale, pour que le texte ne touche jamais le bord de
+    // l'écran sur les largeurs étroites.
+    padding-inline: var(--espace-4);
+
+    @media (min-width: rupture.$rupture-large) {
+      padding-inline: var(--espace-6);
+    }
+  }
+
+  .o-pile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espace-5);
+  }
+}
