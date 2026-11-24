@@ -43,6 +43,13 @@ Les branches créées par Spec Kit font exception : l'outil les nomme lui-même 
 `<numéro>-<sujet>`, par exemple `001-parcours-commande`. Cette forme est conservée telle
 quelle, pour que le numéro de branche corresponde au dossier de spécification.
 
+## Liaison d'une demande de fusion à son issue
+
+Le corps de la demande de fusion contient `Closes #<numéro>`. Ce mot-clé reste en anglais,
+même si le reste de la description est en français : GitHub ne reconnaît que les mots-clés
+anglais `close`, `closes`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves` et
+`resolved`. Une mention en français laisse l'issue ouverte après la fusion.
+
 ## Fusion
 
 La fusion se fait en squash ou en rebase. Le commit de fusion est désactivé sur le dépôt,
