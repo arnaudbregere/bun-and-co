@@ -1,0 +1,11 @@
+// =============================================================================
+// Feuille principale
+// =============================================================================
+// L'ordre des règles émises suit l'ordre des couches ITCSS. L'ordre de la
+// cascade, lui, est fixé par la déclaration `@layer` de `_layers.scss`, qui doit
+// rester la première instruction émise.
+
+@use 'layers';
+@use '1-settings/colors';
+@use '1-settings/typography';
+@use '1-settings/spacing';

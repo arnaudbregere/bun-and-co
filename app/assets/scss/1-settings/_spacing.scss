@@ -1,0 +1,45 @@
+// =============================================================================
+// Settings — espacements et cibles tactiles
+// =============================================================================
+// Échelle de 4 px, exprimée en `rem`. Une seule échelle pour les marges, les
+// espacements internes et les écarts de grille : deux échelles concurrentes
+// produisent des alignements faux dès le troisième composant.
+
+@layer settings {
+  :root {
+    --space-1: 0.25rem; // 4 px
+    --space-2: 0.5rem;  // 8 px
+    --space-3: 0.75rem; // 12 px
+    --space-4: 1rem;    // 16 px
+    --space-5: 1.5rem;  // 24 px
+    --space-6: 2rem;    // 32 px
+    --space-7: 3rem;    // 48 px
+    --space-8: 4rem;    // 64 px
+
+    // --- Cibles tactiles --------------------------------------------------------
+    // Le critère WCAG 2.5.8 exige 24 px au minimum, le critère 2.5.5 recommande
+    // 44 px. Nous retenons 56 px pour les actions principales : sur une borne, la
+    // loi de Fitts fait du gain de temps et de la baisse du taux d'erreur un
+    // enjeu mesurable, pas un confort.
+    --target-primary: 3.5rem;   // 56 px
+    --target-secondary: 3rem;   // 48 px
+    --target-gap: var(--space-3); // 12 px, évite les taps voisins
+
+    // --- Portée physique --------------------------------------------------------
+    // La norme EN 301 549, clause 8, traite des terminaux en libre-service : une
+    // personne en fauteuil atteint au maximum environ 1,20 m de hauteur. Les
+    // commandes critiques restent donc dans les deux tiers inférieurs de l'écran,
+    // et la barre d'action principale est ancrée en bas.
+    --reach-dead-zone-height: 33.333%;
+
+    // --- Rayons et élévation ----------------------------------------------------
+    --radius-small: 0.25rem;
+    --radius-medium: 0.75rem;
+    --radius-large: 1.25rem;
+    --shadow-card: 0 1px 2px rgb(36 29 25 / 8%), 0 4px 12px rgb(36 29 25 / 6%);
+
+    // --- Focus ------------------------------------------------------------------
+    --focus-ring-width: 3px;
+    --focus-ring-offset: 2px;
+  }
+}
