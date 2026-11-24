@@ -152,6 +152,10 @@ describe('invariant métier : l’économie du menu croît avec la taille', () =
   // Propriété commerciale inscrite dans la spécification. Un forfait mal réglé
   // rendrait un grand menu moins avantageux qu'un petit, ce qu'aucune relecture
   // n'attrape sur six burgers et trois tailles.
+  //
+  // L'économie est mesurée en passant par unitPriceCents, et non par la seule
+  // table des règles : c'est le prix réellement facturé au client qui doit être
+  // avantageux, pas la valeur d'un forfait.
   it.each(['classique', 'fermier', 'vegetal', 'mariner', 'montagnard', 'double-smoky'])(
     'sur %s',
     (id) => {
@@ -159,18 +163,34 @@ describe('invariant métier : l’économie du menu croît avec la taille', () =
 
       const economies = (['M', 'L', 'XL'] as const).map((size) => {
         const rule = MENU_SIZE_RULES[size]
-        const pieces = [
+
+        const alaCarte = [
+          burger.priceCents,
           product(rule.defaultSideId).priceCents,
           product(rule.defaultDrinkId).priceCents,
           ...(rule.includesDessert ? [product('cookie').priceCents] : []),
         ].reduce((total, value) => total + value, 0)
 
-        return pieces - rule.surchargeCents
+        const enMenu = unitPriceCents(burger, line({ menu: menuOf(size) }))
+
+        return alaCarte - enMenu
       })
 
+      // Le prix du burger se simplifie entre les deux membres : l'économie ne
+      // dépend que de la taille, et vaut donc la même chose sur chaque burger.
       expect(economies).toEqual([90, 110, 150])
-      expect(economies[0]).toBeLessThan(economies[1] as number)
-      expect(economies[1] as number).toBeLessThan(economies[2] as number)
     },
   )
+
+  it('facture le menu moins cher que les mêmes pièces prises séparément', () => {
+    const burger = product('double-smoky')
+    const enMenu = unitPriceCents(burger, line({ menu: menuOf('XL') }))
+    const alaCarte =
+      burger.priceCents +
+      product('fries-large').priceCents +
+      product('soda-50').priceCents +
+      product('cookie').priceCents
+
+    expect(enMenu).toBeLessThan(alaCarte)
+  })
 })
