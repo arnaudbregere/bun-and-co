@@ -23,8 +23,17 @@ jobs:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
-      # Les étapes de qualité arrivent au lot 3, quand le projet Nuxt et ses
-      # scripts existent : installation pnpm, lint, typecheck, tests unitaires,
-      # puis tests end-to-end Playwright.
-      - name: Pipeline en attente du socle technique
-        run: echo "Socle technique absent, aucune vérification à lancer pour le moment."
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # Vérifie que chaque combinaison de couleurs utilisée par l'interface
+      # atteint son seuil de contraste WCAG. Le script est sans dépendance, il
+      # n'a donc besoin d'aucune installation préalable.
+      - name: Vérifier les contrastes de la palette
+        run: node scripts/verifier-contrastes.mjs
+
+      # Les étapes de typage, d'analyse statique, de tests unitaires, de tests
+      # end-to-end et de détection d'anti-patterns de design arrivent avec le
+      # socle technique, au lot 3.
