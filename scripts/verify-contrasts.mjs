@@ -115,14 +115,18 @@ for (const [foreground, background, threshold, label] of PAIRS) {
   const hexBackground = tokens.get(background)
 
   if (!hexForeground || !hexBackground) {
-    failures.push(`token absent : ${!hexForeground ? `--color-${foreground}` : `--color-${background}`}`)
+    failures.push(
+      `token absent : ${!hexForeground ? `--color-${foreground}` : `--color-${background}`}`,
+    )
     continue
   }
 
   const ratio = contrast(hexForeground, hexBackground)
   const passes = ratio >= threshold
   if (!passes) {
-    failures.push(`${label} : ${ratio.toFixed(2)}:1 pour un threshold de ${threshold}:1 (--color-${foreground} sur --color-${background})`)
+    failures.push(
+      `${label} : ${ratio.toFixed(2)}:1 pour un threshold de ${threshold}:1 (--color-${foreground} sur --color-${background})`,
+    )
   }
   lines.push(
     `${passes ? 'OK  ' : 'ECHEC'} ${ratio.toFixed(2).padStart(5)}:1  seuil ${String(threshold).padStart(3)}:1  ${label}`,

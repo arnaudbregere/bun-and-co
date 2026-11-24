@@ -1,0 +1,12 @@
+.nuxt/
+.output/
+node_modules/
+pnpm-lock.yaml
+.claude/
+.specify/
+.impeccable/
+
+# La documentation est mise en forme à la main, avec un retour à la ligne à 100
+# caractères et des tableaux alignés. Prettier la réécrirait sans gain de
+# lisibilité, et ferait du bruit dans chaque relecture.
+*.md

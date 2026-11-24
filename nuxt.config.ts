@@ -7,6 +7,16 @@ export default defineNuxtConfig({
   // seule condition d'être préconstruites ici.
   ssr: true,
 
+  modules: ['@nuxt/eslint'],
+
+  eslint: {
+    config: {
+      // Le formatage est confié à Prettier. Laisser ESLint le faire aussi
+      // produirait deux sources de vérité en conflit.
+      stylistic: false,
+    },
+  },
+
   app: {
     // Sur GitHub Pages, le site est servi sous /bun-and-co/. La valeur est
     // fournie par variable d'environnement au moment du déploiement, et vaut la

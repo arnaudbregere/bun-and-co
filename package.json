@@ -16,6 +16,10 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "contrasts": "node scripts/verify-contrasts.mjs"
   },
   "pnpm": {
@@ -25,8 +29,13 @@
     ]
   },
   "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
     "@types/node": "^26.6.6",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vuejs-accessibility": "^2.6.3",
     "nuxt": "4.7.0",
+    "prettier": "^3.10.1",
     "sass-embedded": "^1.108.2",
     "typescript": "5.9.3",
     "vue-tsc": "^3.3.14"
