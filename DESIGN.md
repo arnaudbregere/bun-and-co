@@ -2,7 +2,7 @@
 
 Direction visuelle, tokens et règles de conception de la borne de commande.
 
-Les tokens vivent dans `assets/scss/1-settings/`. Ce document explique les choix ; le
+Les tokens vivent dans `app/assets/scss/1-settings/`. Ce document explique les choix ; le
 code en est la source de vérité.
 
 ## Direction
@@ -117,7 +117,7 @@ Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volont
 ## Cascade
 
 L'ordre ITCSS est appliqué par les couches natives `@layer`, déclarées dans
-`assets/scss/_layers.scss` :
+`app/assets/scss/_layers.scss` :
 
 ```scss
 @layer settings, tools, generic, elements, objects, components, utilities;

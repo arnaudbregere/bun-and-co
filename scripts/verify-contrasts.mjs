@@ -17,7 +17,7 @@
 
 import { readFileSync } from 'node:fs'
 
-const FILE = 'assets/scss/1-settings/_colors.scss'
+const FILE = 'app/assets/scss/1-settings/_colors.scss'
 
 // Paires réellement utilisées par l'interface. Une paire absente de cette liste
 // n'est pas vérifiée : ajouter une combinaison de couleurs dans un composant
