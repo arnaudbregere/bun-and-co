@@ -32,7 +32,7 @@ jobs:
       # atteint son seuil de contraste WCAG. Le script est sans dépendance, il
       # n'a donc besoin d'aucune installation préalable.
       - name: Vérifier les contrastes de la palette
-        run: node scripts/verifier-contrastes.mjs
+        run: node scripts/verify-contrasts.mjs
 
       # Les étapes de typage, d'analyse statique, de tests unitaires, de tests
       # end-to-end et de détection d'anti-patterns de design arrivent avec le

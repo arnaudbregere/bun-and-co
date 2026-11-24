@@ -34,7 +34,7 @@ ancrée en bas.
 
 ## Palette
 
-Chaque valeur est vérifiée par `node scripts/verifier-contrastes.mjs`, qui lit le fichier
+Chaque valeur est vérifiée par `node scripts/verify-contrasts.mjs`, qui lit le fichier
 de tokens, calcule les rapports de contraste des combinaisons réellement utilisées et
 échoue si l'une descend sous son seuil.
 
@@ -42,34 +42,34 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 
 | Token | Valeur | Usage |
 | --- | --- | --- |
-| `--couleur-fond` | `#fbf6ee` | fond général |
-| `--couleur-surface` | `#ffffff` | cartes produit |
-| `--couleur-surface-sourde` | `#f2e9db` | zones secondaires, en-têtes de catégorie |
-| `--couleur-bordure` | `#8c7a60` | bordures porteuses de sens |
-| `--couleur-bordure-discrete` | `#e2d7c6` | séparateurs purement décoratifs |
+| `--color-background` | `#fbf6ee` | fond général |
+| `--color-surface` | `#ffffff` | cartes produit |
+| `--color-surface-muted` | `#f2e9db` | zones secondaires, en-têtes de catégorie |
+| `--color-border` | `#8c7a60` | bordures porteuses de sens |
+| `--color-border-subtle` | `#e2d7c6` | séparateurs purement décoratifs |
 
 ### Texte
 
 | Token | Valeur | Contraste sur le fond |
 | --- | --- | --- |
-| `--couleur-encre` | `#241d19` | 15,43:1 |
-| `--couleur-encre-sourde` | `#574c43` | 7,75:1 |
-| `--couleur-encre-inversee` | `#fffdf9` | sur accent : 7,14:1 |
+| `--color-ink` | `#241d19` | 15,43:1 |
+| `--color-ink-muted` | `#574c43` | 7,75:1 |
+| `--color-ink-inverse` | `#fffdf9` | sur accent : 7,14:1 |
 
 ### Accents et états
 
 | Token | Valeur | Usage | Contraste |
 | --- | --- | --- | --- |
-| `--couleur-accent` | `#9b3412` | actions principales | 7,14:1 avec le texte inversé |
-| `--couleur-accent-appuye` | `#76270c` | état actif | 10,01:1 |
-| `--couleur-olive` | `#3f5218` | confirmation, disponibilité | 8,50:1 |
-| `--couleur-erreur` | `#a01b12` | erreurs et refus | 7,77:1 |
-| `--couleur-desactive` | `#6b6159` | produit indisponible | 4,82:1 sur son fond |
+| `--color-accent` | `#9b3412` | actions principales | 7,14:1 avec le texte inversé |
+| `--color-accent-pressed` | `#76270c` | état actif | 10,01:1 |
+| `--color-olive` | `#3f5218` | confirmation, disponibilité | 8,50:1 |
+| `--color-error` | `#a01b12` | erreurs et refus | 7,77:1 |
+| `--color-disabled` | `#6b6159` | produit indisponible | 4,82:1 sur son fond |
 
 ### Focus
 
-L'indicateur de focus est à deux tons : un anneau sombre `--couleur-focus` doublé d'un
-liseré clair `--couleur-focus-halo`. Le critère WCAG 2.4.13 est satisfait dès qu'un des
+L'indicateur de focus est à deux tons : un anneau sombre `--color-focus` doublé d'un
+liseré clair `--color-focus-halo`. Le critère WCAG 2.4.13 est satisfait dès qu'un des
 deux tons atteint 3:1 contre la couleur adjacente. Sur un bouton terracotta, l'anneau
 sombre n'y parvient pas, à 2,40:1 ; c'est le liseré clair qui porte le contraste, à
 7,14:1. Ce mécanisme rend l'indicateur lisible sur n'importe quel fond de la palette.
@@ -80,12 +80,12 @@ sombre n'y parvient pas, à 2,40:1 ; c'est le liseré clair qui porte le contras
 
 | Token | Taille | Usage |
 | --- | --- | --- |
-| `--taille-mention` | 18 px | allergènes, mentions |
-| `--taille-corps` | 20 px | texte courant, libellés de contrôle |
-| `--taille-intertitre` | 25 px | nom de produit |
-| `--taille-titre-section` | 31 px | titre de catégorie |
-| `--taille-titre-ecran` | 39 px | titre d'écran |
-| `--taille-prix-fort` | 49 px | total du panier |
+| `--font-size-note` | 18 px | allergènes, mentions |
+| `--font-size-body` | 20 px | texte courant, libellés de contrôle |
+| `--font-size-subheading` | 25 px | nom de produit |
+| `--font-size-section` | 31 px | titre de catégorie |
+| `--font-size-screen` | 39 px | titre d'écran |
+| `--font-size-price` | 49 px | total du panier |
 
 Interligne de 1,5 sur le texte courant, minimum exigé par le critère WCAG 1.4.12. Longueur
 de ligne cible de 60 caractères, bornée entre 45 et 75.
@@ -96,21 +96,21 @@ appel à un hébergeur tiers : le cache des navigateurs est partitionné par sit
 
 ## Espacements et cibles
 
-Échelle unique de 4 px, de `--espace-1` à `--espace-8`. Une seule échelle pour les marges,
+Échelle unique de 4 px, de `--space-1` à `--space-8`. Une seule échelle pour les marges,
 les espacements internes et les écarts de grille.
 
 | Token | Valeur | Raison |
 | --- | --- | --- |
-| `--cible-primaire` | 56 px | loi de Fitts : sur une borne, le gain de temps et la baisse du taux d'erreur sont mesurables |
-| `--cible-secondaire` | 48 px | au-dessus des 44 px recommandés par le critère WCAG 2.5.5 |
-| `--ecart-cibles` | 12 px | évite d'activer la cible voisine |
+| `--target-primary` | 56 px | loi de Fitts : sur une borne, le gain de temps et la baisse du taux d'erreur sont mesurables |
+| `--target-secondary` | 48 px | au-dessus des 44 px recommandés par le critère WCAG 2.5.5 |
+| `--target-gap` | 12 px | évite d'activer la cible voisine |
 
 Le critère WCAG 2.5.8 n'exige que 24 px. Nos valeurs sont volontairement au-delà.
 
 ## Cascade
 
 L'ordre ITCSS est appliqué par les couches natives `@layer`, déclarées dans
-`assets/scss/_couches.scss` :
+`assets/scss/_layers.scss` :
 
 ```scss
 @layer settings, tools, generic, elements, objects, components, utilities;
@@ -143,12 +143,12 @@ permanence.
 vérification ne la voit pas et le contrôle devient décoratif.
 
 **Pas de nouvelle combinaison de couleurs sans déclaration.** Ajouter une paire dans un
-composant impose de l'ajouter à `scripts/verifier-contrastes.mjs`.
+composant impose de l'ajouter à `scripts/verify-contrasts.mjs`.
 
 ## Vérification
 
 ```bash
-node scripts/verifier-contrastes.mjs
+node scripts/verify-contrasts.mjs
 ```
 
 Le script rend 25 paires déclarées et 2 groupes à combinaison libre, et sort en erreur
