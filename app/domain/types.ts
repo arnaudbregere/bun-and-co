@@ -185,6 +185,15 @@ export const PAYMENT_MODES = ['card', 'counter'] as const
 
 export type PaymentMode = (typeof PAYMENT_MODES)[number]
 
+/**
+ * Commande en cours de composition : ce qui est persisté entre deux
+ * rafraîchissements de page, avant toute confirmation.
+ */
+export interface Draft {
+  readonly cart: Cart
+  readonly serviceMode: ServiceMode
+}
+
 export interface Order {
   readonly cart: Cart
   readonly serviceMode: ServiceMode

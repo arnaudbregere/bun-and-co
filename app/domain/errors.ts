@@ -31,3 +31,14 @@ export class CartLimitError extends Error {
     this.name = 'CartLimitError'
   }
 }
+
+/**
+ * Une commande est confirmée alors que le panier est vide. L'interface doit
+ * rendre le paiement indisponible dans ce cas, en annonçant la raison.
+ */
+export class EmptyCartError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'EmptyCartError'
+  }
+}

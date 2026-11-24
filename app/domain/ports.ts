@@ -9,7 +9,7 @@
 // une API se fait en écrivant une seconde implémentation, sans toucher une seule
 // règle métier.
 
-import type { Product } from './types'
+import type { Draft, Product } from './types'
 
 /**
  * Accès en lecture au catalogue.
@@ -21,4 +21,21 @@ import type { Product } from './types'
  */
 export interface CatalogueGateway {
   all(): Promise<readonly Product[]>
+}
+
+/**
+ * Persistance de la commande en cours.
+ *
+ * Le contrat est synchrone : l'implémentation écrit dans le stockage de
+ * session du navigateur, opération immédiate. La rendre asynchrone obligerait
+ * chaque écran à gérer une attente qui n'existe pas.
+ *
+ * `read` rend `undefined` plutôt que de lever : un contenu absent est le cas
+ * normal au premier écran, et un contenu illisible ne doit pas empêcher le
+ * client de commander.
+ */
+export interface DraftStore {
+  read(): Draft | undefined
+  write(draft: Draft): void
+  clear(): void
 }
