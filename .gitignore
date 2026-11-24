@@ -24,3 +24,6 @@ blob-report/
 .DS_Store
 .idea/
 *.log
+
+# Réglages Claude Code propres à une machine
+.claude/settings.local.json
