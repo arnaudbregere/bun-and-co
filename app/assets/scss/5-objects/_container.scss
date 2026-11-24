@@ -1,0 +1,29 @@
+// =============================================================================
+// Objects — contenant et pile
+// =============================================================================
+// Motifs de mise en page sans habillage. Aucune couleur, aucune bordure : un
+// objet décrit une structure, pas une apparence.
+
+@use '../1-settings/breakpoints' as breakpoint;
+
+@layer objects {
+  .o-container {
+    width: 100%;
+    max-width: breakpoint.$breakpoint-kiosk;
+    margin-inline: auto;
+
+    // Gouttière latérale, pour que le texte ne touche jamais le bord de l'écran
+    // sur les largeurs étroites.
+    padding-inline: var(--space-4);
+
+    @media (min-width: breakpoint.$breakpoint-large) {
+      padding-inline: var(--space-6);
+    }
+  }
+
+  .o-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+}
