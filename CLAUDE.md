@@ -62,6 +62,11 @@ design sont des variables SCSS et des custom properties déclarées en `1-settin
 
 Référentiel RGAA 4.1, vérifié en continu et non en fin de projet.
 
+Le RGAA 4.1 transpose WCAG 2.1 niveau AA. Le projet visant WCAG 2.2 niveau AA, quatre
+critères ajoutés par la version 2.2 s'appliquent en plus du référentiel : 2.4.11 sur le
+focus non masqué, 2.5.7 sur les mouvements de glissement, 2.5.8 sur la taille minimale des
+cibles et 3.2.6 sur la cohérence de l'aide.
+
 Tout élément interactif est atteignable et actionnable au clavier. La prise de focus est
 toujours visible : `outline: none` sans remplacement est interdit. Les cibles tactiles
 mesurent au moins 44 × 44 pixels. Les contrastes atteignent 4.5:1 pour le texte et 3:1
