@@ -5,6 +5,7 @@
 // composant. Ces règles appartiennent au domaine : elles ne décrivent pas un
 // produit vendu, elles décrivent comment un menu se compose et se tarife.
 
+import { cents } from './money'
 import { toProductId, type MenuSize, type MenuSizeRule, type Substitution } from './types'
 
 // --- Menus ------------------------------------------------------------------------
@@ -19,24 +20,30 @@ import { toProductId, type MenuSize, type MenuSizeRule, type Substitution } from
 export const MENU_SIZE_RULES: Readonly<Record<MenuSize, MenuSizeRule>> = {
   M: {
     size: 'M',
-    surchargeCents: 400,
+    surchargeCents: cents(400),
     sideFormat: 'small',
     drinkFormat: 'small',
     includesDessert: false,
+    defaultSideId: toProductId('fries-small'),
+    defaultDrinkId: toProductId('soda-33'),
   },
   L: {
     size: 'L',
-    surchargeCents: 490,
+    surchargeCents: cents(490),
     sideFormat: 'medium',
     drinkFormat: 'medium',
     includesDessert: false,
+    defaultSideId: toProductId('fries-medium'),
+    defaultDrinkId: toProductId('soda-50'),
   },
   XL: {
     size: 'XL',
-    surchargeCents: 690,
+    surchargeCents: cents(690),
     sideFormat: 'large',
     drinkFormat: 'medium',
     includesDessert: true,
+    defaultSideId: toProductId('fries-large'),
+    defaultDrinkId: toProductId('soda-50'),
   },
 }
 
@@ -48,9 +55,9 @@ export const MENU_SIZE_RULES: Readonly<Record<MenuSize, MenuSizeRule>> = {
  * à neuf cases pour un gain de quelques centimes.
  */
 export const SIDE_SUBSTITUTIONS: readonly Substitution[] = [
-  { productId: toProductId('potatoes'), surchargeCents: 60 },
-  { productId: toProductId('salad'), surchargeCents: 40 },
-  { productId: toProductId('apple-slices'), surchargeCents: 0 },
+  { productId: toProductId('potatoes'), surchargeCents: cents(60) },
+  { productId: toProductId('salad'), surchargeCents: cents(40) },
+  { productId: toProductId('apple-slices'), surchargeCents: cents(0) },
 ]
 
 /**
@@ -60,10 +67,10 @@ export const SIDE_SUBSTITUTIONS: readonly Substitution[] = [
  * M, dont la boisson incluse est un 33 cl.
  */
 export const DRINK_SUBSTITUTIONS: readonly Substitution[] = [
-  { productId: toProductId('milkshake'), surchargeCents: 110 },
-  { productId: toProductId('orange-juice-25'), surchargeCents: 30 },
-  { productId: toProductId('water-50'), surchargeCents: 0 },
-  { productId: toProductId('iced-tea-50'), surchargeCents: 0 },
-  { productId: toProductId('coffee'), surchargeCents: 0 },
-  { productId: toProductId('soda-50'), surchargeCents: 50 },
+  { productId: toProductId('milkshake'), surchargeCents: cents(110) },
+  { productId: toProductId('orange-juice-25'), surchargeCents: cents(30) },
+  { productId: toProductId('water-50'), surchargeCents: cents(0) },
+  { productId: toProductId('iced-tea-50'), surchargeCents: cents(0) },
+  { productId: toProductId('coffee'), surchargeCents: cents(0) },
+  { productId: toProductId('soda-50'), surchargeCents: cents(50) },
 ]
