@@ -12,6 +12,7 @@
 // Tous les prix sont des entiers de centimes. Aucun nombre à virgule n'apparaît
 // dans ce fichier, et aucun ne doit y apparaître.
 
+import { cents } from '../domain/money'
 import {
   toExtraId,
   toProductId,
@@ -43,20 +44,20 @@ const BACON = toExtraId('bacon')
 const EXTRA_STEAK = toExtraId('extra-steak')
 
 const BURGER_EXTRAS: readonly Extra[] = [
-  { id: BACON, label: 'Bacon', priceCents: 120, allergens: [] },
-  { id: toExtraId('cheddar'), label: 'Cheddar', priceCents: 80, allergens: ['milk'] },
+  { id: BACON, label: 'Bacon', priceCents: cents(120), allergens: [] },
+  { id: toExtraId('cheddar'), label: 'Cheddar', priceCents: cents(80), allergens: ['milk'] },
   {
     id: toExtraId('hash-brown'),
     label: 'Galette de pomme de terre',
-    priceCents: 100,
+    priceCents: cents(100),
     allergens: ['gluten'],
   },
-  { id: toExtraId('egg'), label: 'Œuf', priceCents: 90, allergens: ['eggs'] },
-  { id: EXTRA_STEAK, label: 'Steak supplémentaire', priceCents: 250, allergens: [] },
+  { id: toExtraId('egg'), label: 'Œuf', priceCents: cents(90), allergens: ['eggs'] },
+  { id: EXTRA_STEAK, label: 'Steak supplémentaire', priceCents: cents(250), allergens: [] },
   {
     id: toExtraId('extra-sauce'),
     label: 'Sauce supplémentaire',
-    priceCents: 50,
+    priceCents: cents(50),
     allergens: ['eggs', 'mustard', 'sulphites'],
   },
 ]
@@ -85,7 +86,7 @@ const burger = (
   id: toProductId(id),
   name,
   category: 'burgers',
-  priceCents,
+  priceCents: cents(priceCents),
   allergens,
   available: true,
   removables: BURGER_REMOVABLES,
@@ -107,7 +108,7 @@ const plain = (
   id: toProductId(id),
   name,
   category,
-  priceCents,
+  priceCents: cents(priceCents),
   allergens,
   available: true,
   removables: [],

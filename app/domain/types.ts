@@ -8,10 +8,9 @@
 // `5.90 + 1.20 + 0.80` vaut `7.9000000000000004`, et l'erreur s'accumule au fil
 // des lignes du panier. La conversion en euros n'a lieu qu'à l'affichage.
 
-/**
- * Montant en centimes. Toujours un entier, jamais un nombre à virgule.
- */
-export type Cents = number
+import type { Cents } from './money'
+
+export type { Cents }
 
 // --- Identifiants ------------------------------------------------------------
 // Types nominaux : deux identifiants de nature différente ne sont pas
@@ -114,6 +113,10 @@ export interface MenuSizeRule {
   readonly sideFormat: Format
   readonly drinkFormat: Format
   readonly includesDessert: boolean
+  /** Accompagnement compris dans le forfait, sans supplément. */
+  readonly defaultSideId: ProductId
+  /** Boisson comprise dans le forfait, sans supplément. */
+  readonly defaultDrinkId: ProductId
 }
 
 /**
