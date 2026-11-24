@@ -29,7 +29,8 @@ produits, panier, paiement simulé et édition d'un ticket avec numéro de comma
 
 ## Accessibilité
 
-Le référentiel appliqué est le RGAA 4.1. Les critères suivis de près sont les contrastes,
+Le référentiel appliqué est le RGAA 4.1, qui transpose WCAG 2.1 niveau AA, complété par
+les critères ajoutés par WCAG 2.2 au même niveau. Les critères suivis de près sont les contrastes,
 l'accès clavier complet, la visibilité de la prise de focus, la restitution des changements
 de contexte au lecteur d'écran, l'étiquetage des options produit, la limite de temps
 d'inactivité de la borne et une taille de cible tactile minimale de 44 × 44 pixels.
@@ -43,14 +44,19 @@ interactions et ne répond à aucune intention de recherche. Le référencement 
 
 ## Développement
 
+Le projet avance par lots, et toutes les commandes n'existent pas encore. Celles qui
+suivent sont disponibles aujourd'hui :
+
 ```bash
-pnpm install
-pnpm dev          # serveur de développement
-pnpm test         # tests unitaires
-pnpm test:e2e     # tests end-to-end
-pnpm generate     # build statique
+node scripts/verify-contrasts.mjs   # contrastes de la palette
 ```
+
+Les commandes du socle applicatif arrivent au lot 3 : `pnpm install`, `pnpm dev`,
+`pnpm generate`, `pnpm typecheck`, puis `pnpm lint`, `pnpm test` et `pnpm test:e2e`.
+
+Prérequis à ce moment : la version de Node déclarée dans `.nvmrc`, et la version de pnpm
+déclarée par le champ `packageManager` de `package.json`.
 
 ## Licence
 
-MIT
+MIT, voir le fichier `LICENSE`.

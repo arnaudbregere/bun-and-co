@@ -73,12 +73,17 @@ Types utilisés : `feat`, `fix`, `a11y`, `refactor`, `test`, `style`, `docs`, `c
 
 ## Avant d'ouvrir une demande de fusion
 
-```bash
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm test:e2e
-```
+Exécuter les vérifications disponibles. Le jeu s'étoffe au fil des lots, et une commande
+absente n'est pas une étape à sauter : elle n'existe pas encore.
+
+| Commande | Disponible depuis |
+| --- | --- |
+| `node scripts/verify-contrasts.mjs` | lot 2 |
+| `pnpm typecheck` | lot 3 |
+| `pnpm lint` | lot 3 |
+| `pnpm test` | lot 3 |
+| `pnpm test:e2e` | lot 3 |
+| `pnpm generate` | lot 3 |
 
 Refaire le parcours modifié entièrement au clavier, sans souris.
 

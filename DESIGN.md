@@ -27,8 +27,9 @@ Trois propriétés de la borne commandent tous les tokens.
 **Entrée tactile exclusive.** Il n'y a pas de survol. Toute information révélée au
 `:hover` est invisible pour l'utilisateur réel.
 
-**Portée physique limitée.** La norme EN 301 549, clause 8, traite des terminaux en libre
-service : une personne en fauteuil atteint environ 1,20 m de hauteur. Les commandes
+**Portée physique limitée.** La norme EN 301 549 traite du matériel à sa clause 8, et des
+plages d'atteinte à la sous-clause 8.3 : une personne en fauteuil atteint environ 1,20 m de
+hauteur. Les commandes
 critiques restent dans les deux tiers inférieurs de l'écran, et l'action principale est
 ancrée en bas.
 
@@ -69,10 +70,16 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 ### Focus
 
 L'indicateur de focus est à deux tons : un anneau sombre `--color-focus` doublé d'un
-liseré clair `--color-focus-halo`. Le critère WCAG 2.4.13 est satisfait dès qu'un des
-deux tons atteint 3:1 contre la couleur adjacente. Sur un bouton terracotta, l'anneau
-sombre n'y parvient pas, à 2,40:1 ; c'est le liseré clair qui porte le contraste, à
-7,14:1. Ce mécanisme rend l'indicateur lisible sur n'importe quel fond de la palette.
+liseré clair `--color-focus-halo`.
+
+L'exigence applicable au niveau AA est le critère WCAG 1.4.11, qui demande 3:1 entre
+l'indicateur de focus et les couleurs adjacentes. Elle est satisfaite dès qu'un des deux
+tons atteint ce seuil, et non les deux. Sur un bouton terracotta, l'anneau sombre n'y
+parvient pas, à 2,40:1 ; c'est le liseré clair qui porte le contraste, à 7,14:1.
+
+Le critère WCAG 2.4.13, qui ajoute des exigences de surface et d'épaisseur de
+l'indicateur, relève du niveau AAA. Le mécanisme à deux tons y répond également, mais ce
+n'est pas lui qui fixe notre obligation.
 
 ## Typographie
 
@@ -102,10 +109,10 @@ les espacements internes et les écarts de grille.
 | Token | Valeur | Raison |
 | --- | --- | --- |
 | `--target-primary` | 56 px | loi de Fitts : sur une borne, le gain de temps et la baisse du taux d'erreur sont mesurables |
-| `--target-secondary` | 48 px | au-dessus des 44 px recommandés par le critère WCAG 2.5.5 |
+| `--target-secondary` | 48 px | au-dessus des 44 px exigés par le critère WCAG 2.5.5, de niveau AAA |
 | `--target-gap` | 12 px | évite d'activer la cible voisine |
 
-Le critère WCAG 2.5.8 n'exige que 24 px. Nos valeurs sont volontairement au-delà.
+Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volontairement au-delà.
 
 ## Cascade
 
@@ -151,6 +158,9 @@ composant impose de l'ajouter à `scripts/verify-contrasts.mjs`.
 node scripts/verify-contrasts.mjs
 ```
 
-Le script rend 25 paires déclarées et 2 groupes à combinaison libre, et sort en erreur
-dès qu'un seuil n'est pas tenu. Il tourne en intégration continue à chaque demande de
-fusion.
+Le script rend 23 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
+qu'un seuil n'est pas tenu. Il tourne en intégration continue à chaque demande de fusion.
+
+Les deux groupes couvrent l'indicateur de focus sur fond accentué, où une seule des deux
+combinaisons doit atteindre le seuil. Ces deux cas étaient d'abord comptés parmi les paires
+strictes, d'où un total de 25 avant leur déplacement.
