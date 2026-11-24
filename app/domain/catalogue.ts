@@ -26,10 +26,3 @@ export const productsOfCategory = (
   products: readonly Product[],
   category: Category,
 ): readonly Product[] => products.filter((product) => product.category === category)
-
-/**
- * Produits disponibles à la commande. Un produit indisponible reste affiché,
- * désactivé, mais ne peut pas être ajouté au panier.
- */
-export const availableProducts = (products: readonly Product[]): readonly Product[] =>
-  products.filter((product) => product.available)

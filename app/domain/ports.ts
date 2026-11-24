@@ -9,7 +9,7 @@
 // une API se fait en écrivant une seconde implémentation, sans toucher une seule
 // règle métier.
 
-import type { Order, Product } from './types'
+import type { Product } from './types'
 
 /**
  * Accès en lecture au catalogue.
@@ -21,15 +21,4 @@ import type { Order, Product } from './types'
  */
 export interface CatalogueGateway {
   all(): Promise<readonly Product[]>
-}
-
-/**
- * Persistance de la commande en cours, et remise de la commande confirmée.
- *
- * La version 1 écrit dans `sessionStorage` : la commande survit à un
- * rafraîchissement de page et disparaît avec la session, comportement attendu
- * d'une borne, dont le client suivant ne doit jamais hériter du panier.
- */
-export interface OrderGateway {
-  submit(order: Order): Promise<void>
 }

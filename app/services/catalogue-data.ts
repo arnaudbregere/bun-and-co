@@ -13,23 +13,16 @@
 // dans ce fichier, et aucun ne doit y apparaître.
 
 import { cents } from '../domain/money'
-import {
-  toExtraId,
-  toProductId,
-  toRemovableId,
-  type Extra,
-  type Product,
-  type Removable,
-} from '../domain/types'
+import { toProductId, type Extra, type Product, type Removable } from '../domain/types'
 
 // --- Personnalisation des burgers ---------------------------------------------
 
-const ONIONS = toRemovableId('onions')
-const PICKLES = toRemovableId('pickles')
-const LETTUCE = toRemovableId('lettuce')
-const TOMATO = toRemovableId('tomato')
-const SAUCE = toRemovableId('sauce')
-const CHEESE = toRemovableId('cheese')
+const ONIONS = 'onions'
+const PICKLES = 'pickles'
+const LETTUCE = 'lettuce'
+const TOMATO = 'tomato'
+const SAUCE = 'sauce'
+const CHEESE = 'cheese'
 
 const BURGER_REMOVABLES: readonly Removable[] = [
   { id: ONIONS, label: 'Oignons' },
@@ -40,22 +33,22 @@ const BURGER_REMOVABLES: readonly Removable[] = [
   { id: CHEESE, label: 'Fromage' },
 ]
 
-const BACON = toExtraId('bacon')
-const EXTRA_STEAK = toExtraId('extra-steak')
+const BACON = 'bacon'
+const EXTRA_STEAK = 'extra-steak'
 
 const BURGER_EXTRAS: readonly Extra[] = [
   { id: BACON, label: 'Bacon', priceCents: cents(120), allergens: [] },
-  { id: toExtraId('cheddar'), label: 'Cheddar', priceCents: cents(80), allergens: ['milk'] },
+  { id: 'cheddar', label: 'Cheddar', priceCents: cents(80), allergens: ['milk'] },
   {
-    id: toExtraId('hash-brown'),
+    id: 'hash-brown',
     label: 'Galette de pomme de terre',
     priceCents: cents(100),
     allergens: ['gluten'],
   },
-  { id: toExtraId('egg'), label: 'Œuf', priceCents: cents(90), allergens: ['eggs'] },
+  { id: 'egg', label: 'Œuf', priceCents: cents(90), allergens: ['eggs'] },
   { id: EXTRA_STEAK, label: 'Steak supplémentaire', priceCents: cents(250), allergens: [] },
   {
-    id: toExtraId('extra-sauce'),
+    id: 'extra-sauce',
     label: 'Sauce supplémentaire',
     priceCents: cents(50),
     allergens: ['eggs', 'mustard', 'sulphites'],
