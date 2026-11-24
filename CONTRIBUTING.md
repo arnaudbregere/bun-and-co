@@ -76,14 +76,19 @@ Types utilisés : `feat`, `fix`, `a11y`, `refactor`, `test`, `style`, `docs`, `c
 Exécuter les vérifications disponibles. Le jeu s'étoffe au fil des lots, et une commande
 absente n'est pas une étape à sauter : elle n'existe pas encore.
 
-| Commande | Disponible depuis |
-| --- | --- |
-| `node scripts/verify-contrasts.mjs` | lot 2 |
-| `pnpm typecheck` | lot 3 |
-| `pnpm lint` | lot 3 |
-| `pnpm test` | lot 3 |
-| `pnpm test:e2e` | lot 3 |
-| `pnpm generate` | lot 3 |
+```bash
+pnpm contrasts      # contrastes de la palette
+pnpm format:check   # formatage
+pnpm lint           # analyse statique, dont les règles d'accessibilité
+pnpm typecheck      # types
+pnpm test           # tests unitaires
+pnpm generate       # rendu statique
+pnpm layer-order    # ordre des couches dans le CSS construit
+pnpm test:e2e       # parcours utilisateur et audits axe-core
+```
+
+Les deux dernières exigent un rendu construit ou un serveur démarré. Le pipeline exécute
+exactement ces commandes, dans cet ordre.
 
 Refaire le parcours modifié entièrement au clavier, sans souris.
 

@@ -23,17 +23,79 @@ jobs:
       - name: Récupérer le dépôt
         uses: actions/checkout@v4
 
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Installer Node
         uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
 
       # Vérifie que chaque combinaison de couleurs utilisée par l'interface
-      # atteint son seuil de contraste WCAG. Le script est sans dépendance, il
-      # n'a donc besoin d'aucune installation préalable.
+      # atteint son seuil de contraste WCAG. Placée en premier car elle ne
+      # dépend d'aucune construction.
       - name: Vérifier les contrastes de la palette
-        run: node scripts/verify-contrasts.mjs
+        run: pnpm contrasts
 
-      # Les étapes de typage, d'analyse statique, de tests unitaires, de tests
-      # end-to-end et de détection d'anti-patterns de design arrivent avec le
-      # socle technique, au lot 3.
+      - name: Vérifier le formatage
+        run: pnpm format:check
+
+      - name: Analyser le code
+        run: pnpm lint
+
+      - name: Vérifier les types
+        run: pnpm typecheck
+
+      - name: Exécuter les tests unitaires
+        run: pnpm test
+
+      - name: Construire le rendu statique
+        run: pnpm generate
+
+      # Les deux vérifications suivantes portent sur le résultat construit, et
+      # non sur les sources : le détecteur de design analyse une page rendue, et
+      # l'ordre des couches n'est observable qu'après minification du CSS.
+      - name: Vérifier l'ordre des couches de styles
+        run: pnpm layer-order
+
+      - name: Détecter les anti-patrons de design
+        run: .claude/skills/impeccable/scripts/impeccable detect .output/public/index.html --no-advisory
+
+  tests-end-to-end:
+    name: Tests end-to-end
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      # Un seul navigateur : la borne est un appareil unique, dont le navigateur
+      # est connu.
+      - name: Installer le navigateur
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Exécuter les parcours
+        run: pnpm test:e2e
+
+      - name: Conserver le rapport en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-playwright
+          path: playwright-report/
+          retention-days: 7

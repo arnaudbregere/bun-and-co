@@ -44,18 +44,30 @@ interactions et ne répond à aucune intention de recherche. Le référencement 
 
 ## Développement
 
-Le projet avance par lots, et toutes les commandes n'existent pas encore. Celles qui
-suivent sont disponibles aujourd'hui :
+Prérequis : la version de Node déclarée dans `.nvmrc`, et la version de pnpm déclarée par
+le champ `packageManager` de `package.json`.
 
 ```bash
-node scripts/verify-contrasts.mjs   # contrastes de la palette
+nvm use
+pnpm install
+pnpm dev            # serveur de développement
+pnpm generate       # rendu statique
 ```
 
-Les commandes du socle applicatif arrivent au lot 3 : `pnpm install`, `pnpm dev`,
-`pnpm generate`, `pnpm typecheck`, puis `pnpm lint`, `pnpm test` et `pnpm test:e2e`.
+Vérifications :
 
-Prérequis à ce moment : la version de Node déclarée dans `.nvmrc`, et la version de pnpm
-déclarée par le champ `packageManager` de `package.json`.
+```bash
+pnpm contrasts      # contrastes de la palette
+pnpm format:check   # formatage
+pnpm lint           # analyse statique, dont les règles d'accessibilité
+pnpm typecheck      # types
+pnpm test           # tests unitaires
+pnpm layer-order    # ordre des couches dans le CSS construit
+pnpm test:e2e       # parcours utilisateur et audits axe-core
+```
+
+Le navigateur des tests end-to-end s'installe une fois, par
+`pnpm exec playwright install chromium`.
 
 ## Licence
 

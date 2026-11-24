@@ -24,7 +24,8 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "contrasts": "node scripts/verify-contrasts.mjs"
+    "contrasts": "node scripts/verify-contrasts.mjs",
+    "layer-order": "node scripts/verify-layer-order.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
