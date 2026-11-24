@@ -1,7 +1,6 @@
 name: Fonctionnalité
 description: Décrire une fonctionnalité à développer
-title: "feat: "
-labels: ["enhancement"]
+labels: ["feat"]
 body:
   - type: textarea
     id: besoin
@@ -18,24 +17,6 @@ body:
         - [ ] L'utilisateur peut retirer les oignons du Classique
         - [ ] Le choix est repris sur la ligne de panier
         - [ ] Le changement est annoncé au lecteur d'écran
-    validations:
-      required: true
-  - type: dropdown
-    id: lot
-    attributes:
-      label: Lot
-      options:
-        - "0 — Dépôt et intégration continue"
-        - "1 — Spécifications"
-        - "2 — Design system"
-        - "3 — Socle technique"
-        - "4 — Domaine"
-        - "5 — Composants"
-        - "6 — Parcours"
-        - "7 — Audit RGAA"
-        - "8 — Tests end-to-end"
-        - "9 — Build et déploiement"
-        - "10 — Référencement"
     validations:
       required: true
   - type: textarea

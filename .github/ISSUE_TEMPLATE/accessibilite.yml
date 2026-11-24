@@ -1,6 +1,5 @@
 name: Accessibilité
 description: Signaler un écart au RGAA 4.1
-title: "a11y: "
 labels: ["a11y"]
 body:
   - type: input
