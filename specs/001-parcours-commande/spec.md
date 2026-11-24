@@ -235,6 +235,7 @@ céleri, moutarde, sésame, sulfites, lupin, mollusques.
 | Le Classique | 5,90 € | gluten, lait, œufs, moutarde, sésame, sulfites |
 | Le Fermier | 6,90 € | gluten, lait, œufs, moutarde, sésame |
 | Le Végétal | 6,40 € | gluten, lait, soja, moutarde, sésame |
+| Le Mariner | 6,40 € | gluten, lait, œufs, poissons, moutarde, sésame |
 | Le Montagnard | 7,90 € | gluten, lait, œufs, moutarde, sésame, sulfites |
 | Le Double Smoky | 8,40 € | gluten, lait, œufs, moutarde, sésame, sulfites |
 
@@ -281,7 +282,7 @@ céleri, moutarde, sésame, sulfites, lupin, mollusques.
 
 ### Menus
 
-Un menu existe pour chacun des cinq burgers. Son prix vaut le prix du burger augmenté du
+Un menu existe pour chacun des six burgers. Son prix vaut le prix du burger augmenté du
 forfait de la taille retenue.
 
 | Taille | Forfait | Accompagnement inclus | Boisson incluse | Dessert |
@@ -297,6 +298,7 @@ Prix résultants, à titre de contrôle :
 | Le Classique | 9,90 € | 10,80 € | 12,80 € |
 | Le Fermier | 10,90 € | 11,80 € | 13,80 € |
 | Le Végétal | 10,40 € | 11,30 € | 13,30 € |
+| Le Mariner | 10,40 € | 11,30 € | 13,30 € |
 | Le Montagnard | 11,90 € | 12,80 € | 14,80 € |
 | Le Double Smoky | 12,40 € | 13,30 € | 15,30 € |
 
@@ -335,7 +337,8 @@ Retraits possibles, sans frais : oignons, cornichons, salade, tomate, sauce, fro
 | Steak supplémentaire | + 2,50 € | aucun |
 | Sauce supplémentaire | + 0,50 € | œufs, moutarde, sulfites |
 
-Le Végétal n'accepte ni bacon ni steak supplémentaire. Les produits des catégories Poulet,
+Le Végétal n'accepte ni bacon ni steak supplémentaire. Le Mariner n'accepte pas le steak
+supplémentaire. Les produits des catégories Poulet,
 Accompagnements, Desserts et Boissons n'acceptent ni retrait ni supplément.
 
 ## Écrans et transitions
