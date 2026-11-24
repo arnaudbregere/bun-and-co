@@ -26,8 +26,12 @@ Les composants suivent l'Atomic Design dans `app/components/atoms`, `molecules` 
 ## Styles
 
 SCSS organisé en ITCSS, dans l'ordre `1-settings`, `2-tools`, `3-generic`, `4-elements`,
-`5-objects`, `6-components`, `7-utilities`. La spécificité ne doit jamais décroître d'une
-couche à la suivante.
+`5-objects`, `6-components`, `7-utilities`.
+
+L'ordre de la cascade est appliqué par les couches natives `@layer`, déclarées une seule
+fois en tête de la feuille principale. Une règle d'une couche basse ne peut donc pas
+l'emporter sur une couche haute, quelle que soit sa spécificité. La structure de dossiers
+ITCSS reste le plan de classement ; `@layer` en est la garantie technique.
 
 Mobile first : les media queries utilisent `min-width` uniquement.
 
@@ -52,6 +56,22 @@ règles de calcul. Pas de test de snapshot de markup, qui casse au moindre chang
 style sans rien prouver.
 
 Playwright pour les parcours utilisateur, avec un audit axe-core sur chaque écran traversé.
+
+Le détecteur Impeccable analyse une page rendue, pas un fichier source. Un `detect` lancé
+sur des fichiers `.vue` ne déclenche que les règles à base d'expressions régulières et rend
+un rapport incomplet, que son propre avertissement qualifie de sous-estimation. Il
+s'exécute donc à deux endroits : sur le HTML produit par `nuxt generate`, à chaque demande
+de fusion à partir du lot 3 ; et sur le serveur de développement dans le job end-to-end, au
+lot 8, pour les règles qui dépendent des états d'interaction.
+
+## Points d'accroche de l'agent
+
+`.claude/settings.json` est versionné et déclare les points d'accroche du détecteur de
+design. Ils exécutent `.claude/skills/impeccable/scripts/impeccable`, script présent dans
+le dépôt, après chaque écriture de fichier et à l'arrêt de la session. Toute personne qui
+ouvre ce dépôt dans un agent compatible exécute donc ce script localement.
+
+Les réglages propres à une machine vont dans `.claude/settings.local.json`, ignoré par Git.
 
 ## Conventions de commit
 

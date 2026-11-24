@@ -82,6 +82,22 @@ pnpm test:e2e
 
 Refaire le parcours modifié entièrement au clavier, sans souris.
 
+## Outillage exécuté automatiquement
+
+Le dépôt versionne `.claude/settings.json`, qui déclare des points d'accroche pour le
+détecteur de design Impeccable. Ces points d'accroche lancent
+`.claude/skills/impeccable/scripts/impeccable`, un script livré dans le dépôt, après chaque
+écriture de fichier et à l'arrêt d'une session d'agent.
+
+Conséquence à connaître avant de cloner : ouvrir ce dépôt dans un agent compatible exécute
+ce script sur ta machine, sans action de ta part. Le script réalise une analyse locale des
+fichiers d'interface et n'émet aucune requête réseau pour fonctionner. Pour t'en passer,
+supprime la section `hooks` de `.claude/settings.json` dans ta copie de travail, ou place
+tes propres réglages dans `.claude/settings.local.json`, qui n'est pas versionné.
+
+Ce choix est assumé : ces vérifications décrivent une exigence du projet et non une
+préférence personnelle, elles ont donc leur place dans un fichier partagé.
+
 ## Accessibilité
 
 Toute contribution qui ajoute de l'interface respecte le RGAA 4.1. Un composant livré sans
