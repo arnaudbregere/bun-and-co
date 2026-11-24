@@ -1,0 +1,93 @@
+// =============================================================================
+// Elements — balises nues
+// =============================================================================
+// Styles des balises sans classe. Aucun sélecteur de classe dans cette couche.
+
+@layer elements {
+  html {
+    // Aucune taille en pixels ici : la valeur par défaut du navigateur est
+    // conservée, pour que le réglage de taille de police de l'utilisateur
+    // continue de s'appliquer. L'échelle du projet part de `--font-size-body`.
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--color-background);
+    color: var(--color-ink);
+    font-family: var(--font-ui);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    -webkit-font-smoothing: antialiased;
+
+    // Supprime le délai de 300 millisecondes appliqué par les navigateurs
+    // tactiles avant de confirmer un appui, pour tenir le budget d'interaction
+    // de 100 millisecondes.
+    touch-action: manipulation;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    letter-spacing: var(--letter-spacing-heading);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--font-size-screen);
+  }
+
+  h2 {
+    font-size: var(--font-size-section);
+  }
+
+  h3 {
+    font-size: var(--font-size-subheading);
+  }
+
+  p {
+    max-width: var(--measure);
+    text-wrap: pretty;
+  }
+
+  // Indicateur de focus à deux tons, lisible sur toutes les surfaces de la
+  // palette : l'anneau sombre porte le contraste sur les fonds clairs, le liseré
+  // clair le porte sur les fonds accentués. Le critère WCAG 1.4.11 est satisfait
+  // dès qu'un des deux tons atteint 3:1 contre la couleur adjacente.
+  //
+  // `:focus-visible` et non `:focus`, pour ne pas marquer un appui à la souris
+  // ou au doigt.
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 calc(var(--focus-ring-offset) + var(--focus-ring-width)) var(--color-focus-halo);
+  }
+
+  // Le mode contraste élevé des systèmes d'exploitation écrase les couleurs
+  // d'auteur. L'indicateur de focus doit y rester visible, d'où l'emploi de la
+  // couleur système `Highlight`.
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  img,
+  picture,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
