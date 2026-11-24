@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
-  InvalidLineError,
   cartTotalCents,
   extrasTotalCents,
   lineTotalCents,
   menuSurchargeCents,
   unitPriceCents,
 } from '../../../app/domain/pricing'
+import { InvalidLineError } from '../../../app/domain/errors'
 import { findProduct } from '../../../app/domain/catalogue'
 import { MENU_SIZE_RULES } from '../../../app/domain/menu-rules'
 import { PRODUCTS } from '../../../app/services/catalogue-data'
