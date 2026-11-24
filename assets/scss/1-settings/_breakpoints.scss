@@ -9,6 +9,6 @@
 //
 // Largeurs exprimées en `rem` pour suivre le zoom de l'utilisateur.
 
-$rupture-moyen: 36rem;  // 576 px — tablette en portrait
-$rupture-large: 48rem;  // 768 px — tablette en paysage
-$rupture-borne: 67.5rem; // 1080 px — borne cible, écran portrait 1080 × 1920
+$breakpoint-medium: 36rem;  // 576 px — tablette en portrait
+$breakpoint-large: 48rem;  // 768 px — tablette en paysage
+$breakpoint-kiosk: 67.5rem; // 1080 px — borne cible, écran portrait 1080 × 1920
