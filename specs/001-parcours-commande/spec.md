@@ -170,6 +170,7 @@ histoires.
 - **EF-017** : La borne DOIT permettre de retirer sans frais chaque ingrédient retirable du produit.
 - **EF-018** : La borne DOIT permettre d'ajouter les suppléments payants prévus pour le produit.
 - **EF-019** : Le prix d'une ligne DOIT valoir le prix de base du produit augmenté de la somme des suppléments et des substitutions, multiplié par la quantité.
+- **EF-019b** : Tous les montants DOIVENT être manipulés en centimes entiers, et convertis en euros au seul moment de l'affichage.
 - **EF-020** : La borne DOIT afficher sur la ligne de panier les retraits et les suppléments retenus.
 - **EF-021** : Deux produits identiques personnalisés différemment DOIVENT former deux lignes de panier distinctes.
 - **EF-022** : Deux produits identiques personnalisés à l'identique DOIVENT être regroupés sur une seule ligne, dont la quantité est incrémentée.
@@ -381,7 +382,8 @@ confirmée et immuable.
 - La borne est un écran tactile unique en mode portrait, utilisé par un client à la fois.
 - La conception reste mobile first : la mise en page est d'abord définie pour une largeur étroite, puis élargie.
 - Le catalogue est une donnée statique livrée avec l'application. Il ne change pas sans nouveau déploiement.
-- Les prix sont en euros, toutes taxes comprises, et affichés avec deux décimales et la virgule comme séparateur décimal.
+- Les prix sont en euros, toutes taxes comprises, et affichés avec deux décimales et la virgule comme séparateur décimal. En interne, ils sont stockés et calculés en centimes entiers, afin d'écarter les erreurs d'arrondi des nombres à virgule flottante.
+- Le catalogue est servi par une route préconstruite au build et consommé par un appel réseau, afin que l'application comporte un vrai code d'appel de données sans exiger de serveur à l'exécution.
 - Le paiement est simulé de bout en bout. Aucune donnée bancaire n'est saisie, demandée ni transmise.
 - Les numéros de commande sont tirés dans la plage 100 à 999 et uniques au sein d'une session.
 - L'interface est en français uniquement.

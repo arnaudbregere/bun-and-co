@@ -20,6 +20,26 @@ implémentation dans `app/infrastructure/`. La version 1 persiste la commande da
 `sessionStorage`, comportement attendu d'une borne : la commande ne doit pas survivre au
 client suivant.
 
+Le catalogue est servi par une route Nitro préconstruite, `server/api/catalogue.get.ts`,
+déclarée dans `nitro.prerender.routes` et donc écrite en fichier statique au build. Le
+client la consomme par la passerelle, jamais par un `fetch` écrit dans un composant.
+
+L'URL d'appel doit être préfixée par `useRuntimeConfig().app.baseURL` : sur GitHub Pages le
+site est servi sous `/bun-and-co/`, et une URL absolue partant de la racine renvoie un 404.
+Ce préfixe est appliqué dans la passerelle, à un seul endroit.
+
+Le calcul tarifaire reste local et synchrone. Aucun prix n'est demandé au réseau.
+
+## Montants
+
+Les montants sont manipulés en centimes entiers partout dans le domaine. `5.90 + 1.20 +
+0.80` vaut `7.9000000000000004` en JavaScript, et l'erreur s'accumule au fil des lignes du
+panier.
+
+Les types portent l'unité dans leur nom, par exemple `prixCentimes`. La conversion en euros
+a lieu au seul moment de l'affichage, par `Intl.NumberFormat('fr-FR', { style: 'currency',
+currency: 'EUR' })`. Aucun composant ne divise un montant par cent.
+
 Les composants suivent l'Atomic Design dans `app/components/atoms`, `molecules` et
 `organisms`. Un composant ne consomme que des composants de niveau inférieur.
 
