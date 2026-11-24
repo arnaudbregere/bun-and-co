@@ -41,8 +41,15 @@ contexte.
 
 ### III. Hébergement statique assumé
 
-L'application est générée en statique et servie par GitHub Pages. Aucun serveur
-applicatif, aucune base de données, aucune route serveur Nitro.
+L'application est générée en statique et servie par GitHub Pages. Aucun serveur applicatif
+à l'exécution, aucune base de données.
+
+Les routes serveur Nitro sont autorisées à une condition : être préconstruites au build.
+Une route déclarée dans `nitro.prerender.routes` est exécutée pendant le `nuxt generate`
+et sa réponse est écrite en fichier statique. Elle ne laisse donc aucun processus à
+l'exécution et reste servie par un hébergeur de fichiers. Une route qui dépend de l'état
+de la requête, d'un paramètre dynamique ou d'une écriture est interdite, car elle exigerait
+un serveur vivant.
 
 L'état de la commande en cours vit dans `sessionStorage` : la commande survit à un
 rafraîchissement accidentel et disparaît à la fin de la session. Une borne ne doit jamais
@@ -51,9 +58,14 @@ présenter au client suivant le panier du client précédent.
 Introduire un serveur applicatif constitue une révision majeure de cette constitution, pas
 une décision d'implémentation.
 
+Le calcul tarifaire reste local et synchrone, en toutes circonstances. Un aller-retour
+réseau par modification de quantité dépasserait le budget d'interaction de 100 millisecondes
+et rendrait la borne inutilisable hors connexion, pour un calcul trivial.
+
 *Raison* : le besoin réel d'une borne est local — un appareil, une session, un client. Un
-backend n'apporterait ici aucune fonction, seulement une dépendance d'exécution qui
-contredit la cible de déploiement.
+serveur vivant n'apporterait ici aucune fonction, seulement une dépendance d'exécution qui
+contredit la cible de déploiement. La route préconstruite, elle, donne une frontière de
+données explicite et un vrai code d'appel réseau, sans cette dépendance.
 
 ### IV. Simplicité contrainte
 
@@ -118,6 +130,18 @@ Les spécifications précèdent l'implémentation. Un écart entre le code livr�
 spécification se résout en corrigeant l'un ou en amendant l'autre, jamais en laissant les
 deux divergents.
 
+## Règles de calcul
+
+Les montants sont manipulés en centimes entiers dans tout le domaine. Aucun prix, aucun
+supplément et aucun total n'est stocké ni calculé en nombre à virgule flottante.
+
+En JavaScript, `5.90 + 1.20 + 0.80` vaut `7.9000000000000004`. L'erreur s'accumule sur un
+panier de plusieurs lignes et produit un total faux d'un centime, défaut invisible en
+relecture et visible sur un ticket.
+
+La conversion en euros n'a lieu qu'à l'affichage, par `Intl.NumberFormat`. Aucun composant
+ne divise un montant par cent pour l'afficher.
+
 ## Gouvernance
 
 Cette constitution prime sur toute autre pratique du projet. En cas de conflit entre un
@@ -133,4 +157,19 @@ justifie explicitement dans la demande de fusion. Les règles d'application au q
 sont consignées dans `CLAUDE.md` à la racine du dépôt, qui ne peut pas contredire ce
 document.
 
-**Version** : 1.0.0 | **Ratifiée** : 2026-11-24 | **Dernier amendement** : 2026-11-24
+## Historique des amendements
+
+### 1.1.0 — 2026-11-24
+
+Principe III : l'interdiction portait sur toute route serveur Nitro, ce qui confondait le
+serveur à l'exécution et la route préconstruite au build. La seconde ne laisse aucun
+processus vivant et reste compatible avec un hébergement de fichiers. L'interdiction est
+donc recentrée sur ce qu'elle visait réellement, et la nature locale du calcul tarifaire est
+rendue explicite.
+
+Ajout de la section « Règles de calcul », qui impose les montants en centimes entiers.
+
+Incrément mineur : aucun principe n'est supprimé ni redéfini de façon incompatible, une
+section est ajoutée et une autre précisée.
+
+**Version** : 1.1.0 | **Ratifiée** : 2026-11-24 | **Dernier amendement** : 2026-11-24
