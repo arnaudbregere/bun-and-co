@@ -12,9 +12,7 @@ import { MENU_SIZE_RULES } from '../../../app/domain/menu-rules'
 import { PRODUCTS } from '../../../app/services/catalogue-data'
 import {
   toCartLineId,
-  toExtraId,
   toProductId,
-  toRemovableId,
   type CartLine,
   type MenuSize,
   type Product,
@@ -52,14 +50,14 @@ describe('suppléments', () => {
   it('additionne les suppléments retenus', () => {
     const total = extrasTotalCents(product('classique'), {
       removedIds: [],
-      extraIds: [toExtraId('bacon'), toExtraId('cheddar')],
+      extraIds: ['bacon', 'cheddar'],
     })
     expect(total).toBe(200)
   })
 
   it('ne facture pas les retraits', () => {
     const total = extrasTotalCents(product('classique'), {
-      removedIds: [toRemovableId('onions'), toRemovableId('pickles')],
+      removedIds: ['onions', 'pickles'],
       extraIds: [],
     })
     expect(total).toBe(0)
@@ -69,7 +67,7 @@ describe('suppléments', () => {
     // Le Végétal refuse le bacon : un produit végétal personnalisable en
     // non-végétal serait un défaut, pas une liberté offerte au client.
     expect(() =>
-      extrasTotalCents(product('vegetal'), { removedIds: [], extraIds: [toExtraId('bacon')] }),
+      extrasTotalCents(product('vegetal'), { removedIds: [], extraIds: ['bacon'] }),
     ).toThrow(InvalidLineError)
   })
 })
@@ -115,7 +113,7 @@ describe('prix d’une ligne', () => {
   })
 
   it('ajoute les suppléments', () => {
-    const avecBacon = line({ customisation: { removedIds: [], extraIds: [toExtraId('bacon')] } })
+    const avecBacon = line({ customisation: { removedIds: [], extraIds: ['bacon'] } })
     expect(unitPriceCents(product('classique'), avecBacon)).toBe(710)
   })
 

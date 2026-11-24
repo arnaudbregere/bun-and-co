@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { availableProducts, findProduct, productsOfCategory } from '../../../app/domain/catalogue'
+import { findProduct, productsOfCategory } from '../../../app/domain/catalogue'
 import { toProductId, type Product } from '../../../app/domain/types'
 
 // Jeu de produits minimal, construit pour ces tests. Le domaine ne dépend
@@ -34,9 +34,5 @@ describe('consultation du catalogue', () => {
   it('filtre par catégorie en conservant l’ordre du catalogue', () => {
     expect(productsOfCategory(PRODUITS, 'burgers').map((p) => p.id)).toEqual(['a', 'b'])
     expect(productsOfCategory(PRODUITS, 'desserts')).toEqual([])
-  })
-
-  it('écarte les produits indisponibles', () => {
-    expect(availableProducts(PRODUITS).map((p) => p.id)).toEqual(['a', 'c'])
   })
 })

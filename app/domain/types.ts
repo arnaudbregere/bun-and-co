@@ -13,10 +13,10 @@ import type { Cents } from './money'
 export type { Cents }
 
 // --- Identifiants ------------------------------------------------------------
-// Types nominaux : deux identifiants de nature différente ne sont pas
-// interchangeables, même s'ils sont tous deux des chaînes à l'exécution. Passer
-// un ProductId là où un CartLineId est attendu devient une erreur de
-// compilation, et non un défaut à découvrir en test.
+// Types nominaux pour les deux identifiants qui se confondent dans une
+// signature : `removeLine(cart, productId)` au lieu de `removeLine(cart,
+// lineId)` est une faute plausible, et les deux sont des chaînes à l'exécution.
+// Le marquage en fait une erreur de compilation.
 
 declare const brand: unique symbol
 
@@ -24,13 +24,23 @@ type Branded<T, B extends string> = T & { readonly [brand]: B }
 
 export type ProductId = Branded<string, 'ProductId'>
 export type CartLineId = Branded<string, 'CartLineId'>
-export type ExtraId = Branded<string, 'ExtraId'>
-export type RemovableId = Branded<string, 'RemovableId'>
 
 export const toProductId = (value: string): ProductId => value as ProductId
 export const toCartLineId = (value: string): CartLineId => value as CartLineId
-export const toExtraId = (value: string): ExtraId => value as ExtraId
-export const toRemovableId = (value: string): RemovableId => value as RemovableId
+
+/**
+ * Identifiants non marqués, parce qu'ils ne se confondent avec rien.
+ *
+ * Un supplément et un retrait ne figurent jamais ensemble dans une signature, et
+ * l'interversion des deux champs d'une personnalisation échoue bruyamment : un
+ * identifiant de retrait placé dans les suppléments ne figure pas parmi ceux du
+ * produit, donc le calcul tarifaire lève.
+ *
+ * On marque ce qui se confond silencieusement, pas tout ce qui a le même type
+ * de base.
+ */
+export type ExtraId = string
+export type RemovableId = string
 
 // --- Allergènes ---------------------------------------------------------------
 // Les quatorze catégories du règlement européen 1169/2011, dit INCO. La liste

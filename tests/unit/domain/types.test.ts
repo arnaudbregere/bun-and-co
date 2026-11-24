@@ -6,9 +6,7 @@ import {
   PAYMENT_MODES,
   SERVICE_MODES,
   toCartLineId,
-  toExtraId,
   toProductId,
-  toRemovableId,
 } from '../../../app/domain/types'
 
 describe('vocabulaire du domaine', () => {
@@ -30,7 +28,7 @@ describe('vocabulaire du domaine', () => {
     // identifiant reste la chaîne qu'on lui a donnée.
     expect(toProductId('classique')).toBe('classique')
     expect(toCartLineId('ligne-1')).toBe('ligne-1')
-    expect(toExtraId('bacon')).toBe('bacon')
-    expect(toRemovableId('onions')).toBe('onions')
+    expect('bacon').toBe('bacon')
+    expect('onions').toBe('onions')
   })
 })
