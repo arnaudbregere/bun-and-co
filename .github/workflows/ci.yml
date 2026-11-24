@@ -1,0 +1,30 @@
+name: Intégration continue
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Annule une exécution encore en cours sur la même branche lorsqu'un nouveau
+# commit est poussé, pour ne pas garder deux vérifications concurrentes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verifications:
+    name: Vérifications
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      # Les étapes de qualité arrivent au lot 3, quand le projet Nuxt et ses
+      # scripts existent : installation pnpm, lint, typecheck, tests unitaires,
+      # puis tests end-to-end Playwright.
+      - name: Pipeline en attente du socle technique
+        run: echo "Socle technique absent, aucune vérification à lancer pour le moment."
