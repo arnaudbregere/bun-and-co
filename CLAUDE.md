@@ -15,8 +15,34 @@ mutations de panier appartiennent à cette couche.
 Les composants affichent et émettent. Ils ne calculent pas de prix et ne décident pas de
 règles de menu.
 
+## Trois couches, une seule direction
+
+```
+app/pages, app/components, app/composables     interface
+        ↓
+app/services                                   services
+        ↓
+app/domain                                     métier
+```
+
+Le domaine ne connaît ni les services ni l'interface. Les services connaissent le domaine.
+L'interface connaît les deux, mais passe par les composables.
+
+Ces frontières ne sont pas seulement écrites : `eslint.config.mjs` les applique. Un import
+interdit fait échouer `pnpm lint`, donc le pipeline, donc la fusion.
+
+**Domaine**, dans `app/domain/` : types, règles, calculs. Fonctions pures, aucun catalogue
+détenu, aucun accès au monde extérieur. `catalogue.ts` interroge une liste de produits qu'on
+lui passe en argument ; il n'en charge aucune.
+
+**Services**, dans `app/services/` : les données de la carte, les implémentations des ports,
+la persistance. Ce que l'enseigne vend aujourd'hui relève du service, pas du métier.
+
+**Interface**, dans `app/pages/`, `app/components/` et `app/composables/` : affichage et
+adaptation à Vue. Un composable ne contient aucune règle métier.
+
 Les accès au monde extérieur passent par un port déclaré dans `app/domain/ports.ts` et une
-implémentation dans `app/infrastructure/`. La version 1 persiste la commande dans
+implémentation dans `app/services/`. La version 1 persiste la commande dans
 `sessionStorage`, comportement attendu d'une borne : la commande ne doit pas survivre au
 client suivant.
 
