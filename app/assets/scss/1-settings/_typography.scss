@@ -17,8 +17,13 @@
     // Les polices sont auto-hébergées au lot 3. Aucun appel à un service tiers :
     // le cache des navigateurs est partitionné par site depuis 2020, un lien vers
     // un hébergeur de polices n'apporte donc aucun gain et ajoute une requête.
-    --font-ui: 'Inter', system-ui, -apple-system, 'Segoe UI', roboto, sans-serif;
-    --font-heading: 'Fraunces', 'Iowan Old Style', georgia, serif;
+    // Archivo et Petrona, et non Inter et Fraunces : le détecteur de design
+    // signale ces dernières comme omniprésentes, au point de ne plus porter
+    // d'identité. Archivo est une grotesque dessinée pour la lisibilité en petit
+    // corps, Petrona une antique à contraste doux, cohérente avec le
+    // positionnement artisanal de l'enseigne.
+    --font-ui: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-heading: 'Petrona', 'Iowan Old Style', georgia, serif;
 
     // --- Tailles ----------------------------------------------------------------
     --font-size-note: 1.125rem;   // 18 px — allergènes, mentions légales
