@@ -1,6 +1,6 @@
 name: Fonctionnalité
 description: Décrire une fonctionnalité à développer
-labels: ["feat"]
+labels: ['feat']
 body:
   - type: textarea
     id: besoin

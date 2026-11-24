@@ -1,6 +1,6 @@
 name: Anomalie
 description: Signaler un comportement incorrect de la borne
-labels: ["fix"]
+labels: ['fix']
 body:
   - type: textarea
     id: observe

@@ -8,21 +8,21 @@
 @layer settings {
   :root {
     --space-1: 0.25rem; // 4 px
-    --space-2: 0.5rem;  // 8 px
+    --space-2: 0.5rem; // 8 px
     --space-3: 0.75rem; // 12 px
-    --space-4: 1rem;    // 16 px
-    --space-5: 1.5rem;  // 24 px
-    --space-6: 2rem;    // 32 px
-    --space-7: 3rem;    // 48 px
-    --space-8: 4rem;    // 64 px
+    --space-4: 1rem; // 16 px
+    --space-5: 1.5rem; // 24 px
+    --space-6: 2rem; // 32 px
+    --space-7: 3rem; // 48 px
+    --space-8: 4rem; // 64 px
 
     // --- Cibles tactiles --------------------------------------------------------
-    // Le critère WCAG 2.5.8 exige 24 px au minimum, le critère 2.5.5 recommande
-    // 44 px. Nous retenons 56 px pour les actions principales : sur une borne, la
-    // loi de Fitts fait du gain de temps et de la baisse du taux d'erreur un
-    // enjeu mesurable, pas un confort.
-    --target-primary: 3.5rem;   // 56 px
-    --target-secondary: 3rem;   // 48 px
+    // Le critère WCAG 2.5.8, de niveau AA, exige 24 px au minimum. Le critère
+    // 2.5.5, de niveau AAA, exige 44 px. Nous retenons 56 px pour les actions
+    // principales : sur une borne, la loi de Fitts fait du gain de temps et de la
+    // baisse du taux d'erreur un enjeu mesurable, pas un confort.
+    --target-primary: 3.5rem; // 56 px
+    --target-secondary: 3rem; // 48 px
     --target-gap: var(--space-3); // 12 px, évite les taps voisins
 
     // --- Portée physique --------------------------------------------------------
