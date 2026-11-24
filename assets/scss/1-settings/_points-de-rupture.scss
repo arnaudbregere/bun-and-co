@@ -1,0 +1,14 @@
+// =============================================================================
+// Settings — points de rupture
+// =============================================================================
+// Conception mobile first : la mise en page est définie pour la largeur la plus
+// étroite, puis élargie. Les requêtes média utilisent exclusivement `min-width`.
+//
+// Ces valeurs sont des variables SCSS et non des custom properties : une custom
+// property n'est pas utilisable dans une condition de requête média.
+//
+// Largeurs exprimées en `rem` pour suivre le zoom de l'utilisateur.
+
+$rupture-moyen: 36rem;  // 576 px — tablette en portrait
+$rupture-large: 48rem;  // 768 px — tablette en paysage
+$rupture-borne: 67.5rem; // 1080 px — borne cible, écran portrait 1080 × 1920

@@ -1,0 +1,14 @@
+// =============================================================================
+// Ordre de la cascade
+// =============================================================================
+// L'ordre des couches ITCSS est appliqué ici par les couches natives `@layer`,
+// et non laissé à la seule convention de nommage des dossiers.
+//
+// Conséquence : une règle écrite dans `components` ne peut pas être emportée par
+// une règle de `generic`, quelle que soit la spécificité des sélecteurs. Les
+// guerres de spécificité et les `!important` deviennent sans objet.
+//
+// Cette déclaration doit rester la première instruction de la feuille
+// principale : `@layer` fixe l'ordre à sa première apparition.
+
+@layer settings, tools, generic, elements, objects, components, utilities;
