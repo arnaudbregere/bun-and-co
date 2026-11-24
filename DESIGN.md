@@ -97,6 +97,13 @@ n'est pas lui qui fixe notre obligation.
 Interligne de 1,5 sur le texte courant, minimum exigé par le critère WCAG 1.4.12. Longueur
 de ligne cible de 60 caractères, bornée entre 45 et 75.
 
+Archivo pour l'interface, Petrona pour les titres.
+
+Inter et Fraunces étaient le premier choix. Le détecteur de design les a signalées comme
+omniprésentes, au point de ne plus porter d'identité : elles reviennent sur une grande part
+des interfaces récentes. Archivo est une grotesque dessinée pour la lisibilité en petit
+corps, Petrona une antique à contraste doux, cohérente avec le positionnement artisanal.
+
 Polices auto-hébergées en `woff2`, sous-ensemble latin, chiffres et ponctuation. Aucun
 appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis
 2020, un lien externe n'apporte donc aucun gain et ajoute une requête bloquante.
@@ -151,6 +158,20 @@ vérification ne la voit pas et le contrôle devient décoratif.
 
 **Pas de nouvelle combinaison de couleurs sans déclaration.** Ajouter une paire dans un
 composant impose de l'ajouter à `scripts/verify-contrasts.mjs`.
+
+## Écart assumé au détecteur de design
+
+Le détecteur signale la règle `cream-palette` sur notre fond crème : un blanc cassé chaud
+est devenu la surface par défaut des interfaces générées, choisie par réflexe.
+
+La règle est désactivée dans `.impeccable/config.json`, et voici pourquoi. Le fond crème
+n'est pas ici un réflexe mais une décision de direction, prise avec le terracotta et le vert
+olive, et chaque paire de couleurs est mesurée. La règle n'accepte pas d'exception par
+valeur, seulement par fichier ou par règle entière, d'où la désactivation complète.
+
+L'alternative, si cet écart devenait gênant, serait un fond neutre teinté de vert olive
+plutôt que de terre cuite. Elle sortirait de la direction retenue et imposerait de
+revérifier toutes les paires de contraste.
 
 ## Vérification
 

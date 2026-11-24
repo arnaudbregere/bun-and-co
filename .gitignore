@@ -30,3 +30,6 @@ blob-report/
 
 # Réglages Claude Code propres à une machine
 .claude/settings.local.json
+
+# Réglages Impeccable propres à une machine
+.impeccable/config.local.json
