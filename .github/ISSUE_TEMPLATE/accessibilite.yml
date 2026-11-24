@@ -1,0 +1,35 @@
+name: Accessibilité
+description: Signaler un écart au RGAA 4.1
+title: "a11y: "
+labels: ["a11y"]
+body:
+  - type: input
+    id: critere
+    attributes:
+      label: Critère RGAA
+      placeholder: "3.2 — contraste du texte"
+    validations:
+      required: true
+  - type: textarea
+    id: ecart
+    attributes:
+      label: Écart constaté
+    validations:
+      required: true
+  - type: dropdown
+    id: moyen
+    attributes:
+      label: Moyen de détection
+      options:
+        - Audit axe-core automatisé
+        - Navigation au clavier
+        - Lecteur d'écran
+        - Vérification de contraste
+        - Zoom à 200 %
+        - Relecture de la grille RGAA
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Correction envisagée

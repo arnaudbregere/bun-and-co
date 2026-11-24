@@ -1,0 +1,48 @@
+name: Anomalie
+description: Signaler un comportement incorrect de la borne
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: observe
+    attributes:
+      label: Comportement observé
+      description: Ce qui se produit réellement.
+    validations:
+      required: true
+  - type: textarea
+    id: attendu
+    attributes:
+      label: Comportement attendu
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes de reproduction
+      placeholder: |
+        1. Choisir « Sur place »
+        2. Ajouter Le Classique au panier
+        3. ...
+    validations:
+      required: true
+  - type: dropdown
+    id: ecran
+    attributes:
+      label: Écran concerné
+      options:
+        - Accueil
+        - Mode de consommation
+        - Carte
+        - Fiche produit
+        - Panier
+        - Paiement
+        - Ticket
+        - Plusieurs écrans
+    validations:
+      required: true
+  - type: input
+    id: environnement
+    attributes:
+      label: Environnement
+      placeholder: Chrome 131 / Firefox 133, écran tactile ou souris
