@@ -2,7 +2,7 @@
 
 Décrire en une phrase ce que cette demande de fusion apporte.
 
-Clôture #
+Closes #
 
 ## Nature du changement
 
