@@ -10,21 +10,10 @@
 // connexion, pour un calcul trivial.
 
 import { findProduct } from './catalogue'
+import { InvalidLineError } from './errors'
 import { DRINK_SUBSTITUTIONS, MENU_SIZE_RULES, SIDE_SUBSTITUTIONS } from './menu-rules'
 import { ZERO_CENTS, addCents, multiplyCents, sumCents, type Cents } from './money'
 import type { CartLine, Customisation, MenuComposition, Product, ProductId } from './types'
-
-/**
- * Levée lorsqu'une composition de menu ou une personnalisation ne correspond à
- * aucune règle. Tarifer silencieusement à zéro masquerait la faute et
- * produirait un ticket faux.
- */
-export class InvalidLineError extends Error {
-  constructor(message: string) {
-    super(message)
-    this.name = 'InvalidLineError'
-  }
-}
 
 /**
  * Somme des suppléments retenus sur un produit.
