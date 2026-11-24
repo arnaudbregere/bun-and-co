@@ -315,6 +315,12 @@ propriété est une règle métier vérifiée par les tests unitaires du lot 4.
 | Boisson | Eau minérale, thé glacé ou café | sans frais |
 | Boisson 33 cl en taille M | Boisson 50 cl | + 0,50 € |
 
+Les suppléments de substitution sont des forfaits, indépendants de la taille du menu. Ils
+sont calibrés sur la taille M, où ils correspondent à l'écart de prix à la pièce. En
+tailles L et XL, l'écart réel est plus faible, mais le forfait reste identique : c'est la
+pratique du secteur, et elle évite une grille tarifaire à neuf cases pour un gain de
+quelques centimes. Ce choix est une règle métier, pas une approximation de calcul.
+
 ### Personnalisation des burgers
 
 Retraits possibles, sans frais : oignons, cornichons, salade, tomate, sauce, fromage.
