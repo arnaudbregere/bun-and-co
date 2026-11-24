@@ -11,9 +11,10 @@ export default defineVitestConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
 
-      // La couverture ne porte que sur le domaine métier. L'imposer aux
-      // composants produirait des tests écrits pour la métrique.
-      include: ['app/domain/**/*.ts'],
+      // La couverture porte sur le domaine et sur les services : du code sans
+      // DOM ni réseau, où le seuil est atteignable et significatif. L'imposer
+      // aux composants produirait des tests écrits pour la métrique.
+      include: ['app/domain/**/*.ts', 'app/services/**/*.ts'],
 
       thresholds: {
         lines: 100,

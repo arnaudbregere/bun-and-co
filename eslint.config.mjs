@@ -17,6 +17,50 @@ export default withNuxt(
   // posé sur un élément non interactif.
   ...vuejsAccessibility.configs['flat/recommended'],
 
+  // Frontières d'architecture, appliquées et non seulement documentées. Une
+  // architecture tenue par la seule bonne volonté se dégrade au premier coup de
+  // pression ; le pipeline refuse désormais la fusion.
+  {
+    files: ['app/domain/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/services/**', '**/composables/**', '**/components/**', '**/pages/**'],
+              message:
+                'Le domaine ne dépend d’aucune couche extérieure. Déclarer un port dans app/domain/ports.ts et le laisser implémenter par un service.',
+            },
+            {
+              group: ['vue', 'vue-router', '#app', '#imports', 'nuxt/*'],
+              message:
+                'Le domaine ne connaît ni Vue, ni Nuxt, ni le navigateur. Cette logique relève d’un composable ou d’un service.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  {
+    files: ['app/services/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['**/composables/**', '**/components/**', '**/pages/**'],
+              message:
+                'Un service ne dépend pas de l’interface. Les dépendances vont de l’interface vers les services, jamais l’inverse.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   {
     rules: {
       // Le projet n'a pas de composant à nom unique imposé par Nuxt.
