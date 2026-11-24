@@ -5,10 +5,50 @@
 Un lot à la fois, un commit par unité de sens. Un commit doit laisser le dépôt dans un
 état où l'intégration continue passe.
 
+## Amorçage du dépôt
+
+Les six premiers commits du dépôt, de `caf2562` à `7dbc636`, ont été poussés directement
+sur `main`. Ils couvrent la création du dépôt, les gabarits de contribution, le squelette
+du pipeline, le jeu d'étiquettes, l'installation de Spec Kit et la ratification de la
+constitution.
+
+Ce choix est assumé et borné. Le premier commit d'un dépôt ne peut pas passer par une
+demande de fusion : une demande de fusion compare une branche à une base, et cette base
+n'existe pas encore. La phase d'amorçage s'arrête à la mise en place de la règle de
+protection, documentée par l'issue #5.
+
+À partir de l'issue #8, toute modification de `main` passe par une demande de fusion, sans
+exception.
+
 ## Branches
 
-`main` est protégée et toujours déployable. Le travail se fait sur des branches nommées
-`<type>/<lot>-<sujet>`, par exemple `feat/4-calcul-panier` ou `a11y/7-focus-visible`.
+`main` est protégée et toujours déployable. Les règles appliquées sont les suivantes :
+
+- toute modification passe par une demande de fusion ;
+- la vérification d'intégration continue doit être verte ;
+- la branche doit être à jour avec `main` avant la fusion ;
+- l'historique reste linéaire ;
+- la poussée forcée et la suppression de branche sont interdites ;
+- les conversations de relecture doivent être résolues ;
+- les règles s'appliquent aussi aux administrateurs du dépôt.
+
+Aucune approbation n'est exigée : le projet est développé en solo, et exiger une
+approbation rendrait toute fusion impossible. La barrière de qualité est le pipeline, pas
+la revue humaine.
+
+Le travail se fait sur des branches nommées `<type>/<lot>-<sujet>`, par exemple
+`feat/4-calcul-panier` ou `a11y/7-focus-visible`.
+
+Les branches créées par Spec Kit font exception : l'outil les nomme lui-même sous la forme
+`<numéro>-<sujet>`, par exemple `001-parcours-commande`. Cette forme est conservée telle
+quelle, pour que le numéro de branche corresponde au dossier de spécification.
+
+## Fusion
+
+La fusion se fait en squash ou en rebase. Le commit de fusion est désactivé sur le dépôt,
+car il contredirait l'exigence d'historique linéaire. Le titre du commit de squash reprend
+le titre de la demande de fusion, son corps reprend la description. La branche est
+supprimée automatiquement après la fusion.
 
 ## Messages de commit
 
