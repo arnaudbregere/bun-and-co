@@ -1,0 +1,21 @@
+name: Setup toolchain
+description: >-
+  Installs pnpm, the Node version pinned by .nvmrc and the project
+  dependencies. Six jobs need the same three steps; a composite action keeps
+  them in one place.
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Install Node
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+        cache: pnpm
+
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash

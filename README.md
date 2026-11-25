@@ -172,7 +172,9 @@ pnpm dev            # serveur de développement
 pnpm generate       # rendu statique
 ```
 
-Vérifications, dans l'ordre où le pipeline les exécute :
+Vérifications. Chacune est un job distinct dans l'intégration continue, exécuté en
+parallèle des autres : un échec de formatage n'empêche plus les tests de tourner, et la
+demande de fusion dit laquelle a échoué sans ouvrir le journal.
 
 ```bash
 pnpm contrasts      # contrastes de la palette
