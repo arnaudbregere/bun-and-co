@@ -115,6 +115,31 @@ test('une étiquette d’état porte son libellé et ne s’active pas', async (
   await expect(indisponible).not.toHaveAttribute('tabindex', /.*/)
 })
 
+test('les polices auto-hébergées sont chargées, sans requête à un tiers', async ({ page }) => {
+  const requetes: string[] = []
+  page.on('request', (requete) => requetes.push(requete.url()))
+
+  await page.goto('/workshop')
+  await page.waitForFunction(() => document.fonts.status === 'loaded')
+
+  const familles = await page.evaluate(() => {
+    const titre = document.querySelector('h1')
+    return {
+      corps: getComputedStyle(document.body).fontFamily,
+      titre: titre === null ? '' : getComputedStyle(titre).fontFamily,
+      chargees: [...document.fonts].map((face) => face.family),
+    }
+  })
+
+  expect(familles.corps).toContain('Archivo')
+  expect(familles.titre).toContain('Archivo Narrow')
+  expect(familles.chargees).toContain('Archivo')
+
+  // Le cache des navigateurs est partitionné par site depuis 2020 : un lien vers
+  // un hébergeur de polices n'apporte aucun gain et ajoute une requête bloquante.
+  expect(requetes.filter((url) => /fonts\.(googleapis|gstatic)\.com/.test(url))).toEqual([])
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
