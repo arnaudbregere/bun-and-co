@@ -135,26 +135,28 @@ n'est pas lui qui fixe notre obligation.
 Interligne de 1,5 sur le texte courant, minimum exigé par le critère WCAG 1.4.12. Longueur
 de ligne cible de 60 caractères, bornée entre 45 et 75.
 
-Archivo pour l'interface, Archivo Narrow pour l'affichage.
+Fredoka pour l'affichage, Figtree pour l'interface.
 
-Inter et Fraunces étaient le premier choix. Le détecteur de design les a signalées comme
-omniprésentes, au point de ne plus porter d'identité : elles reviennent sur une grande part
-des interfaces récentes. Archivo est une grotesque dessinée pour la lisibilité en petit
-corps.
+Fredoka est une géométrique aux angles arrondis : ses capitales pleines tiennent le
+registre du comptoir américain sans sa raideur, et c'est elle qui donne à l'écran son air
+accueillant. Figtree porte le texte courant, grotesque géométrique aux formes ouvertes
+dessinée pour l'écran. Deux polices rondes auraient donné une interface molle ; l'une
+arrondie et l'autre ouverte se complètent.
 
-Petrona, l'antique du premier jeu, a été retirée. Un titre à empattements posait une
-enseigne sage, et cette direction demande l'inverse. La condensée tient de surcroît le nom
-d'un produit sur une seule ligne dans une carte étroite, ce qui vaut mieux qu'un nom coupé
-en deux.
+Trois jeux ont précédé celui-ci. Inter et Fraunces, signalées par le détecteur de design
+comme omniprésentes au point de ne plus porter d'identité. Petrona, antique à empattements,
+qui posait une enseigne sage. Archivo et Archivo Narrow enfin, lisibles mais sérieuses, et
+qui lisaient administratif là où la borne s'adresse à un public de 15 à 35 ans.
 
 Les noms de produits, les titres d'écran et les titres de catégorie sont en capitales :
-c'est la signature typographique du registre, et une capitale condensée grasse se repère de
-plus loin qu'un bas-de-casse de même corps.
+c'est la signature typographique du registre, et une capitale grasse se repère de plus loin
+qu'un bas-de-casse de même corps.
 
-Deux réglages d'approche, et non un seul. `--letter-spacing-heading` vaut `-0.015em` : un
-titre resserré forme un bloc que l'œil saisit d'un coup. `--letter-spacing-display`, pour
-les libellés capitalisés de petit corps — boutons, étiquettes, onglets —, vaut `0.02em` :
-collées, des capitales de 18 ou 20 px se lisent moins vite.
+Deux réglages d'approche, et non un seul. `--letter-spacing-heading` vaut `-0.005em` :
+Fredoka est déjà large et ronde, et l'approche négative dessinée pour une condensée ferait
+se toucher les panses. `--letter-spacing-display`, pour les libellés capitalisés de petit
+corps — boutons, étiquettes, onglets —, vaut `0.02em` : collées, des capitales de 18 ou
+20 px se lisent moins vite.
 
 Polices auto-hébergées en `woff2`, sous-ensemble latin, dans `app/assets/fonts/`. Aucun
 appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis 2020,
@@ -164,8 +166,8 @@ part vers `fonts.googleapis.com` ni `fonts.gstatic.com`.
 
 | Fichier | Famille | Poids |
 | --- | --- | --- |
-| `archivo-variable-latin.woff2` | Archivo, graisses 400 à 700 | 35 Ko |
-| `archivo-narrow-variable-latin.woff2` | Archivo Narrow, graisses 400 à 700 | 19 Ko |
+| `fredoka-variable-latin.woff2` | Fredoka, graisses 400 à 700 | 29 Ko |
+| `figtree-variable-latin.woff2` | Figtree, graisses 400 à 800 | 20 Ko |
 
 Une seule ressource par famille : ce sont des fontes variables, et l'API de Google Fonts
 servait le même fichier pour chaque graisse demandée. Déclarer une plage de graisses évite
@@ -175,7 +177,8 @@ d'embarquer trois copies des mêmes octets.
 bascule. Un écran vide pendant le chargement est un échec d'affichage, pas un raffinement
 typographique.
 
-Licence SIL Open Font License 1.1, Omnibus-Type.
+Licence SIL Open Font License 1.1 : Fredoka par Milena Brandão et Hafontia, Figtree par
+Erik Kennedy.
 
 ## Photographie
 
