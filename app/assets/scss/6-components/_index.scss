@@ -11,5 +11,6 @@
 // `@layer` établit, et le script de vérification de l'ordre des couches ne le
 // verrait pas.
 //
-// Le dossier est encore vide : les composants arrivent un par un, avec leur
-// demande de fusion.
+// Les composants arrivent un par un, avec leur demande de fusion.
+
+@use 'button';
