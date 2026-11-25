@@ -26,7 +26,10 @@ test('chaque bouton de l’atelier est atteignable au clavier', async ({ page })
   // Les onglets sont exclus, et c'est le motif d'onglets du guide ARIA qui le
   // veut : la barre n'offre qu'un arrêt de tabulation, ses autres onglets
   // s'atteignant aux flèches. Le test des onglets couvre ce parcours.
-  const boutons = page.locator('main button:not([role="tab"])')
+  // Les boutons d'un dialogue fermé sont exclus : ils ne sont pas rendus tant
+  // qu'il n'est pas ouvert, et c'est le test du dialogue qui couvre son
+  // parcours clavier.
+  const boutons = page.locator('main button:not([role="tab"]):not(dialog button)')
   const total = await boutons.count()
   expect(total).toBeGreaterThan(0)
 
@@ -98,9 +101,15 @@ test('un bouton reçoit un indicateur de focus visible', async ({ page }) => {
   await page.goto('/workshop')
 
   const bouton = page.getByRole('button', { name: 'Ajouter au panier' })
+
   // `:focus-visible` ne s'applique qu'à un focus clavier : un appui ne doit pas
-  // marquer le bouton.
-  await page.keyboard.press('Tab')
+  // marquer le bouton. On avance jusqu'au bouton visé plutôt que de supposer
+  // qu'il est le premier de la page — l'atelier gagne des sections.
+  for (let appui = 0; appui < 10; appui += 1) {
+    await page.keyboard.press('Tab')
+    if (await bouton.evaluate((element) => element === document.activeElement)) break
+  }
+
   await expect(bouton).toBeFocused()
 
   const indicateur = await bouton.evaluate((element) => {
@@ -479,6 +488,61 @@ test('le résumé du panier refuse l’accès à vide et ne masque pas le focus'
   expect(Number.parseFloat(mesures.marge)).toBeGreaterThanOrEqual(mesures.hauteur)
 })
 
+test('la boîte de confirmation piège la tabulation et rend le focus', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const section = page.locator('[aria-labelledby="titre-confirmation"]')
+  const declencheur = section.getByRole('button', { name: 'Retirer Le Classique' })
+  // Le serveur de développement injecte son propre `role="dialog"` : la
+  // recherche porte sur notre élément `dialog`.
+  const dialogue = page.locator('dialog.c-confirm')
+
+  await expect(dialogue).toBeHidden()
+  await declencheur.click()
+  await expect(dialogue).toBeVisible()
+  await expect(dialogue).toHaveAccessibleName('Retirer cet article ?')
+
+  // L'action destructrice n'est jamais le choix par défaut : c'est
+  // l'annulation qui reçoit le focus à l'ouverture.
+  const annuler = dialogue.getByRole('button', { name: 'Annuler' })
+  const supprimer = dialogue.getByRole('button', { name: 'Supprimer Le Classique' })
+  await expect(annuler).toBeFocused()
+
+  // La tabulation reste dans le dialogue : le focus en fait le tour sans
+  // jamais retomber sur la page derrière.
+  await page.keyboard.press('Tab')
+  await expect(supprimer).toBeFocused()
+
+  for (let appui = 0; appui < 4; appui += 1) {
+    await page.keyboard.press('Tab')
+
+    // Entre deux tours, le navigateur repose le focus sur le document : c'est
+    // sa façon de boucler, et aucune commande de la page n'est traversée.
+    const position = await dialogue.evaluate((element) => {
+      const actif = document.activeElement
+      if (actif === null) return 'rien'
+      if (element.contains(actif)) return 'dialogue'
+      return actif === document.body ? 'document' : (actif.textContent?.trim() ?? 'inconnu')
+    })
+
+    expect(['dialogue', 'document']).toContain(position)
+  }
+
+  // Échap annule, et le focus revient au bouton déclencheur, critère WCAG
+  // 2.4.3 et exigence EF-045.
+  await page.keyboard.press('Escape')
+  await expect(dialogue).toBeHidden()
+  await expect(declencheur).toBeFocused()
+  await expect(section).toContainText('Retrait annulé.')
+
+  // Confirmer émet la décision, et c'est la page qui agit.
+  await declencheur.click()
+  await dialogue.getByRole('button', { name: 'Supprimer Le Classique' }).click()
+  await expect(dialogue).toBeHidden()
+  await expect(section).toContainText('Retrait confirmé.')
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -486,6 +550,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
   // Les sections sont rangées par ordre alphabétique, pour qu'un composant
   // ajouté trouve sa place sans discussion.
   await expect(page.getByRole('heading', { level: 2 })).toHaveText([
+    'Boîte de confirmation',
     'Bouton',
     'Carte de produit',
     "Étiquette d'état",

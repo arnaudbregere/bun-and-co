@@ -1,0 +1,45 @@
+// =============================================================================
+// Components — boîte de confirmation
+// =============================================================================
+// Le dialogue natif est centré par le navigateur et son fond est peint par le
+// pseudo-élément `::backdrop`. Rien de tout cela n'est réécrit ici : seules
+// les couleurs, les espacements et la largeur sont posés.
+
+@layer components {
+  .c-confirm {
+    width: min(28rem, calc(100vw - var(--space-6)));
+    padding: var(--space-5);
+    border: var(--border-bold) solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    color: var(--color-ink);
+  }
+
+  // Le fond assombrit la page sans la masquer : le client doit reconnaître
+  // l'écran qu'il quitte des yeux, et comprendre que le dialogue s'y pose.
+  .c-confirm::backdrop {
+    background-color: var(--color-scrim);
+  }
+
+  .c-confirm__title {
+    margin: 0;
+    font-size: var(--font-size-section);
+  }
+
+  .c-confirm__message {
+    margin-block: var(--space-3) 0;
+    color: var(--color-ink-muted);
+  }
+
+  // L'annulation est à gauche, l'action destructrice à droite : c'est l'ordre
+  // du balisage, donc celui de la tabulation, et le focus se pose sur
+  // l'annulation à l'ouverture.
+  .c-confirm__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--target-gap);
+    justify-content: flex-end;
+    margin-block-start: var(--space-5);
+  }
+}

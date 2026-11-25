@@ -174,6 +174,20 @@ const totalDuPanier = computed(() =>
   classique === undefined ? cents(0) : cartTotalCents([classique], lignesDuDomaine.value),
 )
 
+// Boîte de confirmation : l'écran décide, le dialogue ne fait que demander.
+const confirmationOuverte = ref(false)
+const dernierChoix = ref('Aucune décision.')
+
+const demanderLeRetrait = () => {
+  confirmationOuverte.value = true
+  dernierChoix.value = 'Aucune décision.'
+}
+
+const confirmerLeRetrait = () => {
+  dernierChoix.value = 'Retrait confirmé.'
+  annoncerAuLecteur('Le Classique retiré du panier')
+}
+
 const quantite = ref(2)
 
 // Les six entrées de l'exigence EF-006. « Menus » n'est pas une catégorie de
@@ -226,6 +240,45 @@ const annoncer = (libelle: string) => {
       </p>
     </header>
 
+    <section class="o-stack" aria-labelledby="titre-confirmation">
+      <h2 id="titre-confirmation">Boîte de confirmation</h2>
+
+      <h3>Avant un retrait</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton variant="secondary" @activate="demanderLeRetrait">
+            Retirer Le Classique
+          </BaseButton>
+        </div>
+
+        <ConfirmDialog
+          v-model:open="confirmationOuverte"
+          title="Retirer cet article ?"
+          message="Le Classique quittera le panier. L'opération peut être refaite en le rajoutant."
+          confirm-label="Supprimer Le Classique"
+          @confirm="confirmerLeRetrait"
+          @cancel="dernierChoix = 'Retrait annulé.'"
+        />
+
+        <p class="c-specimen__note">
+          Exigence EF-024. À ouvrir au clavier : la tabulation reste dans le dialogue, le fond est
+          inerte, Échap ferme, et le focus revient au bouton qui a ouvert. Rien de tout cela n'est
+          écrit dans le composant — c'est ce que l'élément <code>dialog</code> natif apporte par
+          <code>showModal()</code>. Dernière décision :
+          <strong>{{ dernierChoix }}</strong>
+        </p>
+      </div>
+
+      <h3>L'action destructrice n'est pas le choix par défaut</h3>
+      <div class="c-specimen">
+        <p class="c-specimen__note">
+          « Annuler » précède « Supprimer Le Classique » dans le balisage, donc dans la tabulation :
+          c'est l'annulation qui reçoit le focus à l'ouverture, et un appui machinal sur Entrée
+          n'efface rien. Les libellés nomment l'action, ils ne disent pas « OK » — un lecteur
+          d'écran qui ne lit que le bouton doit savoir ce qu'il déclenche.
+        </p>
+      </div>
+    </section>
     <section class="o-stack" aria-labelledby="titre-bouton">
       <h2 id="titre-bouton">Bouton</h2>
 
