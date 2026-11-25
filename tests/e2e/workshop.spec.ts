@@ -22,7 +22,11 @@ test('chaque bouton de l’atelier est atteignable au clavier', async ({ page })
 
   // La recherche est bornée au contenu de la page : en développement, Nuxt
   // ajoute hors de `main` un bouton flottant qui n'appartient pas à l'atelier.
-  const boutons = page.locator('main').getByRole('button')
+  //
+  // Les onglets sont exclus, et c'est le motif d'onglets du guide ARIA qui le
+  // veut : la barre n'offre qu'un arrêt de tabulation, ses autres onglets
+  // s'atteignant aux flèches. Le test des onglets couvre ce parcours.
+  const boutons = page.locator('main button:not([role="tab"])')
   const total = await boutons.count()
   expect(total).toBeGreaterThan(0)
 
@@ -238,6 +242,43 @@ test('un sélecteur de quantité compte, et refuse au-delà de la limite', async
   await expect(refus).toContainText('Maximum de 10 par ligne')
 })
 
+test('les onglets de catégories se parcourent aux flèches', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const barre = page.getByRole('tablist', { name: 'Catégories de la carte' })
+  const panneau = page.getByRole('tabpanel')
+
+  await expect(barre.getByRole('tab')).toHaveCount(6)
+  await expect(barre.getByRole('tab', { name: 'Burgers' })).toHaveAttribute('aria-selected', 'true')
+  await expect(panneau).toContainText('Le Classique')
+
+  // Un seul arrêt de tabulation dans la barre : les cinq autres onglets portent
+  // `tabindex="-1"` et ne s'atteignent qu'aux flèches.
+  await barre.getByRole('tab', { name: 'Burgers' }).focus()
+  await page.keyboard.press('ArrowRight')
+  await expect(barre.getByRole('tab', { name: 'Menus' })).toBeFocused()
+  await expect(barre.getByRole('tab', { name: 'Menus' })).toHaveAttribute('aria-selected', 'true')
+
+  await page.keyboard.press('End')
+  const boissons = barre.getByRole('tab', { name: 'Boissons' })
+  await expect(boissons).toBeFocused()
+  await expect(boissons).toHaveAttribute('aria-selected', 'true')
+  await expect(panneau).toContainText('Soda, 33 cl')
+  // Le panneau porte le nom de l'onglet courant : c'est ce lien qui fait
+  // annoncer la catégorie en entrant dans le contenu.
+  await expect(panneau).toHaveAttribute('aria-labelledby', (await boissons.getAttribute('id'))!)
+
+  // L'onglet courant ne se distingue pas par la seule couleur, critère WCAG
+  // 1.4.1 : son trait et sa graisse changent aussi.
+  const marques = await boissons.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return { trait: style.borderBottomWidth, graisse: style.fontWeight }
+  })
+  expect(Number.parseFloat(marques.trait)).toBeGreaterThan(0)
+  expect(Number(marques.graisse)).toBe(700)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -250,6 +291,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     "Étiquette d'état",
     'Icône',
     'Montant',
+    'Onglets de catégories',
     'Option à cocher',
     "Région d'annonce",
     'Sélecteur de quantité',
