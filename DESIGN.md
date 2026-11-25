@@ -145,6 +145,20 @@ typographique.
 
 Licence SIL Open Font License 1.1, Omnibus-Type.
 
+## Photographie
+
+Les visuels des produits viennent de Pixabay, en cadrage horizontal, et sont versionnés avec
+le dépôt. Ils portent l'appétence que l'interface ne cherche pas à porter : l'écran reste
+sobre, la photographie fait le reste.
+
+Chaque visuel existe en deux tailles — 340 px pour les grilles de carte, 640 px pour la fiche
+produit — et le composant choisit selon son contexte. Le rapport d'affichage est réservé
+avant le chargement : sans cela, la grille saute à l'arrivée de chaque image, et le client
+appuie sur un produit qui vient de se déplacer.
+
+Un produit sans photographie garde sa place derrière un substitut qui porte son nom. Rien
+n'y laisse croire à un chargement en cours.
+
 ## Espacements et cibles
 
 Échelle unique de 4 px, de `--space-1` à `--space-8`. Une seule échelle pour les marges,

@@ -34,6 +34,20 @@
     align-items: center;
   }
 
+  // Grille des spécimens de visuels : quatre colonnes au plus, pour montrer le
+  // rythme d'une carte sans occuper tout l'écran.
+  .c-specimen__grid {
+    display: grid;
+    // `auto-fill` et non `auto-fit` : avec `auto-fit`, un spécimen seul
+    // s'étire sur toute la largeur et son rapport d'affichage lui donne une
+    // hauteur absurde.
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .c-specimen__note {
     max-width: var(--measure);
     color: var(--color-ink-muted);

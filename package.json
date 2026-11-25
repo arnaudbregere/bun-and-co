@@ -27,7 +27,8 @@
     "contrasts": "node scripts/verify-contrasts.mjs",
     "layer-order": "node scripts/verify-layer-order.mjs",
     "catalogue-route": "node scripts/verify-catalogue-route.mjs",
-    "component-levels": "node scripts/verify-component-levels.mjs"
+    "component-levels": "node scripts/verify-component-levels.mjs",
+    "fetch-images": "node scripts/fetch-product-images.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

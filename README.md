@@ -73,6 +73,28 @@ composant. La passerelle est le seul endroit où le chemin est écrit et où
 `/bun-and-co/`, et une URL absolue partant de la racine renverrait un 404. Le calcul
 tarifaire, lui, reste local et synchrone : aucun prix n'est demandé au réseau.
 
+### Visuels des produits
+
+Les photographies des vingt-sept références viennent de Pixabay, et sont versionnées avec le
+dépôt dans `app/assets/images/products/`, en deux tailles : 340 px pour les grilles de carte,
+640 px pour la fiche produit.
+
+Elles sont récupérées une fois, à la main, par `pnpm fetch-images`. Un appel à chaque
+construction rendrait le rendu non reproductible — deux constructions successives donneraient
+deux photographies —, dépendrait d'un quota et imposerait une clé à l'intégration continue.
+Celle-ci reste donc hors ligne.
+
+```bash
+cp .env.example .env     # puis renseigner PIXABAY_API_KEY
+pnpm generate            # le script lit la carte préconstruite
+pnpm fetch-images        # --force pour retélécharger un visuel existant
+```
+
+La clé ne sert qu'à ce script. Un site statique n'a aucun secret : tout ce qui est livré au
+navigateur est lisible, donc rien de sensible ne doit y entrer. `app/services/product-images.ts`
+est produit par le script et porte les crédits — photographe et page d'origine — que Pixabay
+demande d'afficher.
+
 ### Composants
 
 Atomic Design, trois niveaux dans `app/components/` : `atoms`, `molecules`, `organisms`. Un

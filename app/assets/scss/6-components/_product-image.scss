@@ -1,0 +1,27 @@
+// =============================================================================
+// Components — visuel de produit
+// =============================================================================
+
+@layer components {
+  .c-product-image {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-medium);
+    object-fit: cover;
+    background-color: var(--color-surface-muted);
+  }
+
+  // Substitut d'un produit sans photographie. Il reprend la surface secondaire
+  // et l'initiale du produit : la grille garde son rythme, et rien ne laisse
+  // croire à une image en cours de chargement.
+  .c-product-image--placeholder {
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-ink-muted);
+    font-family: var(--font-display);
+    font-size: var(--font-size-screen);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+  }
+}
