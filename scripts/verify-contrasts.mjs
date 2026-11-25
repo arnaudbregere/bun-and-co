@@ -33,18 +33,16 @@ const PAIRS = [
   ['ink', 'highlight', 4.5, 'prix sur une pastille jaune'],
   ['ink', 'highlight-pressed', 4.5, 'prix sur une pastille jaune appuyée'],
   ['ink', 'green-muted', 4.5, 'texte sur un fond de confirmation'],
-  ['ink', 'error-muted', 4.5, 'texte sur un fond d’erreur'],
+  ['green', 'green-muted', 4.5, 'libellé d’un produit inclus dans un menu'],
   ['disabled', 'disabled-surface', 4.5, 'libellé d’un produit indisponible'],
 
   // Texte sur les fonds accentués — seuil 4.5:1
   ['ink-inverse', 'accent', 4.5, 'libellé d’un bouton principal'],
   ['ink-inverse', 'accent-pressed', 4.5, 'libellé d’un bouton principal appuyé'],
   ['ink-inverse', 'green', 4.5, 'libellé sur fond de confirmation'],
-  ['ink-inverse', 'error', 4.5, 'libellé sur fond d’erreur appuyé'],
 
   // Texte accentué sur surface claire — seuil 4.5:1
   ['accent', 'background', 4.5, 'prix mis en avant sur le fond général'],
-  ['error', 'background', 4.5, 'message d’erreur sur le fond général'],
   ['green', 'background', 4.5, 'mention de disponibilité sur le fond général'],
 
   // Composants d'interface et bordures porteuses de sens — seuil 3:1

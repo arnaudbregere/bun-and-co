@@ -46,9 +46,13 @@ implémentation dans `app/services/`. La version 1 persiste la commande dans
 `sessionStorage`, comportement attendu d'une borne : la commande ne doit pas survivre au
 client suivant.
 
-Le catalogue est servi par une route Nitro préconstruite, `server/api/catalogue.get.ts`,
+Le catalogue est servi par une route Nitro préconstruite, `server/api/catalogue.json.get.ts`,
 déclarée dans `nitro.prerender.routes` et donc écrite en fichier statique au build. Le
 client la consomme par la passerelle, jamais par un `fetch` écrit dans un composant.
+
+L'extension `.json` du nom de fichier est délibérée : un hébergeur statique déduit le type
+de contenu de l'extension, et une route sans extension est servie en
+`application/octet-stream`, que `$fetch` rend alors sous forme de chaîne.
 
 L'URL d'appel doit être préfixée par `useRuntimeConfig().app.baseURL` : sur GitHub Pages le
 site est servi sous `/bun-and-co/`, et une URL absolue partant de la racine renvoie un 404.
@@ -66,8 +70,14 @@ Les types portent l'unité dans leur nom, par exemple `prixCentimes`. La convers
 a lieu au seul moment de l'affichage, par `Intl.NumberFormat('fr-FR', { style: 'currency',
 currency: 'EUR' })`. Aucun composant ne divise un montant par cent.
 
-Les composants suivent l'Atomic Design dans `app/components/atoms`, `molecules` et
-`organisms`. Un composant ne consomme que des composants de niveau inférieur.
+## Composants
+
+Atomic Design dans `app/components/atoms`, `molecules` et `organisms`. Un composant ne
+consomme que des composants de niveau strictement inférieur, règle appliquée par
+`pnpm component-levels` : les composants sont auto-importés sans préfixe de dossier, donc
+aucun gabarit n'écrit d'import, et ESLint ne voit pas la composition.
+
+Chaque composant livré figure dans l'atelier, `app/pages/workshop.vue`, avec ses états.
 
 ## Styles
 

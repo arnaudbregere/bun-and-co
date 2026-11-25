@@ -89,8 +89,11 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 | `--color-accent-pressed` | `#b00020` | état actif | 7,33:1 |
 | `--color-highlight` | `#ffd100` | pastille de prix, action secondaire | 13,12:1 avec l'encre |
 | `--color-green` | `#11703a` | confirmation, produit inclus, disponibilité | 6,17:1 |
-| `--color-error` | `#8c1030` | erreurs et refus | 9,41:1 |
 | `--color-disabled` | `#6b645c` | produit indisponible | 4,86:1 sur son fond |
+
+La palette ne porte pas de couleur d'erreur. Les messages d'erreur appartiennent aux écrans
+du lot 6 : un token que rien ne peint est du code mort, et sa paire de contraste un contrôle
+décoratif. Les deux entreront avec le premier composant qui les emploie.
 
 **Le jaune ne dessine jamais une forme à lui seul.** Son contraste contre le blanc vaut
 1,46:1, très loin des 3:1 exigés par le critère WCAG 1.4.11 pour un composant d'interface :
@@ -98,9 +101,9 @@ une pastille jaune posée sur du blanc n'aurait pas de contour visible. Elle re�
 toujours un trait d'encre, mesuré à 13,12:1. C'est la seule couleur de la palette soumise à
 cette contrainte, et le script la vérifie par la paire `border` / `highlight`.
 
-L'erreur est une baie sombre et non un rouge vif. L'accent étant déjà rouge, deux rouges
-voisins se confondraient — et le critère WCAG 1.4.1 interdit de toute façon de porter le
-sens par la couleur seule : le libellé reste le porteur, la couleur ne fait que l'appuyer.
+Le critère WCAG 1.4.1 interdit de porter le sens par la couleur seule : le libellé reste le
+porteur, la couleur ne fait que l'appuyer. L'étiquette d'un produit inclus dans un menu
+porte ainsi le mot « inclus », en vert sur fond vert clair.
 
 ### Focus
 
@@ -190,8 +193,9 @@ n'y laisse croire à un chargement en cours.
 
 ## Espacements et cibles
 
-Échelle unique de 4 px, de `--space-1` à `--space-8`. Une seule échelle pour les marges,
-les espacements internes et les écarts de grille.
+Échelle unique de 4 px, de `--space-1` à `--space-6`. Une seule échelle pour les marges,
+les espacements internes et les écarts de grille. Elle s'arrête au pas employé : les pas
+suivants entreront avec la mise en page des écrans, qui les demandera.
 
 | Token | Valeur | Raison |
 | --- | --- | --- |
@@ -207,7 +211,6 @@ Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volont
 | --- | --- | --- |
 | `--radius-small` | 2 px | visuels de produit, petits blocs |
 | `--radius-medium` | 4 px | boutons, cartes, onglets |
-| `--radius-large` | 8 px | panneaux et dialogues |
 | `--radius-pill` | 1000 px | pastille de prix, étiquette d'état |
 | `--border-bold` | 3 px | trait d'encre des cartes, boutons, onglets et pastilles |
 | `--shadow-card` | `0 6px 0 var(--color-ink)` | ombre pleine, sans flou ni transparence |
@@ -284,7 +287,7 @@ détecteur passe sans exception sur les deux pages construites.
 node scripts/verify-contrasts.mjs
 ```
 
-Le script rend 26 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
+Le script rend 24 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
 qu'un seuil n'est pas tenu. Il tourne en intégration continue à chaque demande de fusion.
 
 Les deux groupes couvrent l'indicateur de focus sur fond accentué, où une seule des deux

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
+import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
 import { cents } from '~/domain/money'
 import { ALLERGENS } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
@@ -77,14 +78,14 @@ const quantite = ref(2)
 // Les six entrées de l'exigence EF-006. « Menus » n'est pas une catégorie de
 // produit : un menu se compose à partir d'un burger. L'écart appartient à
 // l'écran de carte, pas à la barre d'onglets, qui reçoit sa liste.
-const categories = [
+const categories: readonly CategoryTab[] = [
   { id: 'burgers', label: 'Burgers' },
   { id: 'menus', label: 'Menus' },
   { id: 'chicken', label: 'Poulet' },
   { id: 'sides', label: 'Accompagnements' },
   { id: 'desserts', label: 'Desserts' },
   { id: 'drinks', label: 'Boissons' },
-] as const
+]
 
 const categorie = ref<string>('burgers')
 

@@ -72,11 +72,10 @@
     --color-green-muted: #dff2e4;
 
     // --- États ------------------------------------------------------------------
-    // L'erreur est une baie sombre et non un rouge vif : elle doit se distinguer
-    // de l'accent, qui est déjà rouge. Le libellé reste le porteur du sens, la
-    // couleur ne fait que l'appuyer.
-    --color-error: #8c1030; // erreurs et refus
-    --color-error-muted: #fde7ec; // fond d'erreur
+    // Aucune couleur d'erreur ici : les messages d'erreur appartiennent aux
+    // écrans du lot 6, et un token que rien ne peint est du code mort. Il
+    // entrera avec le premier composant qui l'emploie, et sa paire de
+    // contraste avec lui.
     --color-disabled: #6b645c; // texte d'un élément indisponible
     --color-disabled-surface: #eeeae2; // fond d'un élément indisponible
 

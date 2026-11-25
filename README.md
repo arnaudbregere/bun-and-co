@@ -198,8 +198,8 @@ Le navigateur des tests end-to-end s'installe une fois, par
 | 1 — Spécifications | terminé |
 | 2 — Design system | terminé |
 | 3 — Socle technique | terminé |
-| 4 — Domaine métier | en cours, route du catalogue restante |
-| 5 — Composants | à venir |
+| 4 — Domaine métier | terminé |
+| 5 — Composants | en cours, molécules du panier restantes |
 | 6 — Parcours utilisateur | à venir |
 | 7 — Audit RGAA | à venir |
 | 8 — Tests end-to-end | à venir |
