@@ -202,19 +202,40 @@ test('une carte de produit est une cible unique, et refuse l’indisponible', as
   await page.goto('/workshop')
   await waitForHydration(page)
 
-  const classique = page.getByRole('button', { name: /Le Classique/ })
+  // La recherche est bornée à la section : le sélecteur de quantité nomme lui
+  // aussi « Le Classique » sur ses deux boutons.
+  const section = page.locator('[aria-labelledby="titre-carte"]')
+  const classique = section.getByRole('button', { name: /Le Classique/ })
   await expect(classique).toHaveCount(1)
 
   // L'appui porte sur le visuel, loin du nom : toute la carte est la cible.
   await classique.locator('img').click()
   await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
 
-  const montagnard = page.getByRole('button', { name: /Le Montagnard/ })
+  const montagnard = section.getByRole('button', { name: /Le Montagnard/ })
   await expect(montagnard).toHaveAttribute('aria-disabled', 'true')
   await expect(montagnard).toContainText('Indisponible')
 
   await montagnard.click({ force: true })
   await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
+})
+
+test('un sélecteur de quantité compte, et refuse au-delà de la limite', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const valeur = page.locator('.c-quantity__value').first()
+  await expect(valeur).toHaveText('2')
+
+  await page.getByRole('button', { name: 'Augmenter la quantité de Le Classique' }).click()
+  await expect(valeur).toHaveText('3')
+
+  await page.getByRole('button', { name: 'Diminuer la quantité de Le Classique' }).click()
+  await expect(valeur).toHaveText('2')
+
+  const refus = page.getByRole('button', { name: /Augmenter la quantité de Le Végétal/ })
+  await expect(refus).toHaveAttribute('aria-disabled', 'true')
+  await expect(refus).toContainText('Maximum de 10 par ligne')
 })
 
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
@@ -231,6 +252,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Montant',
     'Option à cocher',
     "Région d'annonce",
+    'Sélecteur de quantité',
     'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.

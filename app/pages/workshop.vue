@@ -69,6 +69,8 @@ const indisponible = pourCarte('montagnard', false) ?? {
   available: false,
 }
 
+const quantite = ref(2)
+
 const annonceCourtoise = ref('')
 const alerte = ref('')
 
@@ -361,6 +363,54 @@ const annoncer = (libelle: string) => {
           Un même message envoyé deux fois de suite est relu : la région est vidée puis réécrite au
           cycle suivant. « Quantité maximale atteinte » doit se répéter si le client insiste.
           Dernière alerte : <strong>{{ alerte === '' ? 'aucune' : alerte }}</strong>.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-quantite">
+      <h2 id="titre-quantite">Sélecteur de quantité</h2>
+
+      <h3>Quantité courante</h3>
+      <div class="c-specimen">
+        <QuantityStepper
+          :quantity="quantite"
+          product-name="Le Classique"
+          :increase-disabled-reason="quantite >= 10 ? 'Maximum de 10 par ligne' : ''"
+          @increase="quantite += 1"
+          @decrease="quantite -= 1"
+          @remove="annoncerAuLecteur('Suppression de la ligne demandée')"
+        />
+        <p class="c-specimen__note">
+          La valeur s'affiche, elle ne se saisit pas : une borne tactile n'a pas de clavier. Sa
+          largeur est fixe, sans quoi le passage de 9 à 10 décalerait les boutons sous un doigt qui
+          enchaîne les appuis.
+        </p>
+      </div>
+
+      <h3>Dernière unité</h3>
+      <div class="c-specimen">
+        <QuantityStepper
+          :quantity="1"
+          product-name="Le Fermier"
+          @remove="annoncerAuLecteur('Suppression de la ligne demandée')"
+        />
+        <p class="c-specimen__note">
+          À une unité, diminuer ne produit pas une quantité nulle : le composant demande la
+          suppression de la ligne, et l'icône passe à la corbeille. C'est l'écran qui en demandera
+          confirmation, exigence EF-024.
+        </p>
+      </div>
+
+      <h3>Limite atteinte</h3>
+      <div class="c-specimen">
+        <QuantityStepper
+          :quantity="10"
+          product-name="Le Végétal"
+          increase-disabled-reason="Maximum de 10 par ligne"
+        />
+        <p class="c-specimen__note">
+          Le bouton refuse en donnant sa raison, plutôt que de rester silencieusement inopérant. Les
+          limites viennent du domaine : dix par ligne, trente par commande, exigence EF-025. Aucune
+          n'est écrite dans le composant.
         </p>
       </div>
     </section>

@@ -1,0 +1,22 @@
+// =============================================================================
+// Components — sélecteur de quantité
+// =============================================================================
+
+@layer components {
+  .c-quantity {
+    display: flex;
+    gap: var(--target-gap);
+    align-items: center;
+  }
+
+  // La valeur occupe une largeur fixe : sans elle, le passage de 9 à 10 décale
+  // les deux boutons, et le doigt qui enchaînait les appuis tombe à côté.
+  .c-quantity__value {
+    min-width: 2.5rem;
+    font-family: var(--font-display);
+    font-size: var(--font-size-subheading);
+    font-weight: var(--font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+}
