@@ -14,8 +14,9 @@
   }
 
   // Total du panier : le seul montant que le client cherche des yeux sans le
-  // lire, d'où le corps le plus grand de l'échelle.
+  // lire, d'où le corps le plus grand de l'échelle et la couleur d'accent.
   .c-price--total {
+    color: var(--color-accent);
     font-family: var(--font-display);
     font-size: var(--font-size-price);
     font-weight: var(--font-weight-bold);

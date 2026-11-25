@@ -33,17 +33,18 @@
     --reach-dead-zone-height: 33.333%;
 
     // --- Rayons et élévation ----------------------------------------------------
-    // Angles presque droits : la direction néo-diner tient de l'enseigne
-    // peinte, pas de la pastille d'application mobile. Les rayons ne sont pas
-    // nuls, un angle parfaitement vif se lisant comme un défaut de rendu sur un
-    // écran tactile.
+    // Angles presque droits sur les surfaces, pastilles entièrement arrondies
+    // pour les prix et les étiquettes. Le contraste des deux formes est voulu :
+    // une pastille se détache d'autant mieux sur un bloc à angles vifs.
     --radius-small: 0.125rem;
     --radius-medium: 0.25rem;
     --radius-large: 0.5rem;
+    --radius-pill: 62.5rem;
 
-    // Ombre portée franche, sans flou : une ombre diffuse appartient au registre
-    // de l'élévation matérielle, étranger à cette direction.
-    --shadow-card: 0 3px 0 rgb(23 19 13 / 12%);
+    // Ombre portée franche, sans flou, dans l'encre : une ombre diffuse
+    // appartient au registre de l'élévation matérielle, étranger à cette
+    // direction, qui tient de l'affiche imprimée.
+    --shadow-card: 0 4px 0 rgb(26 26 26 / 20%);
 
     // --- Focus ------------------------------------------------------------------
     --focus-ring-width: 3px;

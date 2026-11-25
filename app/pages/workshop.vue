@@ -168,7 +168,7 @@ const annoncer = (libelle: string) => {
         <p class="c-specimen__note">
           À observer à la tabulation, et non à la souris : l'indicateur suit
           <code>:focus-visible</code>. Anneau sombre et liseré clair, pour tenir le seuil de 3:1 du
-          critère WCAG 1.4.11 sur le vermillon comme sur le fond crème.
+          critère WCAG 1.4.11 sur le rouge comme sur le fond blanc.
         </p>
       </div>
 
@@ -376,7 +376,7 @@ const annoncer = (libelle: string) => {
           Tab entre dans la barre et n'y rencontre qu'un arrêt, les flèches changent d'onglet, Home
           et End vont aux extrémités. La sélection suit le focus : la carte est déjà chargée, et
           exiger un second appui ne ferait qu'allonger le parcours clavier. L'onglet courant se
-          distingue par son trait, sa graisse et sa couleur, jamais par la couleur seule.
+          distingue par son fond, sa graisse et son ombre portée, jamais par la couleur seule.
         </p>
       </div>
     </section>

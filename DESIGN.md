@@ -7,22 +7,28 @@ code en est la source de vérité.
 
 ## Direction
 
-Néo-diner. L'enseigne prépare sur place et s'adresse à un public de 15 à 35 ans : l'écran
-doit donner faim avant de donner des instructions. La référence est l'enseigne peinte d'un
-comptoir, relue en moderne — pas la pastille arrondie d'une application mobile, pas le
-rouge et jaune saturés des grandes chaînes.
+Fast-food américain. L'enseigne s'adresse à un public de 15 à 35 ans : l'écran doit donner
+faim avant de donner des instructions. La référence est le comptoir américain — rouge,
+jaune, blanc, capitales grasses, prix sur pastille — et non l'enseigne peinte d'un comptoir
+de quartier, trop sage pour ce public.
 
-Vermillon pour l'action, crème pour le fond, teal profond pour tout ce qui ne doit pas
-disputer l'attention au vermillon. Grotesque condensée pour l'affichage, grotesque normale
-pour l'interface. Angles presque droits, ombre franche sans flou, étiquettes posées comme
-des autocollants.
+Inspiration et non imitation. Aucun logo, aucune arche, aucun nom de marque réelle n'entre
+dans ce projet : ce sont les codes du registre qui sont repris, pas l'identité de
+quelqu'un.
 
-Le fond reste crème. Sur un écran regardé à 70 cm pendant plusieurs minutes, un fond sombre
-fatigue moins mais écrase les photographies de produit, et un blanc pur éblouit.
+Rouge pour l'action, jaune pour la mise en avant, vert pour ce qui est acquis — confirmé,
+inclus, disponible. Trois rôles, trois couleurs : une quatrième couleur d'accent ne
+désignerait plus rien. Grotesque condensée pour l'affichage, grotesque normale pour
+l'interface. Angles presque droits sur les surfaces, pastilles entièrement arrondies pour
+les prix et les étiquettes, ombre franche sans flou.
+
+Le fond passe au blanc. Un fond coloré teinte les photographies posées dessus, et la borne
+vend d'abord des photographies de produits. La chaleur de la direction est portée par les
+surfaces — cartes et zones secondaires, en crème — et non par le fond général.
 
 L'interface reste sobre pour autant : sur une borne, l'utilisateur est debout, pressé, et
 parfois observé par la file d'attente. La densité visuelle se paie en temps de commande. La
-photographie porte l'appétence ; l'interface, elle, s'efface.
+photographie porte l'appétence ; l'interface la met en page.
 
 ## Contrainte d'usage, qui précède l'esthétique
 
@@ -50,29 +56,36 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 
 | Token | Valeur | Usage |
 | --- | --- | --- |
-| `--color-background` | `#fbf6ee` | fond général |
-| `--color-surface` | `#ffffff` | cartes produit |
-| `--color-surface-muted` | `#f0e8db` | zones secondaires, en-têtes de catégorie |
-| `--color-border` | `#7d6c55` | bordures porteuses de sens, 4,71:1 sur le fond |
-| `--color-border-subtle` | `#ded2bf` | séparateurs purement décoratifs |
+| `--color-background` | `#ffffff` | fond général |
+| `--color-surface` | `#fff8e7` | cartes produit, crème chaud |
+| `--color-surface-muted` | `#ffeec9` | zones secondaires, onglets au repos |
+| `--color-border` | `#1a1a1a` | bordures porteuses de sens, 17,40:1 sur le fond |
+| `--color-border-subtle` | `#e6dcc4` | séparateurs purement décoratifs |
 
 ### Texte
 
 | Token | Valeur | Contraste sur le fond |
 | --- | --- | --- |
-| `--color-ink` | `#17130d` | 17,19:1 |
-| `--color-ink-muted` | `#4e463a` | 8,63:1 |
-| `--color-ink-inverse` | `#fff8f0` | sur accent : 5,70:1 |
+| `--color-ink` | `#1a1a1a` | 17,40:1 |
+| `--color-ink-muted` | `#56504a` | 7,95:1 |
+| `--color-ink-inverse` | `#ffffff` | sur accent : 5,11:1 |
 
 ### Accents et états
 
 | Token | Valeur | Usage | Contraste |
 | --- | --- | --- | --- |
-| `--color-accent` | `#c21f0d` | actions principales | 5,70:1 avec le texte inversé |
-| `--color-accent-pressed` | `#96160a` | état actif | 8,25:1 |
-| `--color-teal` | `#0c4f4c` | confirmation, disponibilité, bandes | 8,91:1 |
-| `--color-error` | `#8c1030` | erreurs et refus | 8,93:1 |
-| `--color-disabled` | `#645c50` | produit indisponible | 5,12:1 sur son fond |
+| `--color-accent` | `#d81e05` | actions principales, catégorie ouverte | 5,11:1 avec le texte inversé |
+| `--color-accent-pressed` | `#a81603` | état actif | 7,55:1 |
+| `--color-highlight` | `#ffc72c` | pastille de prix, action secondaire, bandes | 11,15:1 avec l'encre |
+| `--color-green` | `#11703a` | confirmation, produit inclus, disponibilité | 6,17:1 |
+| `--color-error` | `#8c1030` | erreurs et refus | 9,41:1 |
+| `--color-disabled` | `#6b645c` | produit indisponible | 4,86:1 sur son fond |
+
+**Le jaune ne dessine jamais une forme à lui seul.** Son contraste contre le blanc vaut
+1,55:1, très loin des 3:1 exigés par le critère WCAG 1.4.11 pour un composant d'interface :
+une pastille jaune posée sur du blanc n'aurait pas de contour visible. Elle reçoit donc
+toujours un trait d'encre, mesuré à 11,15:1. C'est la seule couleur de la palette soumise à
+cette contrainte, et le script la vérifie par la paire `border` / `highlight`.
 
 L'erreur est une baie sombre et non un rouge vif. L'accent étant déjà rouge, deux rouges
 voisins se confondraient — et le critère WCAG 1.4.1 interdit de toute façon de porter le
@@ -85,8 +98,8 @@ liseré clair `--color-focus-halo`.
 
 L'exigence applicable au niveau AA est le critère WCAG 1.4.11, qui demande 3:1 entre
 l'indicateur de focus et les couleurs adjacentes. Elle est satisfaite dès qu'un des deux
-tons atteint ce seuil, et non les deux. Sur le vermillon, l'anneau sombre atteint 3,08:1 et
-le liseré clair 5,70:1 : les deux passent, là où le terracotta précédent obligeait à ne
+tons atteint ce seuil, et non les deux. Sur le rouge, l'anneau d'encre atteint 4,23:1 et le
+liseré blanc 5,11:1 : les deux passent, là où le terracotta du premier jeu obligeait à ne
 compter que sur le liseré.
 
 Le critère WCAG 2.4.13, qui ajoute des exigences de surface et d'épaisseur de
@@ -117,12 +130,18 @@ des interfaces récentes. Archivo est une grotesque dessinée pour la lisibilit�
 corps.
 
 Petrona, l'antique du premier jeu, a été retirée. Un titre à empattements posait une
-enseigne sage, et la direction néo-diner demande l'inverse. La condensée tient de surcroît
-le nom d'un produit sur une seule ligne dans une carte étroite, ce qui vaut mieux qu'un nom
-coupé en deux.
+enseigne sage, et cette direction demande l'inverse. La condensée tient de surcroît le nom
+d'un produit sur une seule ligne dans une carte étroite, ce qui vaut mieux qu'un nom coupé
+en deux.
 
-Les libellés capitalisés — boutons, étiquettes, catégories — portent `--letter-spacing-display`
-à `0.04em` : des capitales collées se lisent moins vite que des bas-de-casse.
+Les noms de produits, les titres d'écran et les titres de catégorie sont en capitales :
+c'est la signature typographique du registre, et une capitale condensée grasse se repère de
+plus loin qu'un bas-de-casse de même corps.
+
+Deux réglages d'approche, et non un seul. `--letter-spacing-heading` vaut `-0.015em` : un
+titre resserré forme un bloc que l'œil saisit d'un coup. `--letter-spacing-display`, pour
+les libellés capitalisés de petit corps — boutons, étiquettes, onglets —, vaut `0.02em` :
+collées, des capitales de 18 ou 20 px se lisent moins vite.
 
 Polices auto-hébergées en `woff2`, sous-ensemble latin, dans `app/assets/fonts/`. Aucun
 appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis 2020,
@@ -176,14 +195,21 @@ Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volont
 
 | Token | Valeur | Raison |
 | --- | --- | --- |
-| `--radius-small` | 2 px | étiquettes et petits blocs |
-| `--radius-medium` | 4 px | boutons, cartes |
+| `--radius-small` | 2 px | visuels de produit, petits blocs |
+| `--radius-medium` | 4 px | boutons, cartes, onglets |
 | `--radius-large` | 8 px | panneaux et dialogues |
-| `--shadow-card` | `0 3px 0 rgb(23 19 13 / 12%)` | ombre franche, sans flou |
+| `--radius-pill` | 1000 px | pastille de prix, étiquette d'état |
+| `--shadow-card` | `0 4px 0 rgb(26 26 26 / 20%)` | ombre franche, sans flou |
 
 Les angles sont presque droits sans être vifs : un angle parfaitement à 90 degrés se lit
-comme un défaut de rendu sur un écran tactile. L'ombre est un décalage net, sans flou — une
-ombre diffuse appartient au registre de l'élévation matérielle, étranger à cette direction.
+comme un défaut de rendu sur un écran tactile. La pastille, elle, est entièrement arrondie.
+Le contraste des deux formes est voulu : un prix en pastille se détache d'autant mieux sur
+une carte à angles vifs.
+
+L'ombre est un décalage net, sans flou — une ombre diffuse appartient au registre de
+l'élévation matérielle, étranger à cette direction, qui tient de l'affiche imprimée. Elle
+porte aussi un état : un bouton, un onglet ou une carte s'enfonce de 4 px à l'appui et perd
+son ombre, retour géométrique visible même pour qui distingue mal deux rouges voisins.
 
 ## Cascade
 
@@ -223,19 +249,14 @@ vérification ne la voit pas et le contrôle devient décoratif.
 **Pas de nouvelle combinaison de couleurs sans déclaration.** Ajouter une paire dans un
 composant impose de l'ajouter à `scripts/verify-contrasts.mjs`.
 
-## Écart assumé au détecteur de design
+## Détecteur de design
 
-Le détecteur signale la règle `cream-palette` sur notre fond crème : un blanc cassé chaud
-est devenu la surface par défaut des interfaces générées, choisie par réflexe.
+Aucune règle n'est désactivée : `.impeccable/config.json` ne porte plus d'exception.
 
-La règle est désactivée dans `.impeccable/config.json`, et voici pourquoi. Le fond crème
-n'est pas ici un réflexe mais une décision de direction, prise avec le vermillon et le teal,
-et chaque paire de couleurs est mesurée. La règle n'accepte pas d'exception par valeur,
-seulement par fichier ou par règle entière, d'où la désactivation complète.
-
-L'alternative, si cet écart devenait gênant, serait le fond charbon de la direction
-concurrente, écartée parce qu'elle fatigue moins l'œil mais écrase les photographies de
-produit, qui portent ici l'essentiel de l'appétence.
+La direction précédente en demandait une. Son fond crème déclenchait la règle
+`cream-palette`, qui signale le blanc cassé chaud devenu surface par défaut des interfaces
+générées. Le fond est maintenant blanc, le crème n'habille plus que les cartes, et le
+détecteur passe sans exception sur les deux pages construites.
 
 ## Vérification
 
@@ -243,9 +264,8 @@ produit, qui portent ici l'essentiel de l'appétence.
 node scripts/verify-contrasts.mjs
 ```
 
-Le script rend 23 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
+Le script rend 26 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
 qu'un seuil n'est pas tenu. Il tourne en intégration continue à chaque demande de fusion.
 
 Les deux groupes couvrent l'indicateur de focus sur fond accentué, où une seule des deux
-combinaisons doit atteindre le seuil. Ces deux cas étaient d'abord comptés parmi les paires
-strictes, d'où un total de 25 avant leur déplacement.
+combinaisons doit atteindre le seuil.

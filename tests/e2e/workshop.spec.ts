@@ -270,13 +270,13 @@ test('les onglets de catégories se parcourent aux flèches', async ({ page }) =
   await expect(panneau).toHaveAttribute('aria-labelledby', (await boissons.getAttribute('id'))!)
 
   // L'onglet courant ne se distingue pas par la seule couleur, critère WCAG
-  // 1.4.1 : son trait et sa graisse changent aussi.
+  // 1.4.1 : sa graisse et son ombre portée changent aussi.
   const marques = await boissons.evaluate((element) => {
     const style = getComputedStyle(element)
-    return { trait: style.borderBottomWidth, graisse: style.fontWeight }
+    return { graisse: style.fontWeight, ombre: style.boxShadow }
   })
-  expect(Number.parseFloat(marques.trait)).toBeGreaterThan(0)
   expect(Number(marques.graisse)).toBe(700)
+  expect(marques.ombre).not.toBe('none')
 })
 
 test('les allergènes sont nommés en texte, et leur absence mentionnée', async ({ page }) => {

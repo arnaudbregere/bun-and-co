@@ -12,7 +12,10 @@
     gap: var(--space-3);
     width: 100%;
     padding: var(--space-3);
-    border: 1px solid var(--color-border-subtle);
+    // Trait d'encre franc, et non un filet discret : la carte est le motif que
+    // le client parcourt le plus, et c'est son cadre qui donne à la carte de
+    // l'enseigne son rythme d'affiche imprimée.
+    border: 2px solid var(--color-border);
     border-radius: var(--radius-medium);
     background-color: var(--color-surface);
     box-shadow: var(--shadow-card);
@@ -23,7 +26,7 @@
   }
 
   .c-product-card:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
     box-shadow: none;
   }
 
@@ -32,17 +35,27 @@
     font-size: var(--font-size-subheading);
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-heading);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
   }
 
   // Le prix est l'information que le client compare d'une carte à l'autre : il
-  // porte l'accent. La paire est déjà mesurée, à 6,01:1 sur la surface des
-  // cartes.
+  // est posé sur une pastille jaune, forme arrondie au milieu d'un bloc à
+  // angles vifs. Le trait d'encre est obligatoire : le jaune ne tient pas les
+  // 3:1 contre une surface claire, et la pastille n'aurait pas de contour.
   .c-product-card__foot .c-price {
-    color: var(--color-accent);
+    padding-block: var(--space-1);
+    padding-inline: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-highlight);
+    color: var(--color-ink);
     font-size: var(--font-size-subheading);
   }
 
   .c-product-card[aria-disabled='true'] .c-price {
+    border-color: var(--color-disabled);
+    background-color: var(--color-disabled-surface);
     color: var(--color-disabled);
   }
 
