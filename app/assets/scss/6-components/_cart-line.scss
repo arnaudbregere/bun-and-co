@@ -1,0 +1,93 @@
+// =============================================================================
+// Components — ligne de panier
+// =============================================================================
+// Une ligne tient dans un bloc cerclé d'encre, comme une carte de produit :
+// c'est le même objet, vu depuis le panier.
+
+@layer components {
+  .c-cart-line {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+  }
+
+  .c-cart-line__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    align-items: baseline;
+  }
+
+  .c-cart-line__name {
+    font-family: var(--font-display);
+    font-size: var(--font-size-subheading);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  // La taille du menu est une étiquette, pas un titre : elle qualifie la ligne
+  // sans disputer la place au nom du produit.
+  .c-cart-line__menu {
+    padding-block: var(--space-1);
+    padding-inline: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-highlight);
+    font-family: var(--font-display);
+    font-size: var(--font-size-note);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  // Les mentions de personnalisation forment une liste : un lecteur d'écran en
+  // annonce le nombre avant de les lire, et le client sait combien de
+  // modifications portent sur la ligne.
+  .c-cart-line__details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-note);
+  }
+
+  .c-cart-line__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--target-gap);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .c-cart-line__prices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    align-items: baseline;
+    justify-content: space-between;
+    padding-block-start: var(--space-3);
+    border-block-start: 2px solid var(--color-border-subtle);
+  }
+
+  // Le prix unitaire est une précision, le prix de ligne est ce que le client
+  // vérifie : seul le second porte le corps et la graisse de l'affichage.
+  .c-cart-line__unit {
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-note);
+  }
+
+  .c-cart-line__prices > .c-price {
+    font-family: var(--font-display);
+    font-size: var(--font-size-subheading);
+    font-weight: var(--font-weight-bold);
+  }
+}

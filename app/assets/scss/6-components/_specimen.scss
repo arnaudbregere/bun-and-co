@@ -72,6 +72,14 @@
     letter-spacing: var(--letter-spacing-display);
   }
 
+  // Liste de lignes de panier dans l'atelier : la puce et le retrait par défaut
+  // d'une liste n'ont pas de sens pour des blocs cerclés.
+  .c-specimen__lines {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .c-specimen__note {
     max-width: var(--measure);
     color: var(--color-ink-muted);
