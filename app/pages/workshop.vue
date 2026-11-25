@@ -3,8 +3,8 @@ import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
 import { MENU_SIZE_RULES } from '~/domain/menu-rules'
 import { cents } from '~/domain/money'
-import { extrasTotalCents } from '~/domain/pricing'
-import { ALLERGENS, MENU_SIZES, type MenuSize } from '~/domain/types'
+import { extrasTotalCents, lineTotalCents, unitPriceCents } from '~/domain/pricing'
+import { ALLERGENS, MENU_SIZES, toCartLineId, type CartLine, type MenuSize } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
 
@@ -108,6 +108,48 @@ const totalDesSupplements = computed(() =>
 const reglesDeTaille = MENU_SIZES.map((taille) => MENU_SIZE_RULES[taille])
 
 const tailleRetenue = ref<MenuSize>('L')
+
+// Lignes de panier : le même burger, personnalisé de deux façons. Exigence
+// EF-021 : ce sont deux lignes distinctes, et les mentions sont ce qui les
+// distingue. Les prix viennent du domaine, aucune multiplication n'est écrite
+// ici.
+const quantitesDeLigne = ref<Record<string, number>>({ nature: 2, garni: 1 })
+
+const lignesDePanier = computed(() => {
+  if (classique === undefined) return []
+
+  const compositions = [
+    { id: 'nature', removedIds: [], extraIds: [], removed: [], extras: [] },
+    {
+      id: 'garni',
+      removedIds: ['onions'],
+      extraIds: ['bacon'],
+      removed: ['Oignons'],
+      extras: classique.extras
+        .filter((extra) => extra.id === 'bacon')
+        .map((extra) => ({ id: extra.id, label: extra.label, priceCents: extra.priceCents })),
+    },
+  ] as const
+
+  return compositions.map((composition) => {
+    const ligne: CartLine = {
+      id: toCartLineId(composition.id),
+      productId: classique.id,
+      quantity: quantitesDeLigne.value[composition.id] ?? 1,
+      customisation: { removedIds: composition.removedIds, extraIds: composition.extraIds },
+    }
+
+    return {
+      id: composition.id,
+      name: classique.name,
+      quantity: ligne.quantity,
+      removed: composition.removed,
+      extras: composition.extras,
+      unitPriceCents: unitPriceCents(classique, ligne),
+      totalPriceCents: lineTotalCents(classique, ligne),
+    }
+  })
+})
 
 const quantite = ref(2)
 
@@ -360,6 +402,54 @@ const annoncer = (libelle: string) => {
           L'icône est décorative et porte <code>aria-hidden</code>. Le libellé existe dans le
           balisage, masqué à l'écran par <code>.u-visually-hidden</code> : le bouton garde un nom
           pour un lecteur d'écran, et aucune icône ne porte seule le sens d'une action.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-ligne">
+      <h2 id="titre-ligne">Ligne de panier</h2>
+
+      <h3>Le même produit, deux personnalisations</h3>
+      <div class="c-specimen">
+        <ul class="o-stack o-stack--tight c-specimen__lines">
+          <CartLineItem
+            v-for="ligne of lignesDePanier"
+            :key="ligne.id"
+            :name="ligne.name"
+            :quantity="ligne.quantity"
+            :removed="ligne.removed"
+            :extras="ligne.extras"
+            :unit-price-cents="ligne.unitPriceCents"
+            :total-price-cents="ligne.totalPriceCents"
+            @remove="annoncerAuLecteur(`Retrait de ${ligne.name} demandé`)"
+          >
+            <template #quantity>
+              <QuantityStepper
+                :quantity="ligne.quantity"
+                :product-name="ligne.name"
+                :increase-disabled-reason="ligne.quantity >= 10 ? 'Maximum de 10 par ligne' : ''"
+                @increase="quantitesDeLigne[ligne.id] = ligne.quantity + 1"
+                @decrease="quantitesDeLigne[ligne.id] = ligne.quantity - 1"
+                @remove="annoncerAuLecteur(`Retrait de ${ligne.name} demandé`)"
+              />
+            </template>
+          </CartLineItem>
+        </ul>
+        <p class="c-specimen__note">
+          Exigence EF-021 : deux produits identiques personnalisés différemment forment deux lignes.
+          Ce sont les mentions « sans oignons » et « avec bacon » qui les distinguent — sans elles,
+          le panier afficherait deux fois « Le Classique » et le client ne saurait pas laquelle
+          retirer.
+        </p>
+      </div>
+
+      <h3>Le composant ne multiplie rien</h3>
+      <div class="c-specimen">
+        <p class="c-specimen__note">
+          Prix unitaires et prix de ligne viennent de <code>unitPriceCents</code> et
+          <code>lineTotalCents</code>, dans <code>app/domain/pricing.ts</code>. Le sélecteur de
+          quantité arrive par un emplacement : une molécule ne consomme pas une molécule, c'est
+          l'écran qui place l'un dans l'autre. Le bouton de retrait ne retire rien, il demande le
+          retrait, et l'écran en demandera confirmation, exigence EF-024.
         </p>
       </div>
     </section>

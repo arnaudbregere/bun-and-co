@@ -265,16 +265,19 @@ test('un sélecteur de quantité compte, et refuse au-delà de la limite', async
   await page.goto('/workshop')
   await waitForHydration(page)
 
-  const valeur = page.locator('.c-quantity__value').first()
+  // La recherche est bornée à la section : les lignes de panier portent elles
+  // aussi un sélecteur de quantité nommant Le Classique.
+  const section = page.locator('[aria-labelledby="titre-quantite"]')
+  const valeur = section.locator('.c-quantity__value').first()
   await expect(valeur).toHaveText('2')
 
-  await page.getByRole('button', { name: 'Augmenter la quantité de Le Classique' }).click()
+  await section.getByRole('button', { name: 'Augmenter la quantité de Le Classique' }).click()
   await expect(valeur).toHaveText('3')
 
-  await page.getByRole('button', { name: 'Diminuer la quantité de Le Classique' }).click()
+  await section.getByRole('button', { name: 'Diminuer la quantité de Le Classique' }).click()
   await expect(valeur).toHaveText('2')
 
-  const refus = page.getByRole('button', { name: /Augmenter la quantité de Le Végétal/ })
+  const refus = section.getByRole('button', { name: /Augmenter la quantité de Le Végétal/ })
   await expect(refus).toHaveAttribute('aria-disabled', 'true')
   await expect(refus).toContainText('Maximum de 10 par ligne')
 })
@@ -409,6 +412,35 @@ test('les tailles de menu se parcourent aux flèches, un seul arrêt de tabulati
   await expect(tailles.nth(2)).not.toBeFocused()
 })
 
+test('deux lignes du même produit se distinguent par leurs mentions', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const section = page.locator('[aria-labelledby="titre-ligne"]')
+  const lignes = section.locator('.c-cart-line')
+  await expect(lignes).toHaveCount(2)
+
+  // Exigence EF-021 : le même produit, deux personnalisations, deux lignes.
+  await expect(lignes.nth(0)).not.toContainText('Sans oignons')
+  await expect(lignes.nth(1)).toContainText('Sans oignons')
+  await expect(lignes.nth(1)).toContainText('Avec bacon')
+
+  // Le prix de ligne vient du domaine : 5,90 € l'unité, deux articles.
+  await expect(lignes.nth(0)).toContainText(/11,80\s€/)
+
+  // Le bouton de retrait nomme sa ligne : un panier en compte plusieurs.
+  const retrait = lignes.nth(0).getByRole('button', { name: 'Retirer Le Classique du panier' })
+  await expect(retrait).toBeVisible()
+
+  // Augmenter la quantité porte le total à 17,70 €, sans qu'aucune
+  // multiplication soit écrite dans le composant.
+  await lignes
+    .nth(0)
+    .getByRole('button', { name: /Augmenter la quantité/ })
+    .click()
+  await expect(lignes.nth(0)).toContainText(/17,70\s€/)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -421,6 +453,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     "Étiquette d'état",
     "Groupe d'options",
     'Icône',
+    'Ligne de panier',
     "Liste d'allergènes",
     'Montant',
     'Onglets de catégories',
