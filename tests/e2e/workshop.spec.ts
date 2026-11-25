@@ -62,10 +62,28 @@ test('activer un bouton disponible est annoncé par une région polie', async ({
   await expect(region).toHaveText('Bouton activé : Ajouter au panier.')
 })
 
+test('un montant est rendu en euros et porte sa valeur machine', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const total = page.locator('.c-price--total')
+
+  // Le séparateur avant le symbole est une espace insécable, dont le point de
+  // code dépend de la version d'ICU du navigateur.
+  await expect(total).toHaveText(/24,70\s€/)
+  await expect(total).toHaveAttribute('value', '24.70')
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Atelier des composants')
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText('Bouton')
-  await expect(page.getByRole('heading', { level: 3 })).toHaveCount(4)
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Montant', 'Bouton'])
+  // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
+  const niveaux = await page
+    .locator('h1, h2, h3')
+    .evaluateAll((titres) => titres.map((titre) => Number(titre.tagName.slice(1))))
+  for (const [rang, niveau] of niveaux.entries()) {
+    if (rang === 0) continue
+    expect(niveau - niveaux[rang - 1]!).toBeLessThanOrEqual(1)
+  }
 })
