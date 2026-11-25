@@ -163,12 +163,15 @@ test('une option se coche par son étiquette, pas seulement par sa case', async 
   await page.goto('/workshop')
   await waitForHydration(page)
 
-  const option = page.getByRole('checkbox', { name: 'Sans oignons' })
+  // La recherche est bornée à la section : le groupe d'options propose lui
+  // aussi le retrait des oignons.
+  const section = page.locator('[aria-labelledby="titre-option"]')
+  const option = section.getByRole('checkbox', { name: 'Sans oignons' })
   await expect(option).not.toBeChecked()
 
   // Le clic porte sur le texte, hors de la case : l'enveloppement par
   // l'étiquette est ce qui rend toute la ligne cliquable.
-  await page.getByText('Sans oignons').click()
+  await section.getByText('Sans oignons').click()
 
   await expect(option).toBeChecked()
 })
@@ -176,7 +179,11 @@ test('une option se coche par son étiquette, pas seulement par sa case', async 
 test('un supplément affiche son prix à côté de son libellé', async ({ page }) => {
   await page.goto('/workshop')
 
-  const bacon = page.getByText('Bacon', { exact: false }).first()
+  // La recherche est bornée à la section : le groupe d'options montre lui aussi
+  // le supplément bacon, avec son prix.
+  const bacon = page
+    .locator('[aria-labelledby="titre-option"]')
+    .locator('.c-option', { hasText: 'Bacon' })
 
   await expect(bacon).toContainText(/1,20\s€/)
 })
@@ -343,6 +350,33 @@ test('les allergènes sont nommés en texte, et leur absence mentionnée', async
   await expect(venuDuSupplement.locator('..')).toContainText('Lait')
 })
 
+test('un groupe d’options est annoncé par sa légende, et son total vient du domaine', async ({
+  page,
+}) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const section = page.locator('[aria-labelledby="titre-groupe"]')
+  const ajouter = section.getByRole('group', { name: 'Ajouter' })
+
+  // Le `fieldset` rattache chaque case à son groupe : « Bacon » appartient aux
+  // ajouts, « Sans cornichons » aux retraits.
+  await expect(ajouter.getByRole('checkbox', { name: /Bacon/ })).toBeChecked()
+  await expect(section.getByRole('group', { name: 'Retirer' })).toBeVisible()
+
+  const total = section.locator('.c-option-group__total')
+  await expect(total).toContainText(/1,20\s€/)
+
+  await ajouter.getByRole('checkbox', { name: /Cheddar/ }).check()
+
+  // 1,20 € et 0,80 € : la somme est calculée par `extrasTotalCents`, le
+  // composant ne fait que l'afficher.
+  await expect(total).toContainText(/2,00\s€/)
+
+  // Un produit sans personnalisation ne produit pas de groupe vide.
+  await expect(section.getByRole('group')).toHaveCount(2)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -353,6 +387,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Bouton',
     'Carte de produit',
     "Étiquette d'état",
+    "Groupe d'options",
     'Icône',
     "Liste d'allergènes",
     'Montant',

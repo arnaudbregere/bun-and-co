@@ -1,0 +1,52 @@
+// =============================================================================
+// Components — groupe d'options
+// =============================================================================
+// Le `fieldset` porte le groupe pour les technologies d'assistance, pas pour
+// l'œil : son cadre et sa marge par défaut sont retirés, et c'est la légende
+// capitalisée qui sépare visuellement un groupe du suivant.
+
+@layer components {
+  .c-option-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .c-option-group__legend {
+    padding: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-option-group__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  // Le total ferme le groupe, séparé par un trait d'encre : c'est le montant
+  // que le client vérifie avant d'ajouter au panier.
+  .c-option-group__total {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0;
+    padding-block-start: var(--space-3);
+    border-block-start: var(--border-bold) solid var(--color-border);
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-option-group__total .c-price {
+    font-size: var(--font-size-subheading);
+  }
+}
