@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import { cents } from '~/domain/money'
+import { ALLERGENS } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
 
@@ -68,6 +69,8 @@ const indisponible = pourCarte('montagnard', false) ?? {
   src: '',
   available: false,
 }
+
+const allergenesDuClassique = carteParIdentifiant('classique')?.allergens ?? []
 
 const quantite = ref(2)
 
@@ -280,6 +283,50 @@ const annoncer = (libelle: string) => {
           L'icône est décorative et porte <code>aria-hidden</code>. Le libellé existe dans le
           balisage, masqué à l'écran par <code>.u-visually-hidden</code> : le bouton garde un nom
           pour un lecteur d'écran, et aucune icône ne porte seule le sens d'une action.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-allergenes">
+      <h2 id="titre-allergenes">Liste d'allergènes</h2>
+
+      <h3>Un produit et ses allergènes</h3>
+      <div class="c-specimen">
+        <p>Le Classique</p>
+        <AllergenList :allergens="allergenesDuClassique" />
+        <p class="c-specimen__note">
+          Exigence EF-008 : les allergènes sont nommés en texte, et jamais portés par un pictogramme
+          seul. L'ordre suivi est celui du règlement 1169/2011, pour qu'un allergène occupe le même
+          rang d'une fiche à l'autre.
+        </p>
+      </div>
+
+      <h3>Produit sans allergène</h3>
+      <div class="c-specimen">
+        <p>Pommes tranchées</p>
+        <AllergenList :allergens="[]" />
+        <p class="c-specimen__note">
+          Une liste vide se lirait comme un oubli de la borne. La mention est explicite, et personne
+          n'a à commander sur une absence d'information.
+        </p>
+      </div>
+
+      <h3>Allergène apporté par un supplément</h3>
+      <div class="c-specimen">
+        <p>Le Végétal, avec cheddar</p>
+        <AllergenList :allergens="['gluten', 'soy']" :extra-allergens="['milk']" />
+        <p class="c-specimen__note">
+          Histoire 5 : l'allergène du supplément est signalé comme tel. Le client qui retire le
+          supplément retire aussi l'allergène, ce qu'une liste fondue en une seule ne dirait pas.
+        </p>
+      </div>
+
+      <h3>Les quatorze catégories</h3>
+      <div class="c-specimen">
+        <AllergenList :allergens="ALLERGENS" />
+        <p class="c-specimen__note">
+          La liste du règlement est fermée : un allergène hors de ces catégories n'existe pas au
+          sens de la réglementation. Les libellés français vivent dans le composant, le domaine ne
+          connaissant pas la langue d'affichage.
         </p>
       </div>
     </section>

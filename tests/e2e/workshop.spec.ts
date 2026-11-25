@@ -279,6 +279,40 @@ test('les onglets de catégories se parcourent aux flèches', async ({ page }) =
   expect(Number(marques.graisse)).toBe(700)
 })
 
+test('les allergènes sont nommés en texte, et leur absence mentionnée', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const section = page.locator('[aria-labelledby="titre-allergenes"]')
+  const premiere = section.getByRole('list').first()
+
+  // Exigence EF-008 : chaque allergène porte son libellé, aucun pictogramme ne
+  // le remplace. La liste est un `ul`, pour que son nombre d'éléments soit
+  // annoncé.
+  // L'ordre est celui du règlement 1169/2011 — œufs avant lait — et non celui
+  // des données du produit.
+  // Les motifs tolèrent l'espace laissé par l'indentation du gabarit : une
+  // comparaison par chaîne la compterait comme du texte.
+  await expect(premiere.getByRole('listitem')).toHaveText([
+    /^\s*Gluten\s*$/,
+    /^\s*Œufs\s*$/,
+    /^\s*Lait\s*$/,
+    /^\s*Moutarde\s*$/,
+    /^\s*Graines de sésame\s*$/,
+    /^\s*Anhydride sulfureux et sulfites\s*$/,
+  ])
+  await expect(premiere.locator('svg, img')).toHaveCount(0)
+
+  await expect(
+    section.getByText('Aucun allergène des quatorze catégories réglementaires.'),
+  ).toBeVisible()
+
+  // Histoire 5 : l'allergène venu d'un supplément est signalé par un mot, pas
+  // par une couleur.
+  const venuDuSupplement = section.locator('.c-allergens__source')
+  await expect(venuDuSupplement).toHaveText('apporté par un supplément')
+  await expect(venuDuSupplement.locator('..')).toContainText('Lait')
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -290,6 +324,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Carte de produit',
     "Étiquette d'état",
     'Icône',
+    "Liste d'allergènes",
     'Montant',
     'Onglets de catégories',
     'Option à cocher',
