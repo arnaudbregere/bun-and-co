@@ -16,7 +16,7 @@
     min-height: var(--target-primary);
     padding-block: var(--space-3);
     padding-inline: var(--space-5);
-    border: 2px solid transparent;
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-medium);
     font-family: var(--font-display);
     font-size: var(--font-size-body);
@@ -47,7 +47,7 @@
 
   // L'action principale est posée sur une ombre franche, et s'y enfonce à
   // l'appui : le retour est géométrique autant que coloré, donc visible même
-  // pour qui distingue mal le vermillon du vermillon appuyé.
+  // pour qui distingue mal le rouge du rouge appuyé.
   .c-button--primary {
     background-color: var(--color-accent);
     box-shadow: var(--shadow-card);
@@ -55,26 +55,33 @@
   }
 
   .c-button--primary:active {
-    transform: translateY(3px);
+    transform: translateY(4px);
     background-color: var(--color-accent-pressed);
-    box-shadow: none;
+    box-shadow: var(--shadow-card-pressed);
   }
 
+  // L'action secondaire est jaune cerclée d'encre. Le jaune ne tient pas les
+  // 3:1 contre le blanc : sans ce trait, le bouton n'aurait pas de contour
+  // visible, et le critère WCAG 1.4.11 ne serait pas satisfait.
   .c-button--secondary {
     min-height: var(--target-secondary);
-    border-color: var(--color-teal);
-    background-color: transparent;
-    color: var(--color-teal);
+    border-color: var(--color-border);
+    background-color: var(--color-highlight);
+    box-shadow: var(--shadow-card);
+    color: var(--color-ink);
   }
 
   .c-button--secondary:active {
-    background-color: var(--color-teal-muted);
+    transform: translateY(4px);
+    background-color: var(--color-highlight-pressed);
+    box-shadow: var(--shadow-card-pressed);
   }
 
   // L'action discrète reste en bas-de-casse : capitaliser un lien de consultation
   // lui donnerait le poids d'une action principale.
   .c-button--quiet {
     min-height: var(--target-secondary);
+    border-color: transparent;
     background-color: transparent;
     color: var(--color-accent);
     font-family: var(--font-ui);
@@ -95,7 +102,7 @@
 
   .c-button[aria-disabled='true'] {
     transform: none;
-    border-color: transparent;
+    border-color: var(--color-disabled);
     background-color: var(--color-disabled-surface);
     box-shadow: none;
     color: var(--color-disabled);

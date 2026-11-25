@@ -1,13 +1,30 @@
 // =============================================================================
 // Settings — couleurs
 // =============================================================================
-// Direction visuelle « néo-diner » : crème, vermillon, teal profond.
+// Direction visuelle « fast-food américain » : rouge, jaune, noir, blanc.
 //
-// Le fond crème est conservé : sur un écran regardé à 70 cm pendant plusieurs
-// minutes, un fond sombre fatigue moins mais écrase les photographies de
-// produit, et un blanc pur éblouit. Tout le reste change : l'accent passe du
-// terracotta sourd au vermillon, un teal profond apporte le second registre, et
-// les formes se redressent.
+// Le fond est blanc et les cartes aussi. Un fond coloré teinte les
+// photographies posées dessus, et la borne vend d'abord des photographies de
+// produits ; le blanc les laisse à leur propre couleur. Le crème du premier
+// jeu a disparu : une surface beige sous une photographie l'éteint, et
+// l'ensemble se lisait terne.
+//
+// La couleur ne vient donc pas des fonds mais des éléments : titres de section
+// rouges, pastilles de prix jaunes, traits d'encre épais, ombres portées
+// pleines. Le contraste du noir sur blanc porte la structure, le rouge et le
+// jaune portent l'appétence.
+//
+// Le rouge appelle l'action, le jaune met en avant un prix ou une offre, le vert
+// confirme. Trois rôles, trois couleurs : une quatrième couleur d'accent ne
+// désignerait plus rien.
+//
+// Le jaune ne porte jamais seul une information ni une bordure signifiante. Son
+// contraste contre le blanc vaut 1,46:1, très loin des 3:1 exigés par le critère
+// WCAG 1.4.11 : une pastille jaune sur fond blanc n'a pas de contour visible, et
+// reçoit donc toujours un trait d'encre.
+//
+// Inspiration et non imitation : aucun logo, aucune arche, aucun nom de marque
+// réelle n'entre dans ce projet.
 //
 // Les valeurs de contraste sont mesurées par `node scripts/verify-contrasts.mjs`,
 // qui lit ce fichier et échoue si une paire déclarée descend sous son seuil.
@@ -23,41 +40,47 @@
 @layer settings {
   :root {
     // --- Surfaces ---------------------------------------------------------------
-    --color-background: #fbf6ee; // crème, fond général
+    --color-background: #ffffff; // fond général
     --color-surface: #ffffff; // cartes produit
-    --color-surface-muted: #f0e8db; // zones secondaires, en-têtes de catégorie
-    --color-border: #7d6c55; // bordures porteuses de sens
-    --color-border-subtle: #ded2bf; // séparateurs décoratifs, hors seuil
+    --color-surface-muted: #fff3cc; // onglets au repos, substitut de visuel
+    --color-border: #0f0f0f; // traits porteurs de sens, épais
+    --color-border-subtle: #dcd7cd; // séparateurs décoratifs, hors seuil
 
     // --- Texte ------------------------------------------------------------------
-    --color-ink: #17130d; // texte principal
-    --color-ink-muted: #4e463a; // texte secondaire, mentions
-    --color-ink-inverse: #fff8f0; // texte sur fonds accentués
+    --color-ink: #0f0f0f; // texte principal
+    --color-ink-muted: #4a4a4a; // texte secondaire, mentions
+    --color-ink-inverse: #ffffff; // texte sur fonds accentués
 
     // --- Accent principal -------------------------------------------------------
-    // Vermillon : l'appétence passe par le rouge-orangé, et la borne doit donner
-    // faim avant de donner des instructions.
-    --color-accent: #c21f0d; // actions principales
-    --color-accent-pressed: #96160a; // état actif
-    --color-accent-muted: #fbe3dd; // fond de mise en avant discrète
+    // Rouge : il porte les actions, la catégorie ouverte et le prix d'un produit.
+    --color-accent: #e4002b; // actions principales, titres de section
+    --color-accent-pressed: #b00020; // état actif
+    --color-accent-muted: #ffe1e7; // fond de mise en avant discrète
+
+    // --- Mise en avant ----------------------------------------------------------
+    // Jaune soleil : pastille de prix, bandes, actions secondaires. Toujours
+    // sous un trait d'encre, son contraste contre le blanc étant insuffisant
+    // pour qu'il dessine une forme à lui seul.
+    --color-highlight: #ffd100;
+    --color-highlight-pressed: #e0b400;
 
     // --- Accent secondaire ------------------------------------------------------
-    // Teal profond : il porte les bandes, les confirmations et tout ce qui ne
-    // doit pas disputer l'attention au vermillon.
-    --color-teal: #0c4f4c; // confirmations, disponibilité, bandes
-    --color-teal-muted: #d9e8e6; // fond de confirmation
+    // Vert : confirmations, produit inclus dans un menu, disponibilité. Il ne
+    // dispute pas l'attention au rouge, et le vert est le registre attendu de ce
+    // qui est acquis.
+    --color-green: #11703a;
+    --color-green-muted: #dff2e4;
 
     // --- États ------------------------------------------------------------------
-    // L'erreur est une baie sombre et non un rouge vif : elle doit se distinguer
-    // de l'accent, qui est déjà rouge. Le libellé reste le porteur du sens, la
-    // couleur ne fait que l'appuyer.
-    --color-error: #8c1030; // erreurs et refus
-    --color-error-muted: #fbe1e7; // fond d'erreur
-    --color-disabled: #645c50; // texte d'un élément indisponible
-    --color-disabled-surface: #eae2d5; // fond d'un élément indisponible
+    // Aucune couleur d'erreur ici : les messages d'erreur appartiennent aux
+    // écrans du lot 6, et un token que rien ne peint est du code mort. Il
+    // entrera avec le premier composant qui l'emploie, et sa paire de
+    // contraste avec lui.
+    --color-disabled: #6b645c; // texte d'un élément indisponible
+    --color-disabled-surface: #eeeae2; // fond d'un élément indisponible
 
     // --- Focus ------------------------------------------------------------------
-    --color-focus: #17130d; // anneau de focus
-    --color-focus-halo: #fff8f0; // liseré intercalaire, lisible sur accent
+    --color-focus: #0f0f0f; // anneau de focus
+    --color-focus-halo: #ffffff; // liseré intercalaire, lisible sur le rouge
   }
 }

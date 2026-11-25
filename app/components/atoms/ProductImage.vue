@@ -4,7 +4,9 @@
  *
  * Le rapport d'affichage est réservé avant le chargement : sans lui, la grille
  * de la carte saute à l'arrivée de chaque image, et le client appuie sur un
- * produit qui vient de se déplacer.
+ * produit qui vient de se déplacer. Il est tenu par la feuille de styles, et
+ * non par une propriété : tous les visuels de la borne partagent le même
+ * cadrage, et un rapport réglable par l'appelant ne servait personne.
  *
  * Un produit sans visuel garde sa place dans la grille, derrière un substitut
  * qui porte le nom du produit — l'information que l'image aurait donnée. Les
@@ -24,7 +26,6 @@
 const {
   src = '',
   alt,
-  ratio = '4 / 3',
   loading = 'lazy',
 } = defineProps<{
   /** Source du visuel. Vide, le substitut s'affiche. */
@@ -35,8 +36,6 @@ const {
    * fois.
    */
   alt: string
-  /** Rapport d'affichage, pour réserver la place avant le chargement. */
-  ratio?: string
   /** `eager` pour les visuels visibles au premier rendu, `lazy` pour le reste. */
   loading?: 'lazy' | 'eager'
 }>()
@@ -50,7 +49,6 @@ const {
     :alt="alt"
     :loading="loading"
     decoding="async"
-    :style="{ aspectRatio: ratio }"
   />
 
   <div
@@ -59,7 +57,6 @@ const {
     :role="alt === '' ? undefined : 'img'"
     :aria-label="alt === '' ? undefined : alt"
     :aria-hidden="alt === '' ? 'true' : undefined"
-    :style="{ aspectRatio: ratio }"
   >
     <span aria-hidden="true">{{ alt.slice(0, 1) }}</span>
   </div>

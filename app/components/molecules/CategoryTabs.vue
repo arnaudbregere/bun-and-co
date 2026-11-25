@@ -41,13 +41,14 @@ const identifiant = useId()
 const idOnglet = (id: string) => `${identifiant}-onglet-${id}`
 const idPanneau = `${identifiant}-panneau`
 
-const rangCourant = computed(() => tabs.findIndex((onglet) => onglet.id === selection.value))
-
 // Lorsque la sélection reçue ne figure pas dans la liste, le premier onglet
 // tient le rôle de l'onglet courant : une barre dont aucun onglet n'est
 // atteignable enfermerait le focus, et un panneau qui désigne une étiquette
 // absente n'a plus de nom.
-const rangRetenu = computed(() => (rangCourant.value === -1 ? 0 : rangCourant.value))
+const rangRetenu = computed(() => {
+  const rang = tabs.findIndex((onglet) => onglet.id === selection.value)
+  return rang === -1 ? 0 : rang
+})
 
 // Un seul onglet est dans le parcours de tabulation. Sans cela, six arrêts
 // précèdent la carte, et le client au clavier traverse la navigation à chaque
@@ -96,7 +97,7 @@ const onKeydown = (event: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="c-tabs">
+  <div>
     <div class="c-tabs__list" role="tablist" :aria-label="label">
       <button
         v-for="(onglet, rang) of tabs"

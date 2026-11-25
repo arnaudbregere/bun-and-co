@@ -21,11 +21,10 @@
     // ni Fraunces : le détecteur de design signale ces dernières comme
     // omniprésentes, au point de ne plus porter d'identité.
     //
-    // L'antique du premier jeu a été remplacée par une grotesque condensée. Un
-    // titre à empattements posait une enseigne sage ; la borne vise un public de
-    // 15 à 35 ans et doit donner faim. La condensée tient aussi le nom d'un
-    // produit sur une seule ligne dans une carte étroite, ce qui vaut mieux
-    // qu'un nom coupé en deux.
+    // La grotesque condensée porte la direction fast-food américain : des noms
+    // de produits en capitales grasses, serrées, qui se lisent de loin. Elle
+    // tient aussi le nom d'un produit sur une seule ligne dans une carte
+    // étroite, ce qui vaut mieux qu'un nom coupé en deux.
     --font-ui: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --font-display: 'Archivo Narrow', 'Archivo Condensed', 'Archivo', sans-serif;
 
@@ -47,10 +46,13 @@
     --line-height-heading: 1.15;
 
     // --- Autres -----------------------------------------------------------------
-    --letter-spacing-heading: -0.005em;
-    // Les libellés capitalisés — boutons, étiquettes, catégories — ont besoin
-    // d'air : les capitales collées se lisent moins vite que les bas-de-casse.
-    --letter-spacing-display: 0.04em;
+    // Les titres sont serrés : une capitale grasse et resserrée est la signature
+    // typographique de cette direction, et le resserrement regroupe le titre en
+    // un bloc que l'œil saisit d'un coup.
+    --letter-spacing-heading: -0.015em;
+    // Les libellés capitalisés — boutons, étiquettes, catégories — gardent un
+    // peu d'air : collées, des capitales de petit corps se lisent moins vite.
+    --letter-spacing-display: 0.02em;
     --measure: 60ch; // longueur de ligne cible, bornée entre 45ch et 75ch
   }
 }

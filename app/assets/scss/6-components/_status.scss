@@ -13,8 +13,8 @@
     display: inline-block;
     padding-block: var(--space-1);
     padding-inline: var(--space-3);
-    border: 2px solid currentcolor;
-    border-radius: var(--radius-small);
+    border: var(--border-bold) solid currentcolor;
+    border-radius: var(--radius-pill);
     font-family: var(--font-display);
     font-size: var(--font-size-note);
     font-weight: var(--font-weight-bold);
@@ -38,8 +38,8 @@
   }
 
   .c-status--included {
-    background-color: var(--color-teal-muted);
-    color: var(--color-ink);
+    background-color: var(--color-green-muted);
+    color: var(--color-green);
   }
 
   .c-status--surcharge {

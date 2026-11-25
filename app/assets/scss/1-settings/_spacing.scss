@@ -4,6 +4,10 @@
 // Échelle de 4 px, exprimée en `rem`. Une seule échelle pour les marges, les
 // espacements internes et les écarts de grille : deux échelles concurrentes
 // produisent des alignements faux dès le troisième composant.
+//
+// L'échelle s'arrête au pas employé. Les pas suivants entreront avec la mise
+// en page des écrans, qui les demandera ; déclarés d'avance, ils ne seraient
+// que des valeurs que rien ne lit.
 
 @layer settings {
   :root {
@@ -13,8 +17,6 @@
     --space-4: 1rem; // 16 px
     --space-5: 1.5rem; // 24 px
     --space-6: 2rem; // 32 px
-    --space-7: 3rem; // 48 px
-    --space-8: 4rem; // 64 px
 
     // --- Cibles tactiles --------------------------------------------------------
     // Le critère WCAG 2.5.8, de niveau AA, exige 24 px au minimum. Le critère
@@ -25,25 +27,24 @@
     --target-secondary: 3rem; // 48 px
     --target-gap: var(--space-3); // 12 px, évite les taps voisins
 
-    // --- Portée physique --------------------------------------------------------
-    // La norme EN 301 549, clause 8, traite des terminaux en libre-service : une
-    // personne en fauteuil atteint au maximum environ 1,20 m de hauteur. Les
-    // commandes critiques restent donc dans les deux tiers inférieurs de l'écran,
-    // et la barre d'action principale est ancrée en bas.
-    --reach-dead-zone-height: 33.333%;
-
     // --- Rayons et élévation ----------------------------------------------------
-    // Angles presque droits : la direction néo-diner tient de l'enseigne
-    // peinte, pas de la pastille d'application mobile. Les rayons ne sont pas
-    // nuls, un angle parfaitement vif se lisant comme un défaut de rendu sur un
-    // écran tactile.
+    // Angles presque droits sur les surfaces, pastilles entièrement arrondies
+    // pour les prix et les étiquettes. Le contraste des deux formes est voulu :
+    // une pastille se détache d'autant mieux sur un bloc à angles vifs.
     --radius-small: 0.125rem;
     --radius-medium: 0.25rem;
-    --radius-large: 0.5rem;
+    --radius-pill: 62.5rem;
 
-    // Ombre portée franche, sans flou : une ombre diffuse appartient au registre
-    // de l'élévation matérielle, étranger à cette direction.
-    --shadow-card: 0 3px 0 rgb(23 19 13 / 12%);
+    // Trait d'encre épais : c'est lui qui donne sa structure à l'écran, la
+    // couleur ne venant plus des fonds. Un filet d'un pixel disparaît à 70 cm
+    // de distance, et laissait les cartes flotter sur le blanc.
+    --border-bold: 3px;
+
+    // Ombre portée pleine, sans flou et sans transparence : une ombre diffuse
+    // appartient au registre de l'élévation matérielle, étranger à cette
+    // direction, qui tient de l'affiche imprimée et de l'autocollant.
+    --shadow-card: 0 6px 0 var(--color-ink);
+    --shadow-card-pressed: 0 2px 0 var(--color-ink);
 
     // --- Focus ------------------------------------------------------------------
     --focus-ring-width: 3px;

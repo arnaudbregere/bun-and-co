@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
+import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
 import { cents } from '~/domain/money'
 import { ALLERGENS } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
@@ -77,14 +78,14 @@ const quantite = ref(2)
 // Les six entrées de l'exigence EF-006. « Menus » n'est pas une catégorie de
 // produit : un menu se compose à partir d'un burger. L'écart appartient à
 // l'écran de carte, pas à la barre d'onglets, qui reçoit sa liste.
-const categories = [
+const categories: readonly CategoryTab[] = [
   { id: 'burgers', label: 'Burgers' },
   { id: 'menus', label: 'Menus' },
   { id: 'chicken', label: 'Poulet' },
   { id: 'sides', label: 'Accompagnements' },
   { id: 'desserts', label: 'Desserts' },
   { id: 'drinks', label: 'Boissons' },
-] as const
+]
 
 const categorie = ref<string>('burgers')
 
@@ -168,7 +169,7 @@ const annoncer = (libelle: string) => {
         <p class="c-specimen__note">
           À observer à la tabulation, et non à la souris : l'indicateur suit
           <code>:focus-visible</code>. Anneau sombre et liseré clair, pour tenir le seuil de 3:1 du
-          critère WCAG 1.4.11 sur le vermillon comme sur le fond crème.
+          critère WCAG 1.4.11 sur le rouge comme sur le fond blanc.
         </p>
       </div>
 
@@ -376,7 +377,7 @@ const annoncer = (libelle: string) => {
           Tab entre dans la barre et n'y rencontre qu'un arrêt, les flèches changent d'onglet, Home
           et End vont aux extrémités. La sélection suit le focus : la carte est déjà chargée, et
           exiger un second appui ne ferait qu'allonger le parcours clavier. L'onglet courant se
-          distingue par son trait, sa graisse et sa couleur, jamais par la couleur seule.
+          distingue par son fond, sa graisse et son ombre portée, jamais par la couleur seule.
         </p>
       </div>
     </section>
@@ -511,7 +512,7 @@ const annoncer = (libelle: string) => {
         <ul class="c-specimen__grid">
           <li v-for="produit of apercu" :key="produit.id">
             <ProductImage :src="produit.image.medium" :alt="produit.image.alt" loading="eager" />
-            <p>{{ produit.image.alt }}</p>
+            <p class="c-specimen__caption">{{ produit.image.alt }}</p>
             <p class="c-specimen__note">Photographie {{ produit.image.photographer }}, Pixabay</p>
           </li>
         </ul>

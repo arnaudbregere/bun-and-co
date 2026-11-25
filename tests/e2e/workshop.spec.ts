@@ -224,6 +224,36 @@ test('une carte de produit est une cible unique, et refuse l’indisponible', as
   await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
 })
 
+test('les cartes d’une rangée ont la même hauteur, visuel bord à bord', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const cartes = page.locator('[aria-labelledby="titre-carte"] .c-product-card')
+  await expect(cartes).toHaveCount(5)
+
+  const mesures = await cartes.evaluateAll((elements) =>
+    elements.map((element) => {
+      const visuel = element.querySelector('.c-product-image')
+      return {
+        hauteur: Math.round(element.getBoundingClientRect().height),
+        haut: Math.round(element.getBoundingClientRect().top),
+        largeurVisuel: Math.round(visuel?.getBoundingClientRect().width ?? 0),
+        largeurInterieure: Math.round(element.clientWidth),
+      }
+    }),
+  )
+
+  // Les quatre premières cartes forment une rangée : un nom sur deux lignes ne
+  // doit pas rendre sa carte plus haute que ses voisines, sans quoi la rangée
+  // part en escalier.
+  const rangee = mesures.filter((mesure) => mesure.haut === mesures[0]!.haut)
+  expect(rangee.length).toBeGreaterThan(1)
+  for (const mesure of rangee) expect(mesure.hauteur).toBe(rangee[0]!.hauteur)
+
+  // Le visuel occupe toute la largeur intérieure de la carte : une
+  // photographie entourée de marges perd la moitié de sa force.
+  for (const mesure of mesures) expect(mesure.largeurVisuel).toBe(mesure.largeurInterieure)
+})
+
 test('un sélecteur de quantité compte, et refuse au-delà de la limite', async ({ page }) => {
   await page.goto('/workshop')
   await waitForHydration(page)
@@ -270,13 +300,13 @@ test('les onglets de catégories se parcourent aux flèches', async ({ page }) =
   await expect(panneau).toHaveAttribute('aria-labelledby', (await boissons.getAttribute('id'))!)
 
   // L'onglet courant ne se distingue pas par la seule couleur, critère WCAG
-  // 1.4.1 : son trait et sa graisse changent aussi.
+  // 1.4.1 : sa graisse et son ombre portée changent aussi.
   const marques = await boissons.evaluate((element) => {
     const style = getComputedStyle(element)
-    return { trait: style.borderBottomWidth, graisse: style.fontWeight }
+    return { graisse: style.fontWeight, ombre: style.boxShadow }
   })
-  expect(Number.parseFloat(marques.trait)).toBeGreaterThan(0)
   expect(Number(marques.graisse)).toBe(700)
+  expect(marques.ombre).not.toBe('none')
 })
 
 test('les allergènes sont nommés en texte, et leur absence mentionnée', async ({ page }) => {

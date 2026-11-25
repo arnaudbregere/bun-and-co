@@ -14,14 +14,6 @@ describe('atome Visuel de produit', () => {
     expect(wrapper.attributes('src')).toBe('/images/classique.jpg')
   })
 
-  it('réserve la place du visuel avant son chargement', () => {
-    // Sans rapport d'affichage réservé, la grille saute à l'arrivée de chaque
-    // image, et le client appuie sur un produit qui vient de se déplacer.
-    const wrapper = mount(ProductImage, { props: { src: '/x.jpg', alt: 'X' } })
-
-    expect(wrapper.attributes('style')).toContain('aspect-ratio')
-  })
-
   it('charge en différé par défaut, et au premier rendu sur demande', () => {
     const differe = mount(ProductImage, { props: { src: '/x.jpg', alt: 'X' } })
     const immediat = mount(ProductImage, {
@@ -39,7 +31,9 @@ describe('atome Visuel de produit', () => {
       expect(wrapper.element.tagName).toBe('DIV')
       expect(wrapper.attributes('role')).toBe('img')
       expect(wrapper.attributes('aria-label')).toBe('Le Classique')
-      expect(wrapper.attributes('style')).toContain('aspect-ratio')
+      // La place réservée avant le chargement est tenue par la classe, que la
+      // feuille de styles dote d'un rapport d'affichage.
+      expect(wrapper.classes()).toContain('c-product-image')
     })
 
     it('n’annonce pas son initiale en plus du nom', () => {

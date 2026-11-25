@@ -124,6 +124,23 @@ La conversion en euros n'a lieu qu'à l'affichage.
 une ligne silencieusement ignorée produiraient un ticket faux, bien plus difficile à
 diagnostiquer qu'une erreur levée au premier appel.
 
+## Direction visuelle
+
+Fast-food américain : rouge `#e4002b` pour l'action, jaune `#ffd100` pour la mise en avant,
+vert `#11703a` pour ce qui est acquis — confirmé, inclus, disponible. Fonds blancs,
+photographies bord à bord, traits d'encre épais et ombres pleines, capitales condensées.
+
+La couleur ne vient pas des fonds mais des éléments. Une surface beige sous une
+photographie l'éteint ; le blanc la laisse à sa propre couleur, et ce sont les titres, les
+pastilles de prix et les onglets qui portent le rouge et le jaune.
+
+Chaque combinaison de couleurs employée par un composant est déclarée dans
+`scripts/verify-contrasts.mjs` et mesurée à chaque demande de fusion. Le jaune fait
+exception à un détail près : son contraste contre le blanc vaut 1,46:1, il ne dessine donc
+jamais une forme sans un trait d'encre autour.
+
+Les choix et leurs raisons sont dans `DESIGN.md`.
+
 ## Accessibilité
 
 Le référentiel appliqué est le RGAA 4.1, qui transpose WCAG 2.1 niveau AA, complété par
@@ -181,8 +198,8 @@ Le navigateur des tests end-to-end s'installe une fois, par
 | 1 — Spécifications | terminé |
 | 2 — Design system | terminé |
 | 3 — Socle technique | terminé |
-| 4 — Domaine métier | en cours, route du catalogue restante |
-| 5 — Composants | à venir |
+| 4 — Domaine métier | terminé |
+| 5 — Composants | en cours, molécules du panier restantes |
 | 6 — Parcours utilisateur | à venir |
 | 7 — Audit RGAA | à venir |
 | 8 — Tests end-to-end | à venir |
