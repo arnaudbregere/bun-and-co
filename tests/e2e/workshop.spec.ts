@@ -198,6 +198,25 @@ test('une alerte est portée par une région assertive, invisible à l’écran'
   expect(cadre?.height).toBeLessThanOrEqual(1)
 })
 
+test('une carte de produit est une cible unique, et refuse l’indisponible', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const classique = page.getByRole('button', { name: /Le Classique/ })
+  await expect(classique).toHaveCount(1)
+
+  // L'appui porte sur le visuel, loin du nom : toute la carte est la cible.
+  await classique.locator('img').click()
+  await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
+
+  const montagnard = page.getByRole('button', { name: /Le Montagnard/ })
+  await expect(montagnard).toHaveAttribute('aria-disabled', 'true')
+  await expect(montagnard).toContainText('Indisponible')
+
+  await montagnard.click({ force: true })
+  await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -206,6 +225,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
   // ajouté trouve sa place sans discussion.
   await expect(page.getByRole('heading', { level: 2 })).toHaveText([
     'Bouton',
+    'Carte de produit',
     "Étiquette d'état",
     'Icône',
     'Montant',

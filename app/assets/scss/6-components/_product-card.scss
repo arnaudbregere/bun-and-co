@@ -1,0 +1,72 @@
+// =============================================================================
+// Components — carte de produit
+// =============================================================================
+// La carte entière est un bouton : la cible couvre le visuel, le nom et le
+// prix. Sur une borne, un titre cliquable entouré de zones mortes multiplie les
+// appuis manqués.
+
+@layer components {
+  .c-product-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    font-family: var(--font-ui);
+    font-size: var(--font-size-body);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .c-product-card:active {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+
+  .c-product-card__name {
+    font-family: var(--font-display);
+    font-size: var(--font-size-subheading);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+  }
+
+  // Le prix est l'information que le client compare d'une carte à l'autre : il
+  // porte l'accent. La paire est déjà mesurée, à 6,01:1 sur la surface des
+  // cartes.
+  .c-product-card__foot .c-price {
+    color: var(--color-accent);
+    font-size: var(--font-size-subheading);
+  }
+
+  .c-product-card[aria-disabled='true'] .c-price {
+    color: var(--color-disabled);
+  }
+
+  .c-product-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // Produit indisponible : la photographie est désaturée et le fond s'éteint,
+  // mais l'étiquette porte le mot. Le critère WCAG 1.4.1 interdit de laisser la
+  // couleur dire seule qu'un produit ne peut pas être commandé.
+  .c-product-card[aria-disabled='true'] {
+    transform: none;
+    background-color: var(--color-disabled-surface);
+    box-shadow: none;
+    color: var(--color-disabled);
+    cursor: not-allowed;
+  }
+
+  .c-product-card[aria-disabled='true'] .c-product-image {
+    filter: grayscale(100%);
+    opacity: 0.6;
+  }
+}

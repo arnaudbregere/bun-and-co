@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import { cents } from '~/domain/money'
+import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
 
 /**
@@ -34,6 +35,39 @@ const sansOignons = ref(false)
 const sansCornichons = ref(true)
 const avecBacon = ref(true)
 const avecCheddar = ref(false)
+
+// L'atelier lit la carte réelle plutôt que des produits inventés : un spécimen
+// qui montre autre chose que ce que la borne vendra ne vérifie rien.
+const carteParIdentifiant = (identifiant: string) =>
+  PRODUCTS.find((produit) => produit.id === identifiant)
+
+const pourCarte = (identifiant: string, disponible: boolean) => {
+  const produit = carteParIdentifiant(identifiant)
+  const visuel = PRODUCT_IMAGES[identifiant]
+
+  return produit === undefined
+    ? undefined
+    : {
+        id: produit.id,
+        name: produit.name,
+        priceCents: produit.priceCents,
+        src: visuel?.medium ?? '',
+        available: disponible,
+      }
+}
+
+const cartes = ['classique', 'fermier', 'wrap', 'sundae'].flatMap((identifiant) => {
+  const carte = pourCarte(identifiant, true)
+  return carte === undefined ? [] : [carte]
+})
+
+const indisponible = pourCarte('montagnard', false) ?? {
+  id: 'montagnard',
+  name: 'Le Montagnard',
+  priceCents: cents(790),
+  src: '',
+  available: false,
+}
 
 const annonceCourtoise = ref('')
 const alerte = ref('')
@@ -119,6 +153,49 @@ const annoncer = (libelle: string) => {
       <p aria-live="polite" class="c-specimen__note">
         {{ dernierClic === null ? 'Aucun bouton activé.' : `Bouton activé : ${dernierClic}.` }}
       </p>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-carte">
+      <h2 id="titre-carte">Carte de produit</h2>
+
+      <h3>Quatre produits</h3>
+      <div class="c-specimen">
+        <ul class="c-specimen__grid">
+          <li v-for="produit of cartes" :key="produit.id">
+            <ProductCard
+              :name="produit.name"
+              :price-cents="produit.priceCents"
+              :src="produit.src"
+              :available="produit.available"
+              loading="eager"
+              @select="annoncerAuLecteur(`${produit.name} sélectionné`)"
+            />
+          </li>
+        </ul>
+        <p class="c-specimen__note">
+          La carte entière est une cible unique, et une seule prise de focus. Un titre cliquable
+          entouré de zones mortes multiplierait les appuis manqués, et tripler les arrêts de
+          tabulation par produit ferait abandonner un client au clavier avant la fin de la carte.
+        </p>
+      </div>
+
+      <h3>Produit indisponible</h3>
+      <div class="c-specimen">
+        <div class="c-specimen__grid">
+          <ProductCard
+            :name="indisponible.name"
+            :price-cents="indisponible.priceCents"
+            :src="indisponible.src"
+            :available="false"
+            loading="eager"
+            @select="annoncerAuLecteur('Ceci ne doit jamais être annoncé')"
+          />
+        </div>
+        <p class="c-specimen__note">
+          Exigence EF-009 : le produit est présenté désactivé et son ajout est impossible. La carte
+          reste atteignable au clavier et porte le mot « indisponible », la couleur ne disant jamais
+          seule qu'un produit ne peut pas être commandé.
+        </p>
+      </div>
     </section>
     <section class="o-stack" aria-labelledby="titre-etat">
       <h2 id="titre-etat">Étiquette d'état</h2>

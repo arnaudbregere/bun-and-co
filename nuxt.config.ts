@@ -39,7 +39,10 @@ export default defineNuxtConfig({
   // plan de classement, pas une partie du nom.
   // Un niveau est déclaré le jour où il a un composant : un dossier vide n'a
   // rien à faire dans le dépôt.
-  components: [{ path: '~/components/atoms', pathPrefix: false }],
+  components: [
+    { path: '~/components/atoms', pathPrefix: false },
+    { path: '~/components/molecules', pathPrefix: false },
+  ],
 
   css: ['~/assets/scss/main.scss'],
 

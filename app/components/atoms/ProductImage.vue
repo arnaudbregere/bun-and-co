@@ -29,6 +29,11 @@ const {
 } = defineProps<{
   /** Source du visuel. Vide, le substitut s'affiche. */
   src?: string
+  /**
+   * Texte alternatif. Vide uniquement lorsque le nom du produit figure déjà
+   * à côté du visuel : répéter ce nom dans l'image le ferait annoncer deux
+   * fois.
+   */
   alt: string
   /** Rapport d'affichage, pour réserver la place avant le chargement. */
   ratio?: string
@@ -51,8 +56,9 @@ const {
   <div
     v-else
     class="c-product-image c-product-image--placeholder"
-    role="img"
-    :aria-label="alt"
+    :role="alt === '' ? undefined : 'img'"
+    :aria-label="alt === '' ? undefined : alt"
+    :aria-hidden="alt === '' ? 'true' : undefined"
     :style="{ aspectRatio: ratio }"
   >
     <span aria-hidden="true">{{ alt.slice(0, 1) }}</span>
