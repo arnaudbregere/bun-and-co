@@ -30,6 +30,11 @@ const apercu = (['classique', 'mariner', 'fries-medium', 'milkshake'] as const).
   return image === undefined ? [] : [{ id, image }]
 })
 
+const sansOignons = ref(false)
+const sansCornichons = ref(true)
+const avecBacon = ref(true)
+const avecCheddar = ref(false)
+
 const dernierClic = ref<string | null>(null)
 
 const annoncer = (libelle: string) => {
@@ -191,6 +196,39 @@ const annoncer = (libelle: string) => {
           Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
           yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
           ajout.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-option">
+      <h2 id="titre-option">Option à cocher</h2>
+
+      <h3>Retraits sans frais</h3>
+      <div class="c-specimen">
+        <div class="o-stack o-stack--tight">
+          <OptionToggle v-model="sansOignons" label="Sans oignons" />
+          <OptionToggle v-model="sansCornichons" label="Sans cornichons" />
+        </div>
+        <p class="c-specimen__note">
+          L'étiquette enveloppe la case : tout le texte est cliquable, et la cible dépasse les 48
+          px. L'état coché se voit aussi par la bordure, la case seule étant un détail de 24 px au
+          bout d'une ligne.
+        </p>
+      </div>
+
+      <h3>Suppléments payants</h3>
+      <div class="c-specimen">
+        <div class="o-stack o-stack--tight">
+          <OptionToggle v-model="avecBacon" label="Bacon">
+            <template #price><PriceTag :amount-cents="cents(120)" /></template>
+          </OptionToggle>
+          <OptionToggle v-model="avecCheddar" label="Cheddar">
+            <template #price><PriceTag :amount-cents="cents(80)" /></template>
+          </OptionToggle>
+        </div>
+        <p class="c-specimen__note">
+          Le prix arrive par un emplacement, et non par une propriété : seul l'atome Prix convertit
+          des centimes en euros, et un atome ne consomme pas un autre atome. C'est la page qui place
+          l'un dans l'autre.
         </p>
       </div>
     </section>

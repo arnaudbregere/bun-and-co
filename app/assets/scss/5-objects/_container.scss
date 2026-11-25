@@ -26,4 +26,10 @@
     flex-direction: column;
     gap: var(--space-5);
   }
+
+  // Variante resserrée : une liste d'options se lit comme un bloc, pas comme
+  // une suite de sections.
+  .o-stack--tight {
+    gap: var(--space-2);
+  }
 }

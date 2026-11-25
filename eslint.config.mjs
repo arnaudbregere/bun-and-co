@@ -136,6 +136,13 @@ export default withNuxt(
       // typographiques dans les gabarits.
       'vue/no-irregular-whitespace': 'error',
 
+      // Une étiquette qui enveloppe son contrôle est aussi valide qu'une
+      // étiquette reliée par `for` : la spécification HTML nomme les deux
+      // formes, et l'enveloppement rend tout le texte cliquable sans inventer
+      // d'identifiant. La valeur par défaut de la règle n'accepte que `for`,
+      // ce qui est plus strict que la norme.
+      'vuejs-accessibility/label-has-for': ['error', { required: { some: ['nesting', 'id'] } }],
+
       // Interdit les variables inutilisées, sauf celles préfixées d'un tiret
       // bas, convention explicite pour un paramètre volontairement ignoré.
       '@typescript-eslint/no-unused-vars': [

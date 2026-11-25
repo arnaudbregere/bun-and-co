@@ -140,6 +140,28 @@ test('les polices auto-hébergées sont chargées, sans requête à un tiers', a
   expect(requetes.filter((url) => /fonts\.(googleapis|gstatic)\.com/.test(url))).toEqual([])
 })
 
+test('une option se coche par son étiquette, pas seulement par sa case', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const option = page.getByRole('checkbox', { name: 'Sans oignons' })
+  await expect(option).not.toBeChecked()
+
+  // Le clic porte sur le texte, hors de la case : l'enveloppement par
+  // l'étiquette est ce qui rend toute la ligne cliquable.
+  await page.getByText('Sans oignons').click()
+
+  await expect(option).toBeChecked()
+})
+
+test('un supplément affiche son prix à côté de son libellé', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const bacon = page.getByText('Bacon', { exact: false }).first()
+
+  await expect(bacon).toContainText(/1,20\s€/)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -151,6 +173,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     "Étiquette d'état",
     'Icône',
     'Montant',
+    'Option à cocher',
     'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
