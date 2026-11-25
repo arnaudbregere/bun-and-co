@@ -66,10 +66,10 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      // La route du catalogue n'est liée par aucune page : aucun lien ne la
-      // désigne, donc l'exploration ne la trouverait pas. Elle est déclarée ici
-      // pour être exécutée au build et écrite en fichier statique.
-      routes: ['/', '/api/catalogue.json'],
+      // Ni la route du catalogue ni l'atelier ne sont liés par une page :
+      // aucun lien ne les désigne, donc l'exploration ne les trouverait pas. Ils
+      // sont déclarés ici pour être rendus au build.
+      routes: ['/', '/workshop', '/api/catalogue.json'],
       failOnError: true,
     },
   },

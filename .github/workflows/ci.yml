@@ -77,6 +77,12 @@ jobs:
       - name: Détecter les anti-patrons de design
         run: .claude/skills/impeccable/scripts/impeccable detect .output/public/index.html --no-advisory
 
+      # L'atelier rassemble tous les composants livrés : c'est la page où le
+      # détecteur voit le plus de balisage réel avant que les écrans du parcours
+      # n'existent.
+      - name: Détecter les anti-patrons de design dans l'atelier
+        run: .claude/skills/impeccable/scripts/impeccable detect .output/public/workshop/index.html --no-advisory
+
   tests-end-to-end:
     name: Tests end-to-end
     runs-on: ubuntu-latest
