@@ -9,25 +9,48 @@
   .c-product-card {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-    width: 100%;
-    padding: var(--space-3);
-    // Trait d'encre franc, et non un filet discret : la carte est le motif que
-    // le client parcourt le plus, et c'est son cadre qui donne à la carte de
-    // l'enseigne son rythme d'affiche imprimée.
-    border: 2px solid var(--color-border);
+    // La carte occupe toute la hauteur de sa cellule de grille : sans cela,
+    // un nom sur deux lignes rend sa carte plus haute que ses voisines, et la
+    // rangée part en escalier.
+    height: 100%;
+    padding: 0;
+    // Trait d'encre épais, et non un filet discret : c'est lui qui pose la
+    // carte sur le blanc. À 70 cm de distance, un filet d'un pixel disparaît.
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-medium);
     background-color: var(--color-surface);
     box-shadow: var(--shadow-card);
+    // Le visuel va bord à bord : ses angles doivent suivre ceux de la carte.
+    overflow: hidden;
     font-family: var(--font-ui);
     font-size: var(--font-size-body);
     text-align: left;
     cursor: pointer;
   }
 
+  // L'ombre pleine donne à l'appui un retour géométrique : la carte descend
+  // de quatre pixels et son ombre se réduit d'autant. Le mouvement se voit
+  // même pour qui distingue mal deux rouges voisins.
   .c-product-card:active {
     transform: translateY(4px);
-    box-shadow: none;
+    box-shadow: var(--shadow-card-pressed);
+  }
+
+  // Le visuel occupe toute la largeur, séparé du corps par le même trait que
+  // le cadre. Une photographie entourée de marges perd la moitié de sa force.
+  .c-product-card .c-product-image {
+    border: 0;
+    border-block-end: var(--border-bold) solid var(--color-border);
+    border-radius: 0;
+  }
+
+  .c-product-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-3);
+    justify-content: space-between;
+    padding: var(--space-3);
   }
 
   .c-product-card__name {
@@ -40,17 +63,26 @@
   }
 
   // Le prix est l'information que le client compare d'une carte à l'autre : il
-  // est posé sur une pastille jaune, forme arrondie au milieu d'un bloc à
-  // angles vifs. Le trait d'encre est obligatoire : le jaune ne tient pas les
-  // 3:1 contre une surface claire, et la pastille n'aurait pas de contour.
+  // est posé comme un autocollant, pastille jaune cerclée d'encre et penchée
+  // d'un degré. Le trait est obligatoire : le jaune ne tient pas les 3:1
+  // contre le blanc, et la pastille n'aurait pas de contour.
   .c-product-card__foot .c-price {
     padding-block: var(--space-1);
-    padding-inline: var(--space-3);
-    border: 2px solid var(--color-border);
+    padding-inline: var(--space-4);
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-pill);
     background-color: var(--color-highlight);
     color: var(--color-ink);
     font-size: var(--font-size-subheading);
+    rotate: -1deg;
+  }
+
+  // Un écran qui annonce préférer moins de mouvement n'a pas demandé une
+  // interface penchée.
+  @media (prefers-reduced-motion: reduce) {
+    .c-product-card__foot .c-price {
+      rotate: none;
+    }
   }
 
   .c-product-card[aria-disabled='true'] .c-price {
@@ -72,6 +104,7 @@
   // couleur dire seule qu'un produit ne peut pas être commandé.
   .c-product-card[aria-disabled='true'] {
     transform: none;
+    border-color: var(--color-disabled);
     background-color: var(--color-disabled-surface);
     box-shadow: none;
     color: var(--color-disabled);
@@ -79,6 +112,7 @@
   }
 
   .c-product-card[aria-disabled='true'] .c-product-image {
+    border-block-end-color: var(--color-disabled);
     filter: grayscale(100%);
     opacity: 0.6;
   }

@@ -44,10 +44,32 @@
     // s'étire sur toute la largeur et son rapport d'affichage lui donne une
     // hauteur absurde.
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    // Les cellules s'étirent et leur contenu occupe toute la hauteur : sinon
+    // un nom sur deux lignes décale sa voisine, et la rangée part en escalier.
+    align-items: stretch;
     gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .c-specimen__grid > li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  // Légende d'un visuel : le nom du produit, dans la condensée capitalisée de
+  // l'affichage, et non dans le texte courant qui le ferait passer pour une
+  // phrase.
+  .c-specimen__caption {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
   }
 
   .c-specimen__note {

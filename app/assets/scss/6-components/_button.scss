@@ -16,7 +16,7 @@
     min-height: var(--target-primary);
     padding-block: var(--space-3);
     padding-inline: var(--space-5);
-    border: 2px solid transparent;
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-medium);
     font-family: var(--font-display);
     font-size: var(--font-size-body);
@@ -57,7 +57,7 @@
   .c-button--primary:active {
     transform: translateY(4px);
     background-color: var(--color-accent-pressed);
-    box-shadow: none;
+    box-shadow: var(--shadow-card-pressed);
   }
 
   // L'action secondaire est jaune cerclée d'encre. Le jaune ne tient pas les
@@ -74,13 +74,14 @@
   .c-button--secondary:active {
     transform: translateY(4px);
     background-color: var(--color-highlight-pressed);
-    box-shadow: none;
+    box-shadow: var(--shadow-card-pressed);
   }
 
   // L'action discrète reste en bas-de-casse : capitaliser un lien de consultation
   // lui donnerait le poids d'une action principale.
   .c-button--quiet {
     min-height: var(--target-secondary);
+    border-color: transparent;
     background-color: transparent;
     color: var(--color-accent);
     font-family: var(--font-ui);
@@ -101,7 +102,7 @@
 
   .c-button[aria-disabled='true'] {
     transform: none;
-    border-color: transparent;
+    border-color: var(--color-disabled);
     background-color: var(--color-disabled-surface);
     box-shadow: none;
     color: var(--color-disabled);

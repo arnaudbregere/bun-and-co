@@ -51,7 +51,11 @@
     font-size: var(--font-size-screen);
   }
 
+  // Le titre de catégorie est rouge : la couleur ne venant plus des fonds, ce
+  // sont les éléments qui la portent, et le titre est le premier repère que le
+  // client cherche de loin. Le rouge sur blanc tient 4,85:1, paire mesurée.
   h2 {
+    color: var(--color-accent);
     font-size: var(--font-size-section);
   }
 

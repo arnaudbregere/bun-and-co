@@ -20,11 +20,22 @@ Rouge pour l'action, jaune pour la mise en avant, vert pour ce qui est acquis �
 inclus, disponible. Trois rôles, trois couleurs : une quatrième couleur d'accent ne
 désignerait plus rien. Grotesque condensée pour l'affichage, grotesque normale pour
 l'interface. Angles presque droits sur les surfaces, pastilles entièrement arrondies pour
-les prix et les étiquettes, ombre franche sans flou.
+les prix et les étiquettes.
 
-Le fond passe au blanc. Un fond coloré teinte les photographies posées dessus, et la borne
-vend d'abord des photographies de produits. La chaleur de la direction est portée par les
-surfaces — cartes et zones secondaires, en crème — et non par le fond général.
+**La couleur ne vient pas des fonds.** Le fond général et les cartes sont blancs. Le crème
+du premier jeu a disparu : une surface beige sous une photographie l'éteint, et l'ensemble
+se lisait terne. Ce sont les éléments qui portent la couleur — titres de section rouges,
+pastilles de prix jaunes, onglet courant en pavé rouge.
+
+**Le noir porte la structure.** Trait d'encre de 3 px autour des cartes, des boutons, des
+onglets et des pastilles, doublé d'une ombre portée pleine de 6 px. Le registre est celui
+de l'affiche imprimée et de l'autocollant : un aplat et son décalage, jamais un dégradé ni
+un flou. À 70 cm de distance, un filet d'un pixel disparaît et les cartes flottent sur le
+blanc.
+
+**La photographie va bord à bord.** Dans une carte de produit, le visuel occupe toute la
+largeur et seul le texte reçoit une marge intérieure. Une photographie entourée de marges
+perd la moitié de sa force, et c'est elle que le client regarde en premier.
 
 L'interface reste sobre pour autant : sur une borne, l'utilisateur est debout, pressé, et
 parfois observé par la file d'attente. La densité visuelle se paie en temps de commande. La
@@ -57,34 +68,34 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 | Token | Valeur | Usage |
 | --- | --- | --- |
 | `--color-background` | `#ffffff` | fond général |
-| `--color-surface` | `#fff8e7` | cartes produit, crème chaud |
-| `--color-surface-muted` | `#ffeec9` | zones secondaires, onglets au repos |
-| `--color-border` | `#1a1a1a` | bordures porteuses de sens, 17,40:1 sur le fond |
-| `--color-border-subtle` | `#e6dcc4` | séparateurs purement décoratifs |
+| `--color-surface` | `#ffffff` | cartes produit |
+| `--color-surface-muted` | `#fff3cc` | onglets au repos, substitut de visuel |
+| `--color-border` | `#0f0f0f` | traits porteurs de sens, 19,17:1 sur le fond |
+| `--color-border-subtle` | `#dcd7cd` | séparateurs purement décoratifs |
 
 ### Texte
 
 | Token | Valeur | Contraste sur le fond |
 | --- | --- | --- |
-| `--color-ink` | `#1a1a1a` | 17,40:1 |
-| `--color-ink-muted` | `#56504a` | 7,95:1 |
-| `--color-ink-inverse` | `#ffffff` | sur accent : 5,11:1 |
+| `--color-ink` | `#0f0f0f` | 19,17:1 |
+| `--color-ink-muted` | `#4a4a4a` | 8,86:1 |
+| `--color-ink-inverse` | `#ffffff` | sur accent : 4,85:1 |
 
 ### Accents et états
 
 | Token | Valeur | Usage | Contraste |
 | --- | --- | --- | --- |
-| `--color-accent` | `#d81e05` | actions principales, catégorie ouverte | 5,11:1 avec le texte inversé |
-| `--color-accent-pressed` | `#a81603` | état actif | 7,55:1 |
-| `--color-highlight` | `#ffc72c` | pastille de prix, action secondaire, bandes | 11,15:1 avec l'encre |
+| `--color-accent` | `#e4002b` | actions principales, titres de section, catégorie ouverte | 4,85:1 avec le texte inversé |
+| `--color-accent-pressed` | `#b00020` | état actif | 7,33:1 |
+| `--color-highlight` | `#ffd100` | pastille de prix, action secondaire | 13,12:1 avec l'encre |
 | `--color-green` | `#11703a` | confirmation, produit inclus, disponibilité | 6,17:1 |
 | `--color-error` | `#8c1030` | erreurs et refus | 9,41:1 |
 | `--color-disabled` | `#6b645c` | produit indisponible | 4,86:1 sur son fond |
 
 **Le jaune ne dessine jamais une forme à lui seul.** Son contraste contre le blanc vaut
-1,55:1, très loin des 3:1 exigés par le critère WCAG 1.4.11 pour un composant d'interface :
+1,46:1, très loin des 3:1 exigés par le critère WCAG 1.4.11 pour un composant d'interface :
 une pastille jaune posée sur du blanc n'aurait pas de contour visible. Elle reçoit donc
-toujours un trait d'encre, mesuré à 11,15:1. C'est la seule couleur de la palette soumise à
+toujours un trait d'encre, mesuré à 13,12:1. C'est la seule couleur de la palette soumise à
 cette contrainte, et le script la vérifie par la paire `border` / `highlight`.
 
 L'erreur est une baie sombre et non un rouge vif. L'accent étant déjà rouge, deux rouges
@@ -98,9 +109,8 @@ liseré clair `--color-focus-halo`.
 
 L'exigence applicable au niveau AA est le critère WCAG 1.4.11, qui demande 3:1 entre
 l'indicateur de focus et les couleurs adjacentes. Elle est satisfaite dès qu'un des deux
-tons atteint ce seuil, et non les deux. Sur le rouge, l'anneau d'encre atteint 4,23:1 et le
-liseré blanc 5,11:1 : les deux passent, là où le terracotta du premier jeu obligeait à ne
-compter que sur le liseré.
+tons atteint ce seuil, et non les deux. Sur le rouge, le liseré blanc atteint 4,85:1 : le
+seuil est tenu, là où le terracotta du premier jeu ne passait que de justesse.
 
 Le critère WCAG 2.4.13, qui ajoute des exigences de surface et d'épaisseur de
 l'indicateur, relève du niveau AAA. Le mécanisme à deux tons y répond également, mais ce
@@ -199,17 +209,27 @@ Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volont
 | `--radius-medium` | 4 px | boutons, cartes, onglets |
 | `--radius-large` | 8 px | panneaux et dialogues |
 | `--radius-pill` | 1000 px | pastille de prix, étiquette d'état |
-| `--shadow-card` | `0 4px 0 rgb(26 26 26 / 20%)` | ombre franche, sans flou |
+| `--border-bold` | 3 px | trait d'encre des cartes, boutons, onglets et pastilles |
+| `--shadow-card` | `0 6px 0 var(--color-ink)` | ombre pleine, sans flou ni transparence |
+| `--shadow-card-pressed` | `0 2px 0 var(--color-ink)` | la même, à l'appui |
 
 Les angles sont presque droits sans être vifs : un angle parfaitement à 90 degrés se lit
 comme un défaut de rendu sur un écran tactile. La pastille, elle, est entièrement arrondie.
 Le contraste des deux formes est voulu : un prix en pastille se détache d'autant mieux sur
 une carte à angles vifs.
 
-L'ombre est un décalage net, sans flou — une ombre diffuse appartient au registre de
-l'élévation matérielle, étranger à cette direction, qui tient de l'affiche imprimée. Elle
-porte aussi un état : un bouton, un onglet ou une carte s'enfonce de 4 px à l'appui et perd
-son ombre, retour géométrique visible même pour qui distingue mal deux rouges voisins.
+L'ombre est un décalage net, plein, sans flou ni transparence — une ombre diffuse
+appartient au registre de l'élévation matérielle, étranger à cette direction. Elle porte
+aussi un état : un bouton, un onglet ou une carte descend de 4 px à l'appui et son ombre se
+réduit d'autant, retour géométrique visible même pour qui distingue mal deux rouges
+voisins.
+
+### Motifs écartés
+
+La bande posée sous un titre a connu trois dessins. Les rayures rouges et jaunes en
+diagonale sont celles d'un ruban de chantier : la borne y annonçait un danger au lieu d'un
+repas. Les deux barres pleines, rouge au-dessus et jaune en dessous, se lisaient comme un
+drapeau. Reste l'aplat rouge et son ombre d'encre.
 
 ## Cascade
 

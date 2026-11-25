@@ -511,7 +511,7 @@ const annoncer = (libelle: string) => {
         <ul class="c-specimen__grid">
           <li v-for="produit of apercu" :key="produit.id">
             <ProductImage :src="produit.image.medium" :alt="produit.image.alt" loading="eager" />
-            <p>{{ produit.image.alt }}</p>
+            <p class="c-specimen__caption">{{ produit.image.alt }}</p>
             <p class="c-specimen__note">Photographie {{ produit.image.photographer }}, Pixabay</p>
           </li>
         </ul>

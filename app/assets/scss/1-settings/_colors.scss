@@ -1,19 +1,25 @@
 // =============================================================================
 // Settings — couleurs
 // =============================================================================
-// Direction visuelle « fast-food américain » : rouge, jaune soleil, blanc.
+// Direction visuelle « fast-food américain » : rouge, jaune, noir, blanc.
 //
-// Le fond passe du crème au blanc. Un fond coloré teinte les photographies
-// posées dessus, et la borne vend d'abord des photographies de produits ; le
-// blanc les laisse à leur propre couleur. La chaleur de la direction est portée
-// par les surfaces — cartes et zones secondaires — et non par le fond général.
+// Le fond est blanc et les cartes aussi. Un fond coloré teinte les
+// photographies posées dessus, et la borne vend d'abord des photographies de
+// produits ; le blanc les laisse à leur propre couleur. Le crème du premier
+// jeu a disparu : une surface beige sous une photographie l'éteint, et
+// l'ensemble se lisait terne.
+//
+// La couleur ne vient donc pas des fonds mais des éléments : titres de section
+// rouges, pastilles de prix jaunes, traits d'encre épais, ombres portées
+// pleines. Le contraste du noir sur blanc porte la structure, le rouge et le
+// jaune portent l'appétence.
 //
 // Le rouge appelle l'action, le jaune met en avant un prix ou une offre, le vert
 // confirme. Trois rôles, trois couleurs : une quatrième couleur d'accent ne
 // désignerait plus rien.
 //
 // Le jaune ne porte jamais seul une information ni une bordure signifiante. Son
-// contraste contre le blanc vaut 1,55:1, très loin des 3:1 exigés par le critère
+// contraste contre le blanc vaut 1,46:1, très loin des 3:1 exigés par le critère
 // WCAG 1.4.11 : une pastille jaune sur fond blanc n'a pas de contour visible, et
 // reçoit donc toujours un trait d'encre.
 //
@@ -35,28 +41,28 @@
   :root {
     // --- Surfaces ---------------------------------------------------------------
     --color-background: #ffffff; // fond général
-    --color-surface: #fff8e7; // cartes produit, crème chaud
-    --color-surface-muted: #ffeec9; // zones secondaires, en-têtes de catégorie
-    --color-border: #1a1a1a; // bordures porteuses de sens, franches
-    --color-border-subtle: #e6dcc4; // séparateurs décoratifs, hors seuil
+    --color-surface: #ffffff; // cartes produit
+    --color-surface-muted: #fff3cc; // onglets au repos, substitut de visuel
+    --color-border: #0f0f0f; // traits porteurs de sens, épais
+    --color-border-subtle: #dcd7cd; // séparateurs décoratifs, hors seuil
 
     // --- Texte ------------------------------------------------------------------
-    --color-ink: #1a1a1a; // texte principal
-    --color-ink-muted: #56504a; // texte secondaire, mentions
+    --color-ink: #0f0f0f; // texte principal
+    --color-ink-muted: #4a4a4a; // texte secondaire, mentions
     --color-ink-inverse: #ffffff; // texte sur fonds accentués
 
     // --- Accent principal -------------------------------------------------------
     // Rouge : il porte les actions, la catégorie ouverte et le prix d'un produit.
-    --color-accent: #d81e05; // actions principales
-    --color-accent-pressed: #a81603; // état actif
-    --color-accent-muted: #ffe6e1; // fond de mise en avant discrète
+    --color-accent: #e4002b; // actions principales, titres de section
+    --color-accent-pressed: #b00020; // état actif
+    --color-accent-muted: #ffe1e7; // fond de mise en avant discrète
 
     // --- Mise en avant ----------------------------------------------------------
     // Jaune soleil : pastille de prix, bandes, actions secondaires. Toujours
     // sous un trait d'encre, son contraste contre le blanc étant insuffisant
     // pour qu'il dessine une forme à lui seul.
-    --color-highlight: #ffc72c;
-    --color-highlight-pressed: #e3a906;
+    --color-highlight: #ffd100;
+    --color-highlight-pressed: #e0b400;
 
     // --- Accent secondaire ------------------------------------------------------
     // Vert : confirmations, produit inclus dans un menu, disponibilité. Il ne
@@ -75,7 +81,7 @@
     --color-disabled-surface: #eeeae2; // fond d'un élément indisponible
 
     // --- Focus ------------------------------------------------------------------
-    --color-focus: #1a1a1a; // anneau de focus
+    --color-focus: #0f0f0f; // anneau de focus
     --color-focus-halo: #ffffff; // liseré intercalaire, lisible sur le rouge
   }
 }

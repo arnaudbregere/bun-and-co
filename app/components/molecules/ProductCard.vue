@@ -15,6 +15,11 @@
  *
  * Le visuel porte un texte alternatif vide, à dessein : le nom du produit figure
  * juste en dessous, et le répéter le ferait annoncer deux fois.
+ *
+ * Le corps est enveloppé : le visuel occupe toute la largeur de la carte, bord
+ * à bord, et seul le texte reçoit une marge intérieure. Sans cette enveloppe,
+ * une marge commune réduirait la photographie, qui est ce que le client
+ * regarde en premier.
  */
 
 import type { Cents } from '../../domain/money'
@@ -55,10 +60,12 @@ const onClick = (event: MouseEvent) => {
     @click="onClick"
   >
     <ProductImage :src="src" alt="" :loading="loading" />
-    <span class="c-product-card__name">{{ name }}</span>
-    <span class="c-product-card__foot">
-      <PriceTag :amount-cents="priceCents" />
-      <StatusBadge v-if="!available" state="unavailable" />
+    <span class="c-product-card__body">
+      <span class="c-product-card__name">{{ name }}</span>
+      <span class="c-product-card__foot">
+        <PriceTag :amount-cents="priceCents" />
+        <StatusBadge v-if="!available" state="unavailable" />
+      </span>
     </span>
   </button>
 </template>

@@ -41,10 +41,16 @@
     --radius-large: 0.5rem;
     --radius-pill: 62.5rem;
 
-    // Ombre portée franche, sans flou, dans l'encre : une ombre diffuse
+    // Trait d'encre épais : c'est lui qui donne sa structure à l'écran, la
+    // couleur ne venant plus des fonds. Un filet d'un pixel disparaît à 70 cm
+    // de distance, et laissait les cartes flotter sur le blanc.
+    --border-bold: 3px;
+
+    // Ombre portée pleine, sans flou et sans transparence : une ombre diffuse
     // appartient au registre de l'élévation matérielle, étranger à cette
-    // direction, qui tient de l'affiche imprimée.
-    --shadow-card: 0 4px 0 rgb(26 26 26 / 20%);
+    // direction, qui tient de l'affiche imprimée et de l'autocollant.
+    --shadow-card: 0 6px 0 var(--color-ink);
+    --shadow-card-pressed: 0 2px 0 var(--color-ink);
 
     // --- Focus ------------------------------------------------------------------
     --focus-ring-width: 3px;

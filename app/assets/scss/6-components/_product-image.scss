@@ -6,6 +6,10 @@
   .c-product-image {
     display: block;
     width: 100%;
+    // Trait d'encre autour de la photographie : posée nue sur le blanc, elle
+    // flotte, et ses bords clairs se perdent dans le fond. Dans une carte de
+    // produit, ce trait est remplacé par celui de la carte.
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-small);
     object-fit: cover;
     background-color: var(--color-surface-muted);
@@ -17,7 +21,7 @@
   .c-product-image--placeholder {
     display: grid;
     place-items: center;
-    border: 2px solid var(--color-border-subtle);
+    border: var(--border-bold) solid var(--color-border);
     color: var(--color-ink-muted);
     font-family: var(--font-display);
     font-size: var(--font-size-screen);

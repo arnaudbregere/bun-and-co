@@ -22,10 +22,7 @@
     min-height: var(--target-primary);
     padding-block: var(--space-3);
     padding-inline: var(--space-5);
-    // Bordure posée dès l'état par défaut, en transparent : elle sert au mode
-    // contraste élevé, où elle reprend une couleur système. Déclarée seulement
-    // sur l'onglet courant, elle décalerait les autres de deux pixels.
-    border: 2px solid transparent;
+    border: var(--border-bold) solid var(--color-border);
     border-radius: var(--radius-medium);
     background-color: var(--color-surface-muted);
     color: var(--color-ink);
@@ -51,7 +48,7 @@
 
   .c-tabs__tab:active {
     transform: translateY(4px);
-    box-shadow: none;
+    box-shadow: var(--shadow-card-pressed);
   }
 
   .c-tabs__panel {
@@ -64,6 +61,7 @@
   @media (forced-colors: active) {
     .c-tabs__tab[aria-selected='true'] {
       border-color: Highlight;
+      border-width: calc(var(--border-bold) * 2);
     }
   }
 }
