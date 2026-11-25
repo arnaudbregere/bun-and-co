@@ -79,6 +79,13 @@
     --color-disabled: #6b645c; // texte d'un élément indisponible
     --color-disabled-surface: #eeeae2; // fond d'un élément indisponible
 
+    // --- Voile ------------------------------------------------------------------
+    // Fond d'un dialogue modal. Seule couleur de la palette qui n'est pas
+    // opaque, et la seule qui ne figure dans aucune paire de contraste : rien
+    // ne s'écrit dessus, elle assombrit la page sans la masquer, pour que le
+    // client reconnaisse l'écran qu'il quitte.
+    --color-scrim: rgb(15 15 15 / 60%);
+
     // --- Focus ------------------------------------------------------------------
     --color-focus: #0f0f0f; // anneau de focus
     --color-focus-halo: #ffffff; // liseré intercalaire, lisible sur le rouge
