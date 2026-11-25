@@ -62,6 +62,12 @@ jobs:
       - name: Vérifier l'ordre des couches de styles
         run: pnpm layer-order
 
+      # La route du catalogue n'est préconstruite que si elle est déclarée dans
+      # nitro.prerender.routes. L'oubli ne se verrait qu'en production, où aucun
+      # processus Node ne répond.
+      - name: Vérifier la route préconstruite du catalogue
+        run: pnpm catalogue-route
+
       - name: Détecter les anti-patrons de design
         run: .claude/skills/impeccable/scripts/impeccable detect .output/public/index.html --no-advisory
 

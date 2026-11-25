@@ -25,7 +25,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "contrasts": "node scripts/verify-contrasts.mjs",
-    "layer-order": "node scripts/verify-layer-order.mjs"
+    "layer-order": "node scripts/verify-layer-order.mjs",
+    "catalogue-route": "node scripts/verify-catalogue-route.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
