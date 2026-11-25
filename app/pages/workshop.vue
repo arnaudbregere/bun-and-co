@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
+import { MENU_SIZE_RULES } from '~/domain/menu-rules'
 import { cents } from '~/domain/money'
 import { extrasTotalCents } from '~/domain/pricing'
-import { ALLERGENS } from '~/domain/types'
+import { ALLERGENS, MENU_SIZES, type MenuSize } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
 
@@ -101,6 +102,12 @@ const totalDesSupplements = computed(() =>
         extraIds: supplementsRetenus.value,
       }),
 )
+
+// Sélecteur de taille : les trois règles du domaine, dans l'ordre croissant.
+// Aucun forfait ni aucun format n'est écrit dans la page.
+const reglesDeTaille = MENU_SIZES.map((taille) => MENU_SIZE_RULES[taille])
+
+const tailleRetenue = ref<MenuSize>('L')
 
 const quantite = ref(2)
 
@@ -570,6 +577,32 @@ const annoncer = (libelle: string) => {
           Le bouton refuse en donnant sa raison, plutôt que de rester silencieusement inopérant. Les
           limites viennent du domaine : dix par ligne, trente par commande, exigence EF-025. Aucune
           n'est écrite dans le composant.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-taille">
+      <h2 id="titre-taille">Sélecteur de taille de menu</h2>
+
+      <h3>Les trois tailles</h3>
+      <div class="c-specimen">
+        <MenuSizePicker v-model="tailleRetenue" legend="Taille du menu" :rules="reglesDeTaille" />
+        <p class="c-specimen__note">
+          Des boutons radio natifs : le navigateur donne l'exclusivité du choix, le passage d'une
+          taille à l'autre aux flèches et un seul arrêt de tabulation pour le groupe. Chaque taille
+          annonce ce qu'elle comprend, et pas seulement sa lettre — une lettre seule n'est pas un
+          choix éclairé.
+        </p>
+      </div>
+
+      <h3>Les règles viennent du domaine</h3>
+      <div class="c-specimen">
+        <p class="c-specimen__note">
+          Taille retenue : <strong>{{ tailleRetenue }}</strong>, forfait
+          <strong><PriceTag :amount-cents="MENU_SIZE_RULES[tailleRetenue].surchargeCents" /></strong
+          >. Forfaits, formats et dessert viennent de <code>MENU_SIZE_RULES</code>, dans
+          <code>app/domain/menu-rules.ts</code> : exigences EF-012, EF-013 et EF-014. Les écrire
+          dans le composant en ferait une seconde source de vérité, qui divergerait au premier
+          changement de grille.
         </p>
       </div>
     </section>
