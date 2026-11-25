@@ -124,9 +124,26 @@ coupé en deux.
 Les libellés capitalisés — boutons, étiquettes, catégories — portent `--letter-spacing-display`
 à `0.04em` : des capitales collées se lisent moins vite que des bas-de-casse.
 
-Polices auto-hébergées en `woff2`, sous-ensemble latin, chiffres et ponctuation. Aucun
-appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis
-2020, un lien externe n'apporte donc aucun gain et ajoute une requête bloquante.
+Polices auto-hébergées en `woff2`, sous-ensemble latin, dans `app/assets/fonts/`. Aucun
+appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis 2020,
+un lien externe n'apporte donc aucun gain et ajoute une résolution DNS, une connexion et une
+requête bloquante devant le premier rendu. Un test end-to-end vérifie qu'aucune requête ne
+part vers `fonts.googleapis.com` ni `fonts.gstatic.com`.
+
+| Fichier | Famille | Poids |
+| --- | --- | --- |
+| `archivo-variable-latin.woff2` | Archivo, graisses 400 à 700 | 35 Ko |
+| `archivo-narrow-variable-latin.woff2` | Archivo Narrow, graisses 400 à 700 | 19 Ko |
+
+Une seule ressource par famille : ce sont des fontes variables, et l'API de Google Fonts
+servait le même fichier pour chaque graisse demandée. Déclarer une plage de graisses évite
+d'embarquer trois copies des mêmes octets.
+
+`font-display: swap` : le texte s'affiche immédiatement dans la police de substitution, puis
+bascule. Un écran vide pendant le chargement est un échec d'affichage, pas un raffinement
+typographique.
+
+Licence SIL Open Font License 1.1, Omnibus-Type.
 
 ## Espacements et cibles
 
