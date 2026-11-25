@@ -84,6 +84,7 @@ pnpm typecheck      # types
 pnpm test           # tests unitaires
 pnpm generate       # rendu statique
 pnpm layer-order    # ordre des couches dans le CSS construit
+pnpm component-levels # niveaux d'Atomic Design dans les gabarits
 pnpm catalogue-route # route du catalogue écrite en fichier statique
 pnpm test:e2e       # parcours utilisateur et audits axe-core
 ```

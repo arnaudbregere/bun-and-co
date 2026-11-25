@@ -26,7 +26,8 @@
     "test:e2e": "playwright test",
     "contrasts": "node scripts/verify-contrasts.mjs",
     "layer-order": "node scripts/verify-layer-order.mjs",
-    "catalogue-route": "node scripts/verify-catalogue-route.mjs"
+    "catalogue-route": "node scripts/verify-catalogue-route.mjs",
+    "component-levels": "node scripts/verify-component-levels.mjs"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
