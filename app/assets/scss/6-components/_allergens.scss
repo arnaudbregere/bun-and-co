@@ -1,0 +1,45 @@
+// =============================================================================
+// Components — liste d'allergènes
+// =============================================================================
+// Corps de 18 px, taille des mentions du design system. La liste se consulte,
+// elle ne s'annonce pas : elle ne doit pas disputer la place au nom du produit
+// ni à son prix.
+
+@layer components {
+  .c-allergens {
+    display: flex;
+    flex-wrap: wrap;
+    // L'écart tient seul la séparation entre deux allergènes. Une marque
+    // intercalée par un pseudo-élément serait du contenu, donc lue par un
+    // lecteur d'écran au milieu de la liste.
+    gap: var(--space-2) var(--space-5);
+    margin: 0;
+    padding: 0;
+    // Les puces disparaissent, pas la liste : le rôle reste celui d'une liste
+    // pour un lecteur d'écran, qui en annonce le nombre d'éléments.
+    list-style: none;
+    font-size: var(--font-size-note);
+    line-height: var(--line-height-body);
+  }
+
+  .c-allergens__item {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    align-items: baseline;
+  }
+
+  // La provenance est une précision, pas un second allergène : elle reste en
+  // bas-de-casse, dans la teinte secondaire, et porte le mot « supplément »
+  // plutôt qu'une pastille de couleur.
+  .c-allergens__source {
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+
+  .c-allergens__none {
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-note);
+  }
+}
