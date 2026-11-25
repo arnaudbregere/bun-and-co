@@ -58,7 +58,20 @@ fait échouer `pnpm lint`, donc le pipeline, donc la fusion.
 | `app/domain/errors.ts` | métier | erreurs du domaine |
 | `app/services/catalogue-data.ts` | services | les vingt-sept références de la carte |
 | `app/services/static-catalogue.ts` | services | catalogue servi depuis les données livrées |
+| `app/services/http-catalogue.ts` | services | catalogue servi par la route préconstruite |
 | `app/services/session-draft-store.ts` | services | commande en cours, dans le stockage de session |
+| `server/api/catalogue.json.get.ts` | services | route du catalogue, exécutée au build |
+
+Le catalogue n'est pas lu depuis les données livrées par l'interface : il est servi par
+`server/api/catalogue.json.get.ts`, route Nitro déclarée dans `nitro.prerender.routes`.
+Elle est donc exécutée une fois au build et sa réponse écrite dans
+`.output/public/api/catalogue.json`. Du vrai code d'API, aucun processus à l'exécution.
+
+Le client la consomme par `createHttpCatalogueGateway`, jamais par un `fetch` écrit dans un
+composant. La passerelle est le seul endroit où le chemin est écrit et où
+`useRuntimeConfig().app.baseURL` est préfixé : sur GitHub Pages le site est servi sous
+`/bun-and-co/`, et une URL absolue partant de la racine renverrait un 404. Le calcul
+tarifaire, lui, reste local et synchrone : aucun prix n'est demandé au réseau.
 
 Deux règles s'appliquent à tout le domaine.
 
@@ -111,6 +124,7 @@ pnpm typecheck      # types
 pnpm test           # tests unitaires
 pnpm generate       # rendu statique
 pnpm layer-order    # ordre des couches dans le CSS construit
+pnpm catalogue-route # route du catalogue écrite en fichier statique
 pnpm test:e2e       # parcours utilisateur et audits axe-core
 ```
 
