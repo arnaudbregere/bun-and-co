@@ -105,13 +105,28 @@ test('un bouton réduit à son icône garde un nom pour un lecteur d’écran', 
   await expect(bouton.locator('svg')).toHaveAttribute('aria-hidden', 'true')
 })
 
+test('une étiquette d’état porte son libellé et ne s’active pas', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const indisponible = page.locator('.c-status--unavailable').first()
+
+  await expect(indisponible).toHaveText('Indisponible')
+  // Aucun rôle interactif : l'étiquette qualifie ce qui l'entoure.
+  await expect(indisponible).not.toHaveAttribute('tabindex', /.*/)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Atelier des composants')
   // Les sections sont rangées par ordre alphabétique, pour qu'un composant
   // ajouté trouve sa place sans discussion.
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Bouton', 'Icône', 'Montant'])
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText([
+    'Bouton',
+    "Étiquette d'état",
+    'Icône',
+    'Montant',
+  ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
   const niveaux = await page
     .locator('h1, h2, h3')
