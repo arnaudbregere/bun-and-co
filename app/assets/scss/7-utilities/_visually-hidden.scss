@@ -24,17 +24,4 @@
     white-space: nowrap;
     border: 0;
   }
-
-  // Le même contenu, rendu visible à la prise de focus : un lien d'évitement
-  // doit apparaître quand il reçoit le focus, faute de quoi il n'aide que les
-  // lecteurs d'écran.
-  .u-visually-hidden--focusable:focus-visible {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    clip-path: none;
-    white-space: normal;
-  }
 }
