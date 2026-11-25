@@ -71,8 +71,10 @@ test('activer un bouton disponible est annoncé par une région polie', async ({
 
   await page.getByRole('button', { name: 'Ajouter au panier' }).click()
 
-  const region = page.locator('[aria-live="polite"]')
-  await expect(region).toHaveText('Bouton activé : Ajouter au panier.')
+  // La page compte deux régions polies : la note visible de ce spécimen, et la
+  // région d'annonce invisible du spécimen suivant.
+  const note = page.locator('.c-specimen__note[aria-live="polite"]')
+  await expect(note).toHaveText('Bouton activé : Ajouter au panier.')
 })
 
 test('un montant est rendu en euros et porte sa valeur machine', async ({ page }) => {
@@ -175,6 +177,27 @@ test('un supplément affiche son prix à côté de son libellé', async ({ page 
   await expect(bacon).toContainText(/1,20\s€/)
 })
 
+test('une alerte est portée par une région assertive, invisible à l’écran', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const region = page.locator('[role="alert"]')
+  await expect(region).toHaveText('')
+
+  await page.getByRole('button', { name: 'Dépasser la limite' }).click()
+
+  await expect(region).toHaveText('Quantité maximale atteinte')
+  await expect(region).toHaveAttribute('aria-live', 'assertive')
+
+  // Masquée à l'écran, mais jamais par `display: none`, qui la retirerait aussi
+  // aux lecteurs d'écran. Playwright tient d'ailleurs la région pour visible,
+  // et c'est exact : elle occupe un pixel découpé, elle n'est pas retirée du
+  // rendu. La vérification porte donc sur ses dimensions réelles.
+  const cadre = await region.boundingBox()
+  expect(cadre?.width).toBeLessThanOrEqual(1)
+  expect(cadre?.height).toBeLessThanOrEqual(1)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -187,6 +210,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Icône',
     'Montant',
     'Option à cocher',
+    "Région d'annonce",
     'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.

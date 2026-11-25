@@ -35,6 +35,19 @@ const sansCornichons = ref(true)
 const avecBacon = ref(true)
 const avecCheddar = ref(false)
 
+const annonceCourtoise = ref('')
+const alerte = ref('')
+
+const annoncerAuLecteur = (texte: string) => {
+  annonceCourtoise.value = ''
+  annonceCourtoise.value = texte
+}
+
+const alerterLeLecteur = (texte: string) => {
+  alerte.value = ''
+  alerte.value = texte
+}
+
 const dernierClic = ref<string | null>(null)
 
 const annoncer = (libelle: string) => {
@@ -229,6 +242,48 @@ const annoncer = (libelle: string) => {
           Le prix arrive par un emplacement, et non par une propriété : seul l'atome Prix convertit
           des centimes en euros, et un atome ne consomme pas un autre atome. C'est la page qui place
           l'un dans l'autre.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-annonce">
+      <h2 id="titre-annonce">Région d'annonce</h2>
+
+      <h3>Annonce courtoise</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton
+            variant="secondary"
+            @activate="annoncerAuLecteur('Le Classique ajouté au panier')"
+          >
+            Ajouter un produit
+          </BaseButton>
+          <BaseButton variant="secondary" @activate="annoncerAuLecteur('Panier vidé')">
+            Annoncer un panier vidé
+          </BaseButton>
+        </div>
+        <LiveRegion :message="annonceCourtoise" />
+        <p class="c-specimen__note">
+          La région est invisible : elle existe dans le balisage avant d'avoir un message, faute de
+          quoi un lecteur d'écran n'annoncerait pas le premier. Dernier message émis :
+          <strong>{{ annonceCourtoise === '' ? 'aucun' : annonceCourtoise }}</strong>.
+        </p>
+      </div>
+
+      <h3>Alerte</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton
+            variant="secondary"
+            @activate="alerterLeLecteur('Quantité maximale atteinte')"
+          >
+            Dépasser la limite
+          </BaseButton>
+        </div>
+        <LiveRegion :message="alerte" mode="alert" />
+        <p class="c-specimen__note">
+          Un même message envoyé deux fois de suite est relu : la région est vidée puis réécrite au
+          cycle suivant. « Quantité maximale atteinte » doit se répéter si le client insiste.
+          Dernière alerte : <strong>{{ alerte === '' ? 'aucune' : alerte }}</strong>.
         </p>
       </div>
     </section>
