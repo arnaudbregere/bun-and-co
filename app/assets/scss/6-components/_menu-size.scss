@@ -1,0 +1,102 @@
+// =============================================================================
+// Components — sélecteur de taille de menu
+// =============================================================================
+// Le choix de la taille est une décision structurante : il fixe le prix du
+// menu et le format de deux produits. Ses cibles sont donc celles des actions
+// principales, 56 px, et chaque option occupe toute la largeur disponible.
+
+@layer components {
+  .c-menu-size {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .c-menu-size__legend {
+    padding: 0;
+    padding-block-end: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-menu-size__option {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-height: var(--target-primary);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    cursor: pointer;
+  }
+
+  // Le bouton radio natif est agrandi, jamais remplacé : son dessin, son état
+  // coché, les flèches et le rendu en contraste élevé viennent du système.
+  .c-menu-size__input {
+    flex: none;
+    width: var(--space-5);
+    height: var(--space-5);
+    accent-color: var(--color-accent);
+  }
+
+  .c-menu-size__size {
+    flex: none;
+    min-width: 2.5rem;
+    font-family: var(--font-display);
+    font-size: var(--font-size-section);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    text-align: center;
+  }
+
+  .c-menu-size__detail {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: baseline;
+  }
+
+  .c-menu-size__detail .c-price {
+    font-size: var(--font-size-subheading);
+  }
+
+  // Ce que la taille comprend reste en bas-de-casse et en corps de mention :
+  // c'est une précision, le choix se fait sur la lettre et sur le prix.
+  .c-menu-size__includes {
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-note);
+  }
+
+  .c-menu-size__dessert {
+    display: flex;
+    flex: none;
+    gap: var(--space-2);
+    align-items: center;
+    font-size: var(--font-size-note);
+  }
+
+  // La taille retenue se voit aussi par son cadre et son fond : le bouton radio
+  // seul est un détail de 24 px au bout d'une ligne de 56, et le critère WCAG
+  // 1.4.1 interdit de laisser la couleur porter seule l'information.
+  .c-menu-size__option:has(.c-menu-size__input:checked) {
+    border-color: var(--color-accent);
+    border-width: var(--border-bold);
+    background-color: var(--color-accent-muted);
+  }
+
+  // La prise de focus est portée par le bouton radio ; l'option entière la
+  // reprend, faute de quoi l'indicateur marquerait 24 px au milieu d'une ligne.
+  .c-menu-size__option:has(.c-menu-size__input:focus-visible) {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+}

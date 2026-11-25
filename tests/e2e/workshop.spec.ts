@@ -377,6 +377,38 @@ test('un groupe d’options est annoncé par sa légende, et son total vient du 
   await expect(section.getByRole('group')).toHaveCount(2)
 })
 
+test('les tailles de menu se parcourent aux flèches, un seul arrêt de tabulation', async ({
+  page,
+}) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const groupe = page.getByRole('group', { name: 'Taille du menu' })
+  const tailles = groupe.getByRole('radio')
+  await expect(tailles).toHaveCount(3)
+
+  // Le nom accessible porte la lettre, le forfait et ce que la taille comprend.
+  await expect(tailles.nth(2)).toHaveAccessibleName(/XL/)
+  await expect(tailles.nth(2)).toHaveAccessibleName(/grand format/)
+  await expect(tailles.nth(2)).toHaveAccessibleName(/Dessert/)
+
+  const retenue = groupe.getByRole('radio', { checked: true })
+  await expect(retenue).toHaveCount(1)
+  await retenue.focus()
+
+  // Comportement natif des boutons radio : la flèche change de taille, sans
+  // appui supplémentaire.
+  await page.keyboard.press('ArrowDown')
+  await expect(tailles.nth(2)).toBeChecked()
+
+  // Un seul arrêt de tabulation pour le groupe : Tab en sort, il ne passe pas
+  // d'une taille à l'autre.
+  await page.keyboard.press('Tab')
+  await expect(tailles.nth(0)).not.toBeFocused()
+  await expect(tailles.nth(1)).not.toBeFocused()
+  await expect(tailles.nth(2)).not.toBeFocused()
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -395,6 +427,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Option à cocher',
     "Région d'annonce",
     'Sélecteur de quantité',
+    'Sélecteur de taille de menu',
     'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
