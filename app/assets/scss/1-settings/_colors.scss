@@ -1,12 +1,18 @@
 // =============================================================================
 // Settings — couleurs
 // =============================================================================
-// Direction visuelle « artisanal chaleureux » : terracotta, crème, vert olive.
+// Direction visuelle « néo-diner » : crème, vermillon, teal profond.
 //
-// Les valeurs de contraste en commentaire sont mesurées par
-// `node scripts/verify-contrasts.mjs`, qui lit ce fichier et échoue si une
-// paire déclarée descend sous son seuil. Toute modification d'une valeur
-// ci-dessous doit être suivie d'une exécution de ce script.
+// Le fond crème est conservé : sur un écran regardé à 70 cm pendant plusieurs
+// minutes, un fond sombre fatigue moins mais écrase les photographies de
+// produit, et un blanc pur éblouit. Tout le reste change : l'accent passe du
+// terracotta sourd au vermillon, un teal profond apporte le second registre, et
+// les formes se redressent.
+//
+// Les valeurs de contraste sont mesurées par `node scripts/verify-contrasts.mjs`,
+// qui lit ce fichier et échoue si une paire déclarée descend sous son seuil.
+// Toute modification d'une valeur ci-dessous doit être suivie d'une exécution de
+// ce script.
 //
 // Seuils appliqués, issus de WCAG 2.2 niveau AA :
 //   - 4.5:1 pour le texte courant, notre corps à 20 px n'étant pas du « grand
@@ -19,32 +25,39 @@
     // --- Surfaces ---------------------------------------------------------------
     --color-background: #fbf6ee; // crème, fond général
     --color-surface: #ffffff; // cartes produit
-    --color-surface-muted: #f2e9db; // zones secondaires, en-têtes de catégorie
-    --color-border: #8c7a60; // bordures porteuses de sens, 3.85:1 sur le fond
-    --color-border-subtle: #e2d7c6; // séparateurs décoratifs, hors seuil
+    --color-surface-muted: #f0e8db; // zones secondaires, en-têtes de catégorie
+    --color-border: #7d6c55; // bordures porteuses de sens
+    --color-border-subtle: #ded2bf; // séparateurs décoratifs, hors seuil
 
     // --- Texte ------------------------------------------------------------------
-    --color-ink: #241d19; // texte principal
-    --color-ink-muted: #574c43; // texte secondaire, mentions
-    --color-ink-inverse: #fffdf9; // texte sur fonds accentués
+    --color-ink: #17130d; // texte principal
+    --color-ink-muted: #4e463a; // texte secondaire, mentions
+    --color-ink-inverse: #fff8f0; // texte sur fonds accentués
 
     // --- Accent principal -------------------------------------------------------
-    --color-accent: #9b3412; // terracotta, actions principales
-    --color-accent-pressed: #76270c; // état actif
-    --color-accent-muted: #f6e4da; // fond de mise en avant discrète
+    // Vermillon : l'appétence passe par le rouge-orangé, et la borne doit donner
+    // faim avant de donner des instructions.
+    --color-accent: #c21f0d; // actions principales
+    --color-accent-pressed: #96160a; // état actif
+    --color-accent-muted: #fbe3dd; // fond de mise en avant discrète
 
     // --- Accent secondaire ------------------------------------------------------
-    --color-olive: #3f5218; // confirmations, disponibilité
-    --color-olive-muted: #e8ecd9; // fond de confirmation
+    // Teal profond : il porte les bandes, les confirmations et tout ce qui ne
+    // doit pas disputer l'attention au vermillon.
+    --color-teal: #0c4f4c; // confirmations, disponibilité, bandes
+    --color-teal-muted: #d9e8e6; // fond de confirmation
 
     // --- États ------------------------------------------------------------------
-    --color-error: #a01b12; // erreurs et refus
-    --color-error-muted: #fbe4e2; // fond d'erreur
-    --color-disabled: #6b6159; // texte d'un élément indisponible
-    --color-disabled-surface: #ece5da; // fond d'un élément indisponible
+    // L'erreur est une baie sombre et non un rouge vif : elle doit se distinguer
+    // de l'accent, qui est déjà rouge. Le libellé reste le porteur du sens, la
+    // couleur ne fait que l'appuyer.
+    --color-error: #8c1030; // erreurs et refus
+    --color-error-muted: #fbe1e7; // fond d'erreur
+    --color-disabled: #645c50; // texte d'un élément indisponible
+    --color-disabled-surface: #eae2d5; // fond d'un élément indisponible
 
     // --- Focus ------------------------------------------------------------------
-    --color-focus: #1b1a18; // anneau de focus
-    --color-focus-halo: #fffdf9; // liseré intercalaire, lisible sur accent
+    --color-focus: #17130d; // anneau de focus
+    --color-focus-halo: #fff8f0; // liseré intercalaire, lisible sur accent
   }
 }

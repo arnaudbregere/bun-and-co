@@ -7,15 +7,22 @@ code en est la source de vérité.
 
 ## Direction
 
-Artisanal chaleureux. L'enseigne vend des produits préparés sur place, pas de
-l'industriel : la palette vient de la terre cuite, de la pâte et du végétal, pas du rouge
-et du jaune saturés des grandes chaînes.
+Néo-diner. L'enseigne prépare sur place et s'adresse à un public de 15 à 35 ans : l'écran
+doit donner faim avant de donner des instructions. La référence est l'enseigne peinte d'un
+comptoir, relue en moderne — pas la pastille arrondie d'une application mobile, pas le
+rouge et jaune saturés des grandes chaînes.
 
-Terracotta pour l'action, crème pour le fond, vert olive pour la confirmation. Titres à
-empattements pour la chaleur, interface sans empattement pour la lisibilité.
+Vermillon pour l'action, crème pour le fond, teal profond pour tout ce qui ne doit pas
+disputer l'attention au vermillon. Grotesque condensée pour l'affichage, grotesque normale
+pour l'interface. Angles presque droits, ombre franche sans flou, étiquettes posées comme
+des autocollants.
 
-L'interface reste sobre : sur une borne, l'utilisateur est debout, pressé, et parfois
-observé par la file d'attente. La densité visuelle se paie en temps de commande.
+Le fond reste crème. Sur un écran regardé à 70 cm pendant plusieurs minutes, un fond sombre
+fatigue moins mais écrase les photographies de produit, et un blanc pur éblouit.
+
+L'interface reste sobre pour autant : sur une borne, l'utilisateur est debout, pressé, et
+parfois observé par la file d'attente. La densité visuelle se paie en temps de commande. La
+photographie porte l'appétence ; l'interface, elle, s'efface.
 
 ## Contrainte d'usage, qui précède l'esthétique
 
@@ -45,27 +52,31 @@ de tokens, calcule les rapports de contraste des combinaisons réellement utilis
 | --- | --- | --- |
 | `--color-background` | `#fbf6ee` | fond général |
 | `--color-surface` | `#ffffff` | cartes produit |
-| `--color-surface-muted` | `#f2e9db` | zones secondaires, en-têtes de catégorie |
-| `--color-border` | `#8c7a60` | bordures porteuses de sens |
-| `--color-border-subtle` | `#e2d7c6` | séparateurs purement décoratifs |
+| `--color-surface-muted` | `#f0e8db` | zones secondaires, en-têtes de catégorie |
+| `--color-border` | `#7d6c55` | bordures porteuses de sens, 4,71:1 sur le fond |
+| `--color-border-subtle` | `#ded2bf` | séparateurs purement décoratifs |
 
 ### Texte
 
 | Token | Valeur | Contraste sur le fond |
 | --- | --- | --- |
-| `--color-ink` | `#241d19` | 15,43:1 |
-| `--color-ink-muted` | `#574c43` | 7,75:1 |
-| `--color-ink-inverse` | `#fffdf9` | sur accent : 7,14:1 |
+| `--color-ink` | `#17130d` | 17,19:1 |
+| `--color-ink-muted` | `#4e463a` | 8,63:1 |
+| `--color-ink-inverse` | `#fff8f0` | sur accent : 5,70:1 |
 
 ### Accents et états
 
 | Token | Valeur | Usage | Contraste |
 | --- | --- | --- | --- |
-| `--color-accent` | `#9b3412` | actions principales | 7,14:1 avec le texte inversé |
-| `--color-accent-pressed` | `#76270c` | état actif | 10,01:1 |
-| `--color-olive` | `#3f5218` | confirmation, disponibilité | 8,50:1 |
-| `--color-error` | `#a01b12` | erreurs et refus | 7,77:1 |
-| `--color-disabled` | `#6b6159` | produit indisponible | 4,82:1 sur son fond |
+| `--color-accent` | `#c21f0d` | actions principales | 5,70:1 avec le texte inversé |
+| `--color-accent-pressed` | `#96160a` | état actif | 8,25:1 |
+| `--color-teal` | `#0c4f4c` | confirmation, disponibilité, bandes | 8,91:1 |
+| `--color-error` | `#8c1030` | erreurs et refus | 8,93:1 |
+| `--color-disabled` | `#645c50` | produit indisponible | 5,12:1 sur son fond |
+
+L'erreur est une baie sombre et non un rouge vif. L'accent étant déjà rouge, deux rouges
+voisins se confondraient — et le critère WCAG 1.4.1 interdit de toute façon de porter le
+sens par la couleur seule : le libellé reste le porteur, la couleur ne fait que l'appuyer.
 
 ### Focus
 
@@ -74,8 +85,9 @@ liseré clair `--color-focus-halo`.
 
 L'exigence applicable au niveau AA est le critère WCAG 1.4.11, qui demande 3:1 entre
 l'indicateur de focus et les couleurs adjacentes. Elle est satisfaite dès qu'un des deux
-tons atteint ce seuil, et non les deux. Sur un bouton terracotta, l'anneau sombre n'y
-parvient pas, à 2,40:1 ; c'est le liseré clair qui porte le contraste, à 7,14:1.
+tons atteint ce seuil, et non les deux. Sur le vermillon, l'anneau sombre atteint 3,08:1 et
+le liseré clair 5,70:1 : les deux passent, là où le terracotta précédent obligeait à ne
+compter que sur le liseré.
 
 Le critère WCAG 2.4.13, qui ajoute des exigences de surface et d'épaisseur de
 l'indicateur, relève du niveau AAA. Le mécanisme à deux tons y répond également, mais ce
@@ -97,12 +109,20 @@ n'est pas lui qui fixe notre obligation.
 Interligne de 1,5 sur le texte courant, minimum exigé par le critère WCAG 1.4.12. Longueur
 de ligne cible de 60 caractères, bornée entre 45 et 75.
 
-Archivo pour l'interface, Petrona pour les titres.
+Archivo pour l'interface, Archivo Narrow pour l'affichage.
 
 Inter et Fraunces étaient le premier choix. Le détecteur de design les a signalées comme
 omniprésentes, au point de ne plus porter d'identité : elles reviennent sur une grande part
 des interfaces récentes. Archivo est une grotesque dessinée pour la lisibilité en petit
-corps, Petrona une antique à contraste doux, cohérente avec le positionnement artisanal.
+corps.
+
+Petrona, l'antique du premier jeu, a été retirée. Un titre à empattements posait une
+enseigne sage, et la direction néo-diner demande l'inverse. La condensée tient de surcroît
+le nom d'un produit sur une seule ligne dans une carte étroite, ce qui vaut mieux qu'un nom
+coupé en deux.
+
+Les libellés capitalisés — boutons, étiquettes, catégories — portent `--letter-spacing-display`
+à `0.04em` : des capitales collées se lisent moins vite que des bas-de-casse.
 
 Polices auto-hébergées en `woff2`, sous-ensemble latin, chiffres et ponctuation. Aucun
 appel à un hébergeur tiers : le cache des navigateurs est partitionné par site depuis
@@ -120,6 +140,19 @@ les espacements internes et les écarts de grille.
 | `--target-gap` | 12 px | évite d'activer la cible voisine |
 
 Le critère WCAG 2.5.8, de niveau AA, n'exige que 24 px. Nos valeurs sont volontairement au-delà.
+
+## Formes
+
+| Token | Valeur | Raison |
+| --- | --- | --- |
+| `--radius-small` | 2 px | étiquettes et petits blocs |
+| `--radius-medium` | 4 px | boutons, cartes |
+| `--radius-large` | 8 px | panneaux et dialogues |
+| `--shadow-card` | `0 3px 0 rgb(23 19 13 / 12%)` | ombre franche, sans flou |
+
+Les angles sont presque droits sans être vifs : un angle parfaitement à 90 degrés se lit
+comme un défaut de rendu sur un écran tactile. L'ombre est un décalage net, sans flou — une
+ombre diffuse appartient au registre de l'élévation matérielle, étranger à cette direction.
 
 ## Cascade
 
@@ -165,13 +198,13 @@ Le détecteur signale la règle `cream-palette` sur notre fond crème : un blanc
 est devenu la surface par défaut des interfaces générées, choisie par réflexe.
 
 La règle est désactivée dans `.impeccable/config.json`, et voici pourquoi. Le fond crème
-n'est pas ici un réflexe mais une décision de direction, prise avec le terracotta et le vert
-olive, et chaque paire de couleurs est mesurée. La règle n'accepte pas d'exception par
-valeur, seulement par fichier ou par règle entière, d'où la désactivation complète.
+n'est pas ici un réflexe mais une décision de direction, prise avec le vermillon et le teal,
+et chaque paire de couleurs est mesurée. La règle n'accepte pas d'exception par valeur,
+seulement par fichier ou par règle entière, d'où la désactivation complète.
 
-L'alternative, si cet écart devenait gênant, serait un fond neutre teinté de vert olive
-plutôt que de terre cuite. Elle sortirait de la direction retenue et imposerait de
-revérifier toutes les paires de contraste.
+L'alternative, si cet écart devenait gênant, serait le fond charbon de la direction
+concurrente, écartée parce qu'elle fatigue moins l'œil mais écrase les photographies de
+produit, qui portent ici l'essentiel de l'appétence.
 
 ## Vérification
 

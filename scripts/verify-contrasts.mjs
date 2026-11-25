@@ -30,21 +30,21 @@ const PAIRS = [
   ['ink-muted', 'background', 4.5, 'texte secondaire sur le fond général'],
   ['ink-muted', 'surface', 4.5, 'texte secondaire sur une carte produit'],
   ['ink', 'accent-muted', 4.5, 'texte sur un fond de mise en avant'],
-  ['ink', 'olive-muted', 4.5, 'texte sur un fond de confirmation'],
+  ['ink', 'teal-muted', 4.5, 'texte sur un fond de confirmation'],
   ['ink', 'error-muted', 4.5, 'texte sur un fond d’erreur'],
   ['disabled', 'disabled-surface', 4.5, 'libellé d’un produit indisponible'],
 
   // Texte sur les fonds accentués — seuil 4.5:1
   ['ink-inverse', 'accent', 4.5, 'libellé d’un bouton principal'],
   ['ink-inverse', 'accent-pressed', 4.5, 'libellé d’un bouton principal appuyé'],
-  ['ink-inverse', 'olive', 4.5, 'libellé sur fond de confirmation appuyé'],
+  ['ink-inverse', 'teal', 4.5, 'libellé sur fond de confirmation appuyé'],
   ['ink-inverse', 'error', 4.5, 'libellé sur fond d’erreur appuyé'],
 
   // Texte accentué sur surface claire — seuil 4.5:1
   ['accent', 'background', 4.5, 'prix mis en avant sur le fond général'],
   ['accent', 'surface', 4.5, 'prix mis en avant sur une carte produit'],
   ['error', 'background', 4.5, 'message d’erreur sur le fond général'],
-  ['olive', 'background', 4.5, 'mention de disponibilité sur le fond général'],
+  ['teal', 'background', 4.5, 'mention de disponibilité sur le fond général'],
 
   // Composants d'interface et bordures porteuses de sens — seuil 3:1
   ['border', 'background', 3, 'bordure de champ sur le fond général'],

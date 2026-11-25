@@ -80,7 +80,7 @@ const annoncer = (libelle: string) => {
         <p class="c-specimen__note">
           À observer à la tabulation, et non à la souris : l'indicateur suit
           <code>:focus-visible</code>. Anneau sombre et liseré clair, pour tenir le seuil de 3:1 du
-          critère WCAG 1.4.11 sur le terracotta comme sur le fond crème.
+          critère WCAG 1.4.11 sur le vermillon comme sur le fond crème.
         </p>
       </div>
 
