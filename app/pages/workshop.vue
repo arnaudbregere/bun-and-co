@@ -89,6 +89,39 @@ const annoncer = (libelle: string) => {
         {{ dernierClic === null ? 'Aucun bouton activé.' : `Bouton activé : ${dernierClic}.` }}
       </p>
     </section>
+    <section class="o-stack" aria-labelledby="titre-etat">
+      <h2 id="titre-etat">Étiquette d'état</h2>
+
+      <h3>Les trois états</h3>
+      <div class="c-specimen">
+        <p class="c-button-group">
+          <StatusBadge state="unavailable" />
+          <StatusBadge state="included" />
+          <StatusBadge state="surcharge" />
+        </p>
+        <p class="c-specimen__note">
+          Chaque état porte son libellé. Le critère WCAG 1.4.1 interdit de porter une information
+          par la couleur seule, et le mode contraste élevé du système écrase les couleurs d'auteur :
+          une pastille sans texte ne dirait plus rien.
+        </p>
+      </div>
+
+      <h3>En contexte</h3>
+      <div class="c-specimen">
+        <p>
+          Salade verte — <PriceTag :amount-cents="cents(290)" /> <StatusBadge state="included" />
+        </p>
+        <p>Potatoes — <PriceTag :amount-cents="cents(330)" /> <StatusBadge state="surcharge" /></p>
+        <p>
+          Le Montagnard — <PriceTag :amount-cents="cents(790)" />
+          <StatusBadge state="unavailable" />
+        </p>
+        <p class="c-specimen__note">
+          L'étiquette n'est pas interactive et ne prend pas le focus : elle qualifie ce qui
+          l'entoure, elle ne s'active pas.
+        </p>
+      </div>
+    </section>
     <section class="o-stack" aria-labelledby="titre-icone">
       <h2 id="titre-icone">Icône</h2>
 
