@@ -37,6 +37,16 @@
     text-wrap: balance;
   }
 
+  // Titre d'écran et titre de catégorie en capitales : ce sont les deux repères
+  // que le client cherche de loin, et la condensée capitalisée se repère plus
+  // vite qu'un bas-de-casse de même corps. Les titres de rang inférieur restent
+  // en bas-de-casse, qui se lit plus vite en phrase.
+  h1,
+  h2 {
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
   h1 {
     font-size: var(--font-size-screen);
   }

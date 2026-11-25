@@ -18,11 +18,13 @@
     padding-inline: var(--space-5);
     border: 2px solid transparent;
     border-radius: var(--radius-medium);
-    font-family: var(--font-ui);
+    font-family: var(--font-display);
     font-size: var(--font-size-body);
-    font-weight: 600;
+    font-weight: var(--font-weight-bold);
     line-height: 1.2;
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
     cursor: pointer;
 
     // Pas de transition sur la couleur : l'appui doit se voir à l'instant du
@@ -31,38 +33,55 @@
     transition: none;
   }
 
+  // La raison du refus n'est pas un libellé d'action : elle reste en
+  // bas-de-casse et dans la police d'interface, pour se lire comme une phrase.
   .c-button__reason {
+    font-family: var(--font-ui);
     font-size: var(--font-size-note);
-    font-weight: 400;
+    font-weight: var(--font-weight-regular);
+    text-transform: none;
+    letter-spacing: normal;
   }
 
   // --- Variantes ---------------------------------------------------------------
 
+  // L'action principale est posée sur une ombre franche, et s'y enfonce à
+  // l'appui : le retour est géométrique autant que coloré, donc visible même
+  // pour qui distingue mal le vermillon du vermillon appuyé.
   .c-button--primary {
     background-color: var(--color-accent);
+    box-shadow: var(--shadow-card);
     color: var(--color-ink-inverse);
   }
 
   .c-button--primary:active {
+    transform: translateY(3px);
     background-color: var(--color-accent-pressed);
+    box-shadow: none;
   }
 
   .c-button--secondary {
     min-height: var(--target-secondary);
-    border-color: var(--color-accent);
+    border-color: var(--color-teal);
     background-color: transparent;
-    color: var(--color-accent);
+    color: var(--color-teal);
   }
 
   .c-button--secondary:active {
-    background-color: var(--color-accent-muted);
+    background-color: var(--color-teal-muted);
   }
 
+  // L'action discrète reste en bas-de-casse : capitaliser un lien de consultation
+  // lui donnerait le poids d'une action principale.
   .c-button--quiet {
     min-height: var(--target-secondary);
     background-color: transparent;
     color: var(--color-accent);
+    font-family: var(--font-ui);
+    text-transform: none;
+    letter-spacing: normal;
     text-decoration: underline;
+    text-decoration-thickness: 0.125em;
     text-underline-offset: 0.25em;
   }
 
@@ -75,8 +94,10 @@
   // atteignable au clavier, donc annonçable, donc explicable.
 
   .c-button[aria-disabled='true'] {
+    transform: none;
     border-color: transparent;
     background-color: var(--color-disabled-surface);
+    box-shadow: none;
     color: var(--color-disabled);
     text-decoration: none;
     cursor: not-allowed;

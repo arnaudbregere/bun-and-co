@@ -1,0 +1,27 @@
+// =============================================================================
+// Components — bande
+// =============================================================================
+// Motif rayé de l'enseigne, posé sous un titre d'écran ou en tête de section.
+// Purement décoratif : il ne porte aucune information, donc aucun texte, et
+// l'élément qui le rend est masqué aux technologies d'assistance.
+
+@layer components {
+  .c-band {
+    height: var(--space-3);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-teal) 0,
+      var(--color-teal) 0.5rem,
+      transparent 0.5rem,
+      transparent 1rem
+    );
+  }
+
+  // Le mode contraste élevé remplace les couleurs d'auteur : un dégradé y
+  // disparaît. Rien n'est perdu, la bande ne portant aucun sens.
+  @media (forced-colors: active) {
+    .c-band {
+      display: none;
+    }
+  }
+}
