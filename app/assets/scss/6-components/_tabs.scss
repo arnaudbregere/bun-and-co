@@ -1,0 +1,69 @@
+// =============================================================================
+// Components — onglets de catégories
+// =============================================================================
+// Les onglets sont la navigation principale de l'écran de carte : leur cible
+// est celle des actions principales, 56 px, et non celle des actions
+// secondaires.
+
+@layer components {
+  .c-tabs__list {
+    display: flex;
+    // Les onglets passent à la ligne plutôt que de défiler. Une barre qui
+    // défile cache ses dernières entrées, et le critère d'acceptation refuse un
+    // défilement horizontal sans indication ; l'indication la plus sûre est de
+    // n'avoir rien à faire défiler.
+    flex-wrap: wrap;
+    gap: var(--target-gap);
+  }
+
+  .c-tabs__tab {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target-primary);
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4);
+    // Le trait du bas est posé dès l'état par défaut, en transparent : l'onglet
+    // sélectionné ne doit pas être plus haut que ses voisins, sans quoi la
+    // ligne de base de la barre saute à chaque changement.
+    border-bottom: var(--space-1) solid transparent;
+    background-color: transparent;
+    color: var(--color-ink-muted);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+    cursor: pointer;
+    transition: none;
+  }
+
+  // L'onglet sélectionné se distingue par trois signes : un trait épais sous le
+  // libellé, une graisse plus forte et une couleur. Le critère WCAG 1.4.1
+  // interdit de porter l'information par la couleur seule, et un client qui
+  // distingue mal le vermillon de l'encre lit encore le trait.
+  .c-tabs__tab[aria-selected='true'] {
+    border-bottom-color: var(--color-accent);
+    color: var(--color-accent);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .c-tabs__tab:active {
+    background-color: var(--color-accent-muted);
+  }
+
+  // Aucun trait ne ferme la barre : le trait épais de l'onglet courant marque
+  // déjà la ligne des onglets, et un second filet sur toute la largeur le
+  // répétait sans rien ajouter. Seul l'écart sépare la barre de son panneau.
+  .c-tabs__panel {
+    padding-block-start: var(--space-5);
+  }
+
+  // Le mode contraste élevé du système écrase les couleurs d'auteur, dont celle
+  // du trait. La bordure reprend `Highlight`, couleur système conservée dans ce
+  // mode, pour que l'onglet sélectionné reste visible.
+  @media (forced-colors: active) {
+    .c-tabs__tab[aria-selected='true'] {
+      border-bottom-color: Highlight;
+    }
+  }
+}

@@ -71,6 +71,24 @@ const indisponible = pourCarte('montagnard', false) ?? {
 
 const quantite = ref(2)
 
+// Les six entrées de l'exigence EF-006. « Menus » n'est pas une catégorie de
+// produit : un menu se compose à partir d'un burger. L'écart appartient à
+// l'écran de carte, pas à la barre d'onglets, qui reçoit sa liste.
+const categories = [
+  { id: 'burgers', label: 'Burgers' },
+  { id: 'menus', label: 'Menus' },
+  { id: 'chicken', label: 'Poulet' },
+  { id: 'sides', label: 'Accompagnements' },
+  { id: 'desserts', label: 'Desserts' },
+  { id: 'drinks', label: 'Boissons' },
+] as const
+
+const categorie = ref<string>('burgers')
+
+const produitsDeLaCategorie = computed(() =>
+  PRODUCTS.filter((produit) => produit.category === categorie.value),
+)
+
 const annonceCourtoise = ref('')
 const alerte = ref('')
 
@@ -288,6 +306,30 @@ const annoncer = (libelle: string) => {
           Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
           yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
           ajout.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-onglets">
+      <h2 id="titre-onglets">Onglets de catégories</h2>
+
+      <h3>Les six catégories de la carte</h3>
+      <div class="c-specimen">
+        <CategoryTabs v-model="categorie" :tabs="categories" label="Catégories de la carte">
+          <p v-if="categorie === 'menus'">
+            Un menu se compose à partir d'un burger : cette entrée mènera à l'écran de composition
+            du lot 6, et non à une liste de produits.
+          </p>
+          <ul v-else class="o-stack o-stack--tight">
+            <li v-for="produit of produitsDeLaCategorie" :key="produit.id">
+              {{ produit.name }} — <PriceTag :amount-cents="produit.priceCents" />
+            </li>
+          </ul>
+        </CategoryTabs>
+        <p class="c-specimen__note">
+          Tab entre dans la barre et n'y rencontre qu'un arrêt, les flèches changent d'onglet, Home
+          et End vont aux extrémités. La sélection suit le focus : la carte est déjà chargée, et
+          exiger un second appui ne ferait qu'allonger le parcours clavier. L'onglet courant se
+          distingue par son trait, sa graisse et sa couleur, jamais par la couleur seule.
         </p>
       </div>
     </section>
