@@ -20,13 +20,26 @@ test('l’atelier ne présente aucune violation détectée par axe', async ({ pa
 test('chaque bouton de l’atelier est atteignable au clavier', async ({ page }) => {
   await page.goto('/workshop')
 
-  const boutons = page.getByRole('button')
+  // La recherche est bornée au contenu de la page : en développement, Nuxt
+  // ajoute hors de `main` un bouton flottant qui n'appartient pas à l'atelier.
+  const boutons = page.locator('main').getByRole('button')
   const total = await boutons.count()
   expect(total).toBeGreaterThan(0)
 
+  const focusables = await page.locator('main button, main input, main a[href]').count()
+
   for (let rang = 0; rang < total; rang += 1) {
-    await page.keyboard.press('Tab')
-    await expect(boutons.nth(rang)).toBeFocused()
+    const bouton = boutons.nth(rang)
+
+    // Les boutons ne se suivent pas dans le parcours de tabulation : des cases
+    // à cocher s'intercalent. On avance jusqu'au bouton visé, sans supposer
+    // qu'il est le suivant.
+    for (let essai = 0; essai < focusables; essai += 1) {
+      if (await bouton.evaluate((element) => element === document.activeElement)) break
+      await page.keyboard.press('Tab')
+    }
+
+    await expect(bouton).toBeFocused()
   }
 })
 
@@ -140,6 +153,28 @@ test('les polices auto-hébergées sont chargées, sans requête à un tiers', a
   expect(requetes.filter((url) => /fonts\.(googleapis|gstatic)\.com/.test(url))).toEqual([])
 })
 
+test('une option se coche par son étiquette, pas seulement par sa case', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const option = page.getByRole('checkbox', { name: 'Sans oignons' })
+  await expect(option).not.toBeChecked()
+
+  // Le clic porte sur le texte, hors de la case : l'enveloppement par
+  // l'étiquette est ce qui rend toute la ligne cliquable.
+  await page.getByText('Sans oignons').click()
+
+  await expect(option).toBeChecked()
+})
+
+test('un supplément affiche son prix à côté de son libellé', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const bacon = page.getByText('Bacon', { exact: false }).first()
+
+  await expect(bacon).toContainText(/1,20\s€/)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -151,6 +186,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     "Étiquette d'état",
     'Icône',
     'Montant',
+    'Option à cocher',
     'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.

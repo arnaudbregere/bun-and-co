@@ -1,0 +1,52 @@
+// =============================================================================
+// Components — option à cocher
+// =============================================================================
+
+@layer components {
+  .c-option {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-height: var(--target-secondary);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    cursor: pointer;
+  }
+
+  // La case native est agrandie plutôt que remplacée : son dessin, son état
+  // coché et son rendu en contraste élevé viennent du système.
+  .c-option__input {
+    flex: none;
+    width: var(--space-5);
+    height: var(--space-5);
+    accent-color: var(--color-accent);
+  }
+
+  .c-option__label {
+    flex: 1;
+  }
+
+  .c-option__price {
+    flex: none;
+    color: var(--color-ink-muted);
+  }
+
+  // L'état coché se voit aussi par la bordure : la case cochée seule est un
+  // détail de 24 px au bout d'une ligne, et le critère WCAG 1.4.1 interdit de
+  // laisser la couleur porter seule l'information.
+  .c-option:has(.c-option__input:checked) {
+    border-color: var(--color-accent);
+    border-width: 2px;
+    background-color: var(--color-accent-muted);
+  }
+
+  // La prise de focus est portée par la case ; l'étiquette entière la reprend,
+  // faute de quoi l'indicateur marquerait 24 px au milieu d'une ligne de 56.
+  .c-option:has(.c-option__input:focus-visible) {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
