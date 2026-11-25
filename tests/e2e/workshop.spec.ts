@@ -73,6 +73,27 @@ test('un montant est rendu en euros et porte sa valeur machine', async ({ page }
   await expect(total).toHaveAttribute('value', '24.70')
 })
 
+test('un bouton reçoit un indicateur de focus visible', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const bouton = page.getByRole('button', { name: 'Ajouter au panier' })
+  // `:focus-visible` ne s'applique qu'à un focus clavier : un appui ne doit pas
+  // marquer le bouton.
+  await page.keyboard.press('Tab')
+  await expect(bouton).toBeFocused()
+
+  const indicateur = await bouton.evaluate((element) => {
+    const style = getComputedStyle(element)
+    return { outline: style.outlineWidth, ombre: style.boxShadow }
+  })
+
+  // L'indicateur vient de la couche `elements`, qui l'applique à tout élément
+  // recevant le focus. Aucun composant ne le redéclare : ce test est ce qui
+  // garantit qu'il arrive bien jusqu'au bouton.
+  expect(Number.parseFloat(indicateur.outline)).toBeGreaterThan(0)
+  expect(indicateur.ombre).not.toBe('none')
+})
+
 test('un bouton réduit à son icône garde un nom pour un lecteur d’écran', async ({ page }) => {
   await page.goto('/workshop')
 

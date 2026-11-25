@@ -82,17 +82,6 @@
     cursor: not-allowed;
   }
 
-  // --- Focus -------------------------------------------------------------------
-  // Deux anneaux : un sombre, et un liseré clair intercalaire. Sur le terracotta
-  // du bouton principal, l'anneau sombre seul n'atteint pas le seuil de 3:1
-  // exigé par le critère WCAG 1.4.11 ; le liseré le ramène au-dessus.
-
-  .c-button:focus-visible {
-    outline: var(--focus-ring-width) solid var(--color-focus);
-    outline-offset: var(--focus-ring-offset);
-    box-shadow: 0 0 0 var(--focus-ring-offset) var(--color-focus-halo);
-  }
-
   // --- Groupe de boutons -------------------------------------------------------
   // L'écart entre deux cibles voisines évite d'activer celle d'à côté, risque
   // réel sur un écran tactile de borne.
