@@ -14,7 +14,6 @@
     // n'avoir rien à faire défiler.
     flex-wrap: wrap;
     gap: var(--target-gap);
-    border-bottom: 2px solid var(--color-border-subtle);
   }
 
   .c-tabs__tab {
@@ -52,6 +51,9 @@
     background-color: var(--color-accent-muted);
   }
 
+  // Aucun trait ne ferme la barre : le trait épais de l'onglet courant marque
+  // déjà la ligne des onglets, et un second filet sur toute la largeur le
+  // répétait sans rien ajouter. Seul l'écart sépare la barre de son panneau.
   .c-tabs__panel {
     padding-block-start: var(--space-5);
   }
