@@ -33,10 +33,17 @@
     --reach-dead-zone-height: 33.333%;
 
     // --- Rayons et élévation ----------------------------------------------------
-    --radius-small: 0.25rem;
-    --radius-medium: 0.75rem;
-    --radius-large: 1.25rem;
-    --shadow-card: 0 1px 2px rgb(36 29 25 / 8%), 0 4px 12px rgb(36 29 25 / 6%);
+    // Angles presque droits : la direction néo-diner tient de l'enseigne
+    // peinte, pas de la pastille d'application mobile. Les rayons ne sont pas
+    // nuls, un angle parfaitement vif se lisant comme un défaut de rendu sur un
+    // écran tactile.
+    --radius-small: 0.125rem;
+    --radius-medium: 0.25rem;
+    --radius-large: 0.5rem;
+
+    // Ombre portée franche, sans flou : une ombre diffuse appartient au registre
+    // de l'élévation matérielle, étranger à cette direction.
+    --shadow-card: 0 3px 0 rgb(23 19 13 / 12%);
 
     // --- Focus ------------------------------------------------------------------
     --focus-ring-width: 3px;
