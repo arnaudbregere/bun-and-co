@@ -6,14 +6,30 @@
 // aucune paire ne sort du contrôle.
 
 @layer components {
+  // Étiquette posée comme un autocollant : bord net, légère inclinaison,
+  // capitales serrées. L'inclinaison reste à un degré — au-delà, un texte
+  // penché se lit plus lentement, et la borne vend de la vitesse.
   .c-status {
     display: inline-block;
     padding-block: var(--space-1);
     padding-inline: var(--space-3);
+    border: 2px solid currentcolor;
     border-radius: var(--radius-small);
+    font-family: var(--font-display);
     font-size: var(--font-size-note);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
     white-space: nowrap;
+    rotate: -1deg;
+  }
+
+  // Un écran qui annonce préférer moins de mouvement n'a pas pour autant demandé
+  // une interface penchée : l'inclinaison disparaît aussi dans ce mode.
+  @media (prefers-reduced-motion: reduce) {
+    .c-status {
+      rotate: none;
+    }
   }
 
   .c-status--unavailable {
@@ -36,7 +52,7 @@
   // contour dans la couleur courante la conserve.
   @media (forced-colors: active) {
     .c-status {
-      border: 1px solid currentcolor;
+      border-width: 1px;
     }
   }
 }

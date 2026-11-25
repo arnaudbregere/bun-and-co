@@ -29,6 +29,7 @@ const annoncer = (libelle: string) => {
   <main class="o-container o-stack">
     <header class="o-stack">
       <h1>Atelier des composants</h1>
+      <div class="c-band" aria-hidden="true" />
       <p>
         Chaque composant de la borne y figure dans ses états. Cette page ne fait pas partie du
         parcours client : elle sert à vérifier les composants au clavier, à l'œil et par les audits

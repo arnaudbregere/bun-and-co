@@ -9,7 +9,8 @@
   }
 
   .c-price--inline {
-    font-weight: var(--font-weight-medium);
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
   }
 
   // Total du panier : le seul montant que le client cherche des yeux sans le
