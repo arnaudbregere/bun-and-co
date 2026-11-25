@@ -1,4 +1,4 @@
-name: Intégration continue
+name: Continuous integration
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [main]
 
-# Annule une exécution encore en cours sur la même branche lorsqu'un nouveau
-# commit est poussé, pour ne pas garder deux vérifications concurrentes.
+# Cancels a run still in progress on the same branch when a new commit is
+# pushed, so two checks never compete.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -15,105 +15,153 @@ concurrency:
 permissions:
   contents: read
 
+# One job per check. A single job hid which check failed behind one red cross,
+# and stopped every later check at the first failure: a formatting slip meant
+# the tests never ran. Jobs run in parallel and report one by one.
 jobs:
-  verifications:
-    name: Vérifications
+  format:
+    name: Format
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer le dépôt
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm format:check
 
-      - name: Installer pnpm
-        uses: pnpm/action-setup@v4
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm lint
 
-      - name: Installer Node
-        uses: actions/setup-node@v4
+  types:
+    name: Types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm typecheck
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm test
+
+  # Reads the colour tokens and fails when a declared pair falls below its WCAG
+  # threshold. A plain Node script with no dependency, so this job skips the
+  # install entirely.
+  contrast-ratios:
+    name: Contrast ratios
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: pnpm
+      - run: node scripts/verify-contrasts.mjs
 
-      - name: Installer les dépendances
-        run: pnpm install --frozen-lockfile
+  # Components are auto-imported: an atom can use a molecule in its template
+  # with no import line, so ESLint never sees the composition. This check reads
+  # the templates. No dependency either.
+  component-levels:
+    name: Component levels
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - run: node scripts/verify-component-levels.mjs
 
-      # Vérifie que chaque combinaison de couleurs utilisée par l'interface
-      # atteint son seuil de contraste WCAG. Placée en premier car elle ne
-      # dépend d'aucune construction.
-      - name: Vérifier les contrastes de la palette
-        run: pnpm contrasts
+  # The three checks below read the built site, not the sources. The build runs
+  # once and they share its output through an artifact.
+  build:
+    name: Static build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: pnpm generate
+      - name: Upload the built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-site
+          path: .output/public
+          retention-days: 1
 
-      - name: Vérifier le formatage
-        run: pnpm format:check
+  # The cascade order is only observable once the CSS is minified: the minifier
+  # splits the @layer declaration and moves each layer before its first use.
+  style-layer-order:
+    name: Style layer order
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: .output/public
+      - run: node scripts/verify-layer-order.mjs
 
-      - name: Analyser le code
-        run: pnpm lint
+  # The catalogue route is only prerendered when it is declared in
+  # nitro.prerender.routes. Forgetting it would only show in production, where
+  # no Node process answers.
+  catalogue-route:
+    name: Catalogue route
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: .output/public
+      - run: node scripts/verify-catalogue-route.mjs
 
-      - name: Vérifier les types
-        run: pnpm typecheck
-
-      # Les composants sont auto-importés : un atome peut employer une molécule
-      # dans son gabarit sans aucune ligne d'import, donc sans qu'ESLint le
-      # voie. Cette vérification porte sur les gabarits.
-      - name: Vérifier les niveaux d'Atomic Design
-        run: pnpm component-levels
-
-      - name: Exécuter les tests unitaires
-        run: pnpm test
-
-      - name: Construire le rendu statique
-        run: pnpm generate
-
-      # Les deux vérifications suivantes portent sur le résultat construit, et
-      # non sur les sources : le détecteur de design analyse une page rendue, et
-      # l'ordre des couches n'est observable qu'après minification du CSS.
-      - name: Vérifier l'ordre des couches de styles
-        run: pnpm layer-order
-
-      # La route du catalogue n'est préconstruite que si elle est déclarée dans
-      # nitro.prerender.routes. L'oubli ne se verrait qu'en production, où aucun
-      # processus Node ne répond.
-      - name: Vérifier la route préconstruite du catalogue
-        run: pnpm catalogue-route
-
-      - name: Détecter les anti-patrons de design
+  # The detector analyses a rendered page, never a source file. The workshop is
+  # where it sees the most real markup until the order screens exist.
+  design-detector:
+    name: Design detector
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: .output/public
+      - name: Detect on the landing page
         run: .claude/skills/impeccable/scripts/impeccable detect .output/public/index.html --no-advisory
-
-      # L'atelier rassemble tous les composants livrés : c'est la page où le
-      # détecteur voit le plus de balisage réel avant que les écrans du parcours
-      # n'existent.
-      - name: Détecter les anti-patrons de design dans l'atelier
+      - name: Detect on the workshop
         run: .claude/skills/impeccable/scripts/impeccable detect .output/public/workshop/index.html --no-advisory
 
-  tests-end-to-end:
-    name: Tests end-to-end
+  end-to-end-tests:
+    name: End-to-end tests
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer le dépôt
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
 
-      - name: Installer pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Installer Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
-          cache: pnpm
-
-      - name: Installer les dépendances
-        run: pnpm install --frozen-lockfile
-
-      # Un seul navigateur : la borne est un appareil unique, dont le navigateur
-      # est connu.
-      - name: Installer le navigateur
+      # One browser only: a kiosk is a single device, with a known browser.
+      - name: Install the browser
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Exécuter les parcours
-        run: pnpm test:e2e
+      - run: pnpm test:e2e
 
-      - name: Conserver le rapport en cas d'échec
+      - name: Keep the report on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: rapport-playwright
+          name: playwright-report
           path: playwright-report/
           retention-days: 7
