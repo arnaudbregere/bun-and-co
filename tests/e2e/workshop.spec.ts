@@ -150,9 +150,9 @@ test('les polices auto-hébergées sont chargées, sans requête à un tiers', a
     }
   })
 
-  expect(familles.corps).toContain('Archivo')
-  expect(familles.titre).toContain('Archivo Narrow')
-  expect(familles.chargees).toContain('Archivo')
+  expect(familles.corps).toContain('Figtree')
+  expect(familles.titre).toContain('Fredoka')
+  expect(familles.chargees).toContain('Fredoka')
 
   // Le cache des navigateurs est partitionné par site depuis 2020 : un lien vers
   // un hébergeur de polices n'apporte aucun gain et ajoute une requête bloquante.

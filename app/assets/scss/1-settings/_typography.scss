@@ -17,16 +17,22 @@
     // Les polices sont auto-hébergées au lot 3. Aucun appel à un service tiers :
     // le cache des navigateurs est partitionné par site depuis 2020, un lien vers
     // un hébergeur de polices n'apporte donc aucun gain et ajoute une requête.
-    // Archivo pour l'interface et Archivo Narrow pour l'affichage, et non Inter
-    // ni Fraunces : le détecteur de design signale ces dernières comme
-    // omniprésentes, au point de ne plus porter d'identité.
+    // Fredoka pour l'affichage, Figtree pour l'interface. Ni Inter ni Fraunces :
+    // le détecteur de design signale ces dernières comme omniprésentes, au
+    // point de ne plus porter d'identité.
     //
-    // La grotesque condensée porte la direction fast-food américain : des noms
-    // de produits en capitales grasses, serrées, qui se lisent de loin. Elle
-    // tient aussi le nom d'un produit sur une seule ligne dans une carte
-    // étroite, ce qui vaut mieux qu'un nom coupé en deux.
-    --font-ui: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-display: 'Archivo Narrow', 'Archivo Condensed', 'Archivo', sans-serif;
+    // La grotesque condensée du premier jeu, Archivo Narrow, a été retirée :
+    // elle lisait sérieux et administratif, là où la borne s'adresse à un
+    // public de 15 à 35 ans. Fredoka est une géométrique aux angles arrondis,
+    // dont les capitales pleines tiennent le registre du comptoir américain
+    // sans sa raideur.
+    //
+    // Figtree porte le texte courant : une grotesque géométrique aux formes
+    // ouvertes, dessinée pour l'écran, qui reste lisible à 70 cm sans imiter
+    // la rondeur de l'affichage — deux polices rondes auraient donné une
+    // interface molle.
+    --font-ui: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Fredoka', 'Figtree', sans-serif;
 
     // --- Tailles ----------------------------------------------------------------
     --font-size-note: 1.125rem; // 18 px — allergènes, mentions légales
@@ -46,10 +52,10 @@
     --line-height-heading: 1.15;
 
     // --- Autres -----------------------------------------------------------------
-    // Les titres sont serrés : une capitale grasse et resserrée est la signature
-    // typographique de cette direction, et le resserrement regroupe le titre en
-    // un bloc que l'œil saisit d'un coup.
-    --letter-spacing-heading: -0.015em;
+    // Les titres sont à peine resserrés. Fredoka est déjà large et ronde :
+    // l'approche négative du jeu précédent, dessinée pour une condensée,
+    // ferait ici se toucher les panses.
+    --letter-spacing-heading: -0.005em;
     // Les libellés capitalisés — boutons, étiquettes, catégories — gardent un
     // peu d'air : collées, des capitales de petit corps se lisent moins vite.
     --letter-spacing-display: 0.02em;
