@@ -1,0 +1,49 @@
+// =============================================================================
+// Components — résumé du panier
+// =============================================================================
+// Barre persistante qui porte le nombre d'articles, le total et l'accès au
+// panier.
+//
+// `position: sticky` et non `fixed`. Une barre fixe sort du flux : elle
+// recouvre le dernier élément de la liste, que le client ne peut alors plus
+// atteindre ni du doigt ni au clavier. Collée, elle reste dans le flux et le
+// dernier élément passe au-dessus d'elle en fin de défilement.
+//
+// La hauteur reste connue du reste de la feuille par `--sticky-bar-space`, que
+// la couche `elements` emploie pour réserver la marge de défilement : le
+// critère WCAG 2.4.11 veut qu'un élément qui prend le focus ne soit pas masqué
+// par un élément collé.
+
+@layer components {
+  .c-cart-summary {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-5);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-block-start: var(--border-bold) solid var(--color-border);
+    background-color: var(--color-surface-muted);
+  }
+
+  .c-cart-summary__state {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    align-items: baseline;
+    margin: 0;
+  }
+
+  // Le nombre d'articles est une mention, le total est ce que le client
+  // cherche des yeux : seul le second porte le corps de 49 px.
+  .c-cart-summary__count {
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+}

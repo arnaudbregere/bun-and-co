@@ -27,6 +27,12 @@
     --target-secondary: 3rem; // 48 px
     --target-gap: var(--space-3); // 12 px, évite les taps voisins
 
+    // --- Barre collée --------------------------------------------------------
+    // Hauteur réservée sous le contenu qui défile. Le critère WCAG 2.4.11 veut
+    // qu'un élément recevant le focus ne soit pas masqué par un élément collé :
+    // la marge de défilement garde la cible au-dessus de la barre du panier.
+    --sticky-bar-space: 7rem;
+
     // --- Rayons et élévation ----------------------------------------------------
     // Angles presque droits sur les surfaces, pastilles entièrement arrondies
     // pour les prix et les étiquettes. Le contraste des deux formes est voulu :

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
+import { itemCount } from '~/domain/cart'
 import { MENU_SIZE_RULES } from '~/domain/menu-rules'
 import { cents } from '~/domain/money'
-import { extrasTotalCents, lineTotalCents, unitPriceCents } from '~/domain/pricing'
+import { cartTotalCents, extrasTotalCents, lineTotalCents, unitPriceCents } from '~/domain/pricing'
 import { ALLERGENS, MENU_SIZES, toCartLineId, type CartLine, type MenuSize } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
@@ -150,6 +151,28 @@ const lignesDePanier = computed(() => {
     }
   })
 })
+
+// Résumé du panier : le compte et le total viennent du domaine, calculés sur
+// les lignes du spécimen précédent.
+const lignesDuDomaine = computed(() =>
+  classique === undefined
+    ? []
+    : lignesDePanier.value.map((ligne) => ({
+        id: toCartLineId(ligne.id),
+        productId: classique.id,
+        quantity: ligne.quantity,
+        customisation: {
+          removedIds: ligne.removed.length > 0 ? ['onions'] : [],
+          extraIds: ligne.extras.map((extra) => extra.id),
+        },
+      })),
+)
+
+const nombreDArticles = computed(() => itemCount({ lines: lignesDuDomaine.value }))
+
+const totalDuPanier = computed(() =>
+  classique === undefined ? cents(0) : cartTotalCents([classique], lignesDuDomaine.value),
+)
 
 const quantite = ref(2)
 
@@ -619,6 +642,35 @@ const annoncer = (libelle: string) => {
           Un même message envoyé deux fois de suite est relu : la région est vidée puis réécrite au
           cycle suivant. « Quantité maximale atteinte » doit se répéter si le client insiste.
           Dernière alerte : <strong>{{ alerte === '' ? 'aucune' : alerte }}</strong>.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-resume">
+      <h2 id="titre-resume">Résumé du panier</h2>
+
+      <h3>Panier rempli</h3>
+      <div class="c-specimen">
+        <CartSummary
+          :item-count="nombreDArticles"
+          :total-cents="totalDuPanier"
+          @open="annoncerAuLecteur('Ouverture du panier demandée')"
+        />
+        <p class="c-specimen__note">
+          Le compte et le total viennent de <code>itemCount</code> et <code>cartTotalCents</code>,
+          calculés sur les lignes de la section précédente : changer une quantité plus haut change
+          ce total. La barre colle au bas de son cadre, <code>position: sticky</code> et non
+          <code>fixed</code> — une barre fixe sort du flux et recouvre le dernier élément de la
+          liste.
+        </p>
+      </div>
+
+      <h3>Panier vide</h3>
+      <div class="c-specimen">
+        <CartSummary :item-count="0" :total-cents="cents(0)" />
+        <p class="c-specimen__note">
+          Exigence EF-026 : l'accès est refusé, et il donne sa raison plutôt que de rester
+          silencieusement inopérant. La barre annonce « panier vide » et non « 0 article » : un zéro
+          suivi d'un montant nul se lit comme un prix, pas comme une absence.
         </p>
       </div>
     </section>

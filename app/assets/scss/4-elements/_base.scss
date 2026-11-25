@@ -10,6 +10,11 @@
     // continue de s'appliquer. L'échelle du projet part de `--font-size-body`.
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
+
+    // Le panier colle au bas de l'écran. Sans cette marge, le navigateur
+    // amène un élément qui prend le focus juste au bord et la barre le
+    // recouvre : le critère WCAG 2.4.11 l'interdit.
+    scroll-padding-block-end: var(--sticky-bar-space);
   }
 
   body {

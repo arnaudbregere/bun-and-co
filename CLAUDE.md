@@ -68,7 +68,12 @@ panier.
 
 Les types portent l'unité dans leur nom, par exemple `prixCentimes`. La conversion en euros
 a lieu au seul moment de l'affichage, par `Intl.NumberFormat('fr-FR', { style: 'currency',
-currency: 'EUR' })`. Aucun composant ne divise un montant par cent.
+currency: 'EUR' })`, dans `app/utils/format-euros.ts`. Aucun autre module ne divise un
+montant par cent.
+
+`app/utils/` ne reçoit que des fonctions pures d'affichage, partagées par au moins deux
+appelants. Ce qui dépend de Vue ou d'un service relève d'un composable, et `eslint.config.mjs`
+applique la frontière.
 
 ## Composants
 
