@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import { cents } from '~/domain/money'
 
 /**
@@ -14,6 +15,8 @@ import { cents } from '~/domain/money'
  */
 
 useHead({ title: 'Atelier des composants · Bun & Co' })
+
+const icones: readonly IconName[] = ['arrow-left', 'cart', 'plus', 'minus', 'trash', 'alert']
 
 const dernierClic = ref<string | null>(null)
 
@@ -32,33 +35,6 @@ const annoncer = (libelle: string) => {
         automatiques.
       </p>
     </header>
-
-    <section class="o-stack" aria-labelledby="titre-prix">
-      <h2 id="titre-prix">Montant</h2>
-
-      <h3>En ligne</h3>
-      <div class="c-specimen">
-        <p>
-          Burger : <PriceTag :amount-cents="cents(590)" />, supplément bacon :
-          <PriceTag :amount-cents="cents(120)" />, montant nul :
-          <PriceTag :amount-cents="cents(0)" />.
-        </p>
-        <p class="c-specimen__note">
-          Les montants circulent en centimes entiers dans tout le projet. Ce composant est le seul
-          endroit où un montant est divisé par cent, et le seul où il devient une chaîne.
-        </p>
-      </div>
-
-      <h3>Total du panier</h3>
-      <div class="c-specimen">
-        <PriceTag :amount-cents="cents(2470)" variant="total" />
-        <p class="c-specimen__note">
-          Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
-          yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
-          ajout.
-        </p>
-      </div>
-    </section>
 
     <section class="o-stack" aria-labelledby="titre-bouton">
       <h2 id="titre-bouton">Bouton</h2>
@@ -112,6 +88,65 @@ const annoncer = (libelle: string) => {
       <p aria-live="polite" class="c-specimen__note">
         {{ dernierClic === null ? 'Aucun bouton activé.' : `Bouton activé : ${dernierClic}.` }}
       </p>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-icone">
+      <h2 id="titre-icone">Icône</h2>
+
+      <h3>Jeu complet</h3>
+      <div class="c-specimen">
+        <ul class="c-icon-list">
+          <li v-for="nom of icones" :key="nom">
+            <BaseIcon :name="nom" />
+            <code>{{ nom }}</code>
+          </li>
+        </ul>
+        <p class="c-specimen__note">
+          Six symboles, et aucune dépendance d'icônes : le parcours n'en emploie pas d'autres. La
+          taille est en <code>em</code>, donc l'icône suit le corps du texte et le zoom du
+          navigateur.
+        </p>
+      </div>
+
+      <h3>Bouton réduit à son icône</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton variant="secondary" @activate="annoncer('Vider le panier')">
+            <BaseIcon name="trash" />
+            <span class="u-visually-hidden">Vider le panier</span>
+          </BaseButton>
+        </div>
+        <p class="c-specimen__note">
+          L'icône est décorative et porte <code>aria-hidden</code>. Le libellé existe dans le
+          balisage, masqué à l'écran par <code>.u-visually-hidden</code> : le bouton garde un nom
+          pour un lecteur d'écran, et aucune icône ne porte seule le sens d'une action.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-prix">
+      <h2 id="titre-prix">Montant</h2>
+
+      <h3>En ligne</h3>
+      <div class="c-specimen">
+        <p>
+          Burger : <PriceTag :amount-cents="cents(590)" />, supplément bacon :
+          <PriceTag :amount-cents="cents(120)" />, montant nul :
+          <PriceTag :amount-cents="cents(0)" />.
+        </p>
+        <p class="c-specimen__note">
+          Les montants circulent en centimes entiers dans tout le projet. Ce composant est le seul
+          endroit où un montant est divisé par cent, et le seul où il devient une chaîne.
+        </p>
+      </div>
+
+      <h3>Total du panier</h3>
+      <div class="c-specimen">
+        <PriceTag :amount-cents="cents(2470)" variant="total" />
+        <p class="c-specimen__note">
+          Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
+          yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
+          ajout.
+        </p>
+      </div>
     </section>
   </main>
 </template>

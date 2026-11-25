@@ -1,0 +1,23 @@
+// =============================================================================
+// Components — icône
+// =============================================================================
+// Taille en `em` : l'icône suit le corps du texte qui l'accompagne, donc le zoom
+// du navigateur et le réglage de taille de police du système.
+
+@layer components {
+  .c-icon {
+    display: inline-block;
+    flex: none;
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: -0.2em;
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    // Épaisseur relative au gabarit de 24 unités : le trait garde la même
+    // proportion quelle que soit la taille rendue.
+    stroke-width: 2;
+  }
+}

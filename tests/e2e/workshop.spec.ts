@@ -73,11 +73,24 @@ test('un montant est rendu en euros et porte sa valeur machine', async ({ page }
   await expect(total).toHaveAttribute('value', '24.70')
 })
 
+test('un bouton réduit à son icône garde un nom pour un lecteur d’écran', async ({ page }) => {
+  await page.goto('/workshop')
+
+  const bouton = page.getByRole('button', { name: 'Vider le panier' })
+  await expect(bouton).toBeVisible()
+
+  // Le nom vient d'un texte masqué à l'écran, pas de l'icône : aucune icône ne
+  // porte seule le sens d'une action.
+  await expect(bouton.locator('svg')).toHaveAttribute('aria-hidden', 'true')
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Atelier des composants')
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Montant', 'Bouton'])
+  // Les sections sont rangées par ordre alphabétique, pour qu'un composant
+  // ajouté trouve sa place sans discussion.
+  await expect(page.getByRole('heading', { level: 2 })).toHaveText(['Bouton', 'Icône', 'Montant'])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
   const niveaux = await page
     .locator('h1, h2, h3')
