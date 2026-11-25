@@ -151,6 +151,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     "Étiquette d'état",
     'Icône',
     'Montant',
+    'Visuel de produit',
   ])
   // Aucun niveau sauté entre les titres : chaque h3 suit un h2.
   const niveaux = await page

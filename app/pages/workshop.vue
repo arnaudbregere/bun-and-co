@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import { cents } from '~/domain/money'
+import { PRODUCT_IMAGES } from '~/services/product-images'
 
 /**
  * Atelier des composants.
@@ -17,6 +18,17 @@ import { cents } from '~/domain/money'
 useHead({ title: 'Atelier des composants · Bun & Co' })
 
 const icones: readonly IconName[] = ['arrow-left', 'cart', 'plus', 'minus', 'trash', 'alert']
+
+// L'atelier lit la couche services directement : c'est une page de
+// vérification, sans parcours ni état. Les écrans du lot 6 passeront par un
+// composable, comme le veut la règle des trois couches.
+const apercu = (['classique', 'mariner', 'fries-medium', 'milkshake'] as const).flatMap((id) => {
+  const image = PRODUCT_IMAGES[id]
+  // `noUncheckedIndexedAccess` rend un accès par clé possiblement indéfini, et
+  // c'est juste : le fichier des visuels est produit par un script, pas garanti
+  // par le typage.
+  return image === undefined ? [] : [{ id, image }]
+})
 
 const dernierClic = ref<string | null>(null)
 
@@ -179,6 +191,36 @@ const annoncer = (libelle: string) => {
           Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
           yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
           ajout.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-visuel">
+      <h2 id="titre-visuel">Visuel de produit</h2>
+
+      <h3>Quelques produits de la carte</h3>
+      <div class="c-specimen">
+        <ul class="c-specimen__grid">
+          <li v-for="produit of apercu" :key="produit.id">
+            <ProductImage :src="produit.image.medium" :alt="produit.image.alt" loading="eager" />
+            <p>{{ produit.image.alt }}</p>
+            <p class="c-specimen__note">Photographie {{ produit.image.photographer }}, Pixabay</p>
+          </li>
+        </ul>
+        <p class="c-specimen__note">
+          Les photographies sont versionnées avec le dépôt, en deux tailles. La borne n'appelle
+          aucun service tiers, et la construction n'a besoin d'aucun réseau.
+        </p>
+      </div>
+
+      <h3>Produit sans photographie</h3>
+      <div class="c-specimen">
+        <div class="c-specimen__grid">
+          <ProductImage alt="Le Montagnard" />
+        </div>
+        <p class="c-specimen__note">
+          Le substitut garde la place du visuel dans la grille et porte le nom du produit. Sans
+          réservation de place, la grille sauterait à l'arrivée de chaque image, et le client
+          appuierait sur un produit qui vient de se déplacer.
         </p>
       </div>
     </section>
