@@ -2,6 +2,16 @@ import vuejsAccessibility from 'eslint-plugin-vuejs-accessibility'
 import prettier from 'eslint-config-prettier'
 import withNuxt from './.nuxt/eslint.config.mjs'
 
+// Un composant ne va pas chercher ses données lui-même : l'interface connaît les
+// services, mais passe par un composable. Un `fetch` écrit dans un composant
+// contournerait la passerelle du catalogue, donc le préfixe `baseURL`, et
+// casserait sur GitHub Pages.
+const LAYER_PATTERN = {
+  group: ['**/services/**', '**/pages/**'],
+  message:
+    'Un composant ne dépend ni d’un service ni d’une page. Les données arrivent en propriétés, ou par un composable.',
+}
+
 // Configuration plate ESLint. `withNuxt` apporte les règles Vue, TypeScript et
 // Nuxt, puis nos ajouts viennent par-dessus.
 export default withNuxt(
@@ -54,6 +64,62 @@ export default withNuxt(
               group: ['**/composables/**', '**/components/**', '**/pages/**'],
               message:
                 'Un service ne dépend pas de l’interface. Les dépendances vont de l’interface vers les services, jamais l’inverse.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  // Niveaux d'Atomic Design. Un composant ne consomme que des composants d'un
+  // niveau strictement inférieur : sans cette règle, les trois dossiers ne sont
+  // qu'un rangement, et un atome finit par dépendre d'une molécule.
+  //
+  // Ces règles n'attrapent que les imports explicites. Les composants Vue sont
+  // auto-importés par Nuxt, donc utilisés dans un gabarit sans ligne d'import :
+  // c'est `scripts/verify-component-levels.mjs` qui couvre ce cas, et le
+  // pipeline l'exécute.
+  //
+  // Chaque bloc répète les motifs du précédent à dessein : en configuration
+  // plate, le dernier bloc qui correspond à un fichier emporte la règle entière
+  // et n'y ajoute rien.
+  {
+    files: ['app/components/**'],
+    rules: {
+      'no-restricted-imports': ['error', { patterns: [LAYER_PATTERN] }],
+    },
+  },
+
+  {
+    files: ['app/components/molecules/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            LAYER_PATTERN,
+            {
+              group: ['**/organisms/**'],
+              message: 'Une molécule ne consomme pas un organisme, qui la compose.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  {
+    files: ['app/components/atoms/**'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            LAYER_PATTERN,
+            {
+              group: ['**/molecules/**', '**/organisms/**'],
+              message:
+                'Un atome ne consomme aucun niveau supérieur. Il reçoit ce qu’il affiche en propriétés.',
             },
           ],
         },

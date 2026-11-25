@@ -50,6 +50,12 @@ jobs:
       - name: Vérifier les types
         run: pnpm typecheck
 
+      # Les composants sont auto-importés : un atome peut employer une molécule
+      # dans son gabarit sans aucune ligne d'import, donc sans qu'ESLint le
+      # voie. Cette vérification porte sur les gabarits.
+      - name: Vérifier les niveaux d'Atomic Design
+        run: pnpm component-levels
+
       - name: Exécuter les tests unitaires
         run: pnpm test
 

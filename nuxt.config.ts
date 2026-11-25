@@ -34,6 +34,15 @@ export default defineNuxtConfig({
     },
   },
 
+  // Atomic Design : trois niveaux, et aucun préfixe de dossier dans le nom du
+  // composant. `<BaseButton>` plutôt que `<AtomsBaseButton>` : le niveau est un
+  // plan de classement, pas une partie du nom.
+  components: [
+    { path: '~/components/atoms', pathPrefix: false },
+    { path: '~/components/molecules', pathPrefix: false },
+    { path: '~/components/organisms', pathPrefix: false },
+  ],
+
   css: ['~/assets/scss/main.scss'],
 
   typescript: {

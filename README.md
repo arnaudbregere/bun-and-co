@@ -73,6 +73,20 @@ composant. La passerelle est le seul endroit où le chemin est écrit et où
 `/bun-and-co/`, et une URL absolue partant de la racine renverrait un 404. Le calcul
 tarifaire, lui, reste local et synchrone : aucun prix n'est demandé au réseau.
 
+### Composants
+
+Atomic Design, trois niveaux dans `app/components/` : `atoms`, `molecules`, `organisms`. Un
+composant ne consomme que des composants d'un niveau strictement inférieur.
+
+Les composants sont auto-importés par Nuxt sans préfixe de dossier : `<BaseButton>` et non
+`<AtomsBaseButton>`. Le niveau est un plan de classement, pas une partie du nom. Un gabarit
+n'écrit donc aucune ligne d'import, et ESLint ne voit pas la composition :
+`pnpm component-levels` lit les gabarits et refuse un atome qui emploie une molécule.
+
+Les styles d'un composant vivent dans `app/assets/scss/6-components/`, jamais dans un bloc
+`<style>` de fichier Vue. Un style encapsulé contournerait la cascade que `@layer` établit,
+et `pnpm layer-order` ne le verrait pas.
+
 Deux règles s'appliquent à tout le domaine.
 
 **Les montants sont des entiers de centimes**, garantis par un type nominal. En JavaScript,
@@ -125,6 +139,7 @@ pnpm test           # tests unitaires
 pnpm generate       # rendu statique
 pnpm layer-order    # ordre des couches dans le CSS construit
 pnpm catalogue-route # route du catalogue écrite en fichier statique
+pnpm component-levels # niveaux d'Atomic Design dans les gabarits
 pnpm test:e2e       # parcours utilisateur et audits axe-core
 ```
 
