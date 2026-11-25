@@ -38,7 +38,13 @@ export default withNuxt(
         {
           patterns: [
             {
-              group: ['**/services/**', '**/composables/**', '**/components/**', '**/pages/**'],
+              group: [
+                '**/services/**',
+                '**/composables/**',
+                '**/components/**',
+                '**/pages/**',
+                '**/utils/**',
+              ],
               message:
                 'Le domaine ne dépend d’aucune couche extérieure. Déclarer un port dans app/domain/ports.ts et le laisser implémenter par un service.',
             },
@@ -46,6 +52,36 @@ export default withNuxt(
               group: ['vue', 'vue-router', '#app', '#imports', 'nuxt/*'],
               message:
                 'Le domaine ne connaît ni Vue, ni Nuxt, ni le navigateur. Cette logique relève d’un composable ou d’un service.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  // Les utilitaires de l'interface n'adaptent rien d'autre que l'affichage :
+  // ils convertissent un montant en chaîne, et rien de plus. Ils ne connaissent
+  // ni les services, ni les composants, ni les pages — sinon ils deviennent le
+  // dépotoir que ce dossier doit justement éviter.
+  {
+    files: ['app/utils/**/*.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: [
+                '**/services/**',
+                '**/composables/**',
+                '**/components/**',
+                '**/pages/**',
+                'vue',
+                '#app',
+                '#imports',
+              ],
+              message:
+                'Un utilitaire d’interface est une fonction pure d’affichage. Ce qui dépend de Vue ou d’un service relève d’un composable.',
             },
           ],
         },

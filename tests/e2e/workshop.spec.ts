@@ -84,7 +84,9 @@ test('activer un bouton disponible est annoncé par une région polie', async ({
 test('un montant est rendu en euros et porte sa valeur machine', async ({ page }) => {
   await page.goto('/workshop')
 
-  const total = page.locator('.c-price--total')
+  // La recherche est bornée à la section : le résumé du panier affiche lui
+  // aussi son total dans cette variante.
+  const total = page.locator('[aria-labelledby="titre-prix"] .c-price--total')
 
   // Le séparateur avant le symbole est une espace insécable, dont le point de
   // code dépend de la version d'ICU du navigateur.
@@ -219,16 +221,20 @@ test('une carte de produit est une cible unique, et refuse l’indisponible', as
   const classique = section.getByRole('button', { name: /Le Classique/ })
   await expect(classique).toHaveCount(1)
 
+  // La région d'annonce de l'atelier, et non celles du résumé du panier, qui
+  // portent l'état du panier.
+  const annonce = page.locator('[aria-labelledby="titre-annonce"] [role="status"]')
+
   // L'appui porte sur le visuel, loin du nom : toute la carte est la cible.
   await classique.locator('img').click()
-  await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
+  await expect(annonce).toHaveText('Le Classique sélectionné')
 
   const montagnard = section.getByRole('button', { name: /Le Montagnard/ })
   await expect(montagnard).toHaveAttribute('aria-disabled', 'true')
   await expect(montagnard).toContainText('Indisponible')
 
   await montagnard.click({ force: true })
-  await expect(page.getByRole('status')).toHaveText('Le Classique sélectionné')
+  await expect(annonce).toHaveText('Le Classique sélectionné')
 })
 
 test('les cartes d’une rangée ont la même hauteur, visuel bord à bord', async ({ page }) => {
@@ -441,6 +447,38 @@ test('deux lignes du même produit se distinguent par leurs mentions', async ({ 
   await expect(lignes.nth(0)).toContainText(/17,70\s€/)
 })
 
+test('le résumé du panier refuse l’accès à vide et ne masque pas le focus', async ({ page }) => {
+  await page.goto('/workshop')
+  await waitForHydration(page)
+
+  const section = page.locator('[aria-labelledby="titre-resume"]')
+  const barres = section.locator('.c-cart-summary')
+  await expect(barres).toHaveCount(2)
+
+  // Panier rempli : les trois articles du spécimen précédent, soit deux
+  // Classique nature à 5,90 € et un garni de bacon à 7,10 €. Le total vient de
+  // `cartTotalCents`, la barre ne l'additionne pas.
+  await expect(barres.nth(0)).toContainText('3 articles')
+  await expect(barres.nth(0).locator('.c-price--total')).toHaveAttribute('value', '18.90')
+
+  // Exigence EF-026 : l'accès est refusé et donne sa raison, sans sortir du
+  // parcours de tabulation.
+  const refus = barres.nth(1).getByRole('button')
+  await expect(refus).toHaveAttribute('aria-disabled', 'true')
+  await expect(refus).toContainText('Panier vide')
+  await expect(barres.nth(1)).not.toContainText('0 article')
+
+  // Critère WCAG 2.4.11 : la barre colle au bas du cadre, et la marge de
+  // défilement garde au-dessus d'elle l'élément qui prend le focus.
+  const mesures = await barres.nth(0).evaluate((element) => ({
+    position: getComputedStyle(element).position,
+    hauteur: element.getBoundingClientRect().height,
+    marge: getComputedStyle(document.documentElement).scrollPaddingBottom,
+  }))
+  expect(mesures.position).toBe('sticky')
+  expect(Number.parseFloat(mesures.marge)).toBeGreaterThanOrEqual(mesures.hauteur)
+})
+
 test('la hiérarchie des titres de l’atelier est continue', async ({ page }) => {
   await page.goto('/workshop')
 
@@ -459,6 +497,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Onglets de catégories',
     'Option à cocher',
     "Région d'annonce",
+    'Résumé du panier',
     'Sélecteur de quantité',
     'Sélecteur de taille de menu',
     'Visuel de produit',

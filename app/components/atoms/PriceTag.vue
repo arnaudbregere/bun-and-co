@@ -3,16 +3,17 @@
  * Affichage d'un montant.
  *
  * Les montants sont des entiers de centimes partout ailleurs : dans le domaine,
- * dans les services, dans les propriétés des composants. Ce composant est le
- * seul endroit du projet où un montant est divisé par cent, et le seul où il
- * devient une chaîne.
+ * dans les services, dans les propriétés des composants. La conversion en euros
+ * vit dans `app/utils/format-euros.ts`, seul endroit du projet où un montant est
+ * divisé par cent.
  *
- * Centraliser la conversion n'est pas une coquetterie : `5.90 + 1.20 + 0.80`
- * vaut `7.9000000000000004` en JavaScript, et une division dispersée dans les
- * composants ramène les flottants dans le calcul.
+ * Ce composant est le seul à afficher un montant. La région d'annonce du
+ * résumé du panier emploie la même fonction sans passer par lui : une région
+ * d'annonce ne contient que du texte, pas un composant.
  */
 
 import type { Cents } from '../../domain/money'
+import { formatEuros, machineEuros } from '../../utils/format-euros'
 
 const { amountCents, variant = 'inline' } = defineProps<{
   amountCents: Cents
@@ -20,15 +21,11 @@ const { amountCents, variant = 'inline' } = defineProps<{
   variant?: 'inline' | 'total'
 }>()
 
-// Une seule instance : construire un formateur est coûteux, et la carte en
-// affiche vingt-sept.
-const formateur = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' })
-
-const affichage = computed(() => formateur.format(amountCents / 100))
+const affichage = computed(() => formatEuros(amountCents))
 
 // Valeur lisible par une machine, en euros décimaux, conformément à l'attribut
 // `value` de l'élément `<data>`.
-const valeurMachine = computed(() => (amountCents / 100).toFixed(2))
+const valeurMachine = computed(() => machineEuros(amountCents))
 </script>
 
 <template>
