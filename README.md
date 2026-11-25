@@ -87,6 +87,11 @@ Les styles d'un composant vivent dans `app/assets/scss/6-components/`, jamais da
 `<style>` de fichier Vue. Un style encapsulé contournerait la cascade que `@layer` établit,
 et `pnpm layer-order` ne le verrait pas.
 
+Chaque composant livré figure dans l'atelier, `app/pages/workshop.vue`, avec ses états. La
+page ne fait pas partie du parcours client : elle sert à vérifier les composants au clavier
+et à donner une page rendue au détecteur de design et à l'audit axe-core, deux outils qui
+n'ont rien à analyser dans un fichier source.
+
 Deux règles s'appliquent à tout le domaine.
 
 **Les montants sont des entiers de centimes**, garantis par un type nominal. En JavaScript,
