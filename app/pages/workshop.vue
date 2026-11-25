@@ -2,6 +2,7 @@
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
 import { cents } from '~/domain/money'
+import { extrasTotalCents } from '~/domain/pricing'
 import { ALLERGENS } from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
@@ -72,6 +73,34 @@ const indisponible = pourCarte('montagnard', false) ?? {
 }
 
 const allergenesDuClassique = carteParIdentifiant('classique')?.allergens ?? []
+
+// Groupe d'options : les retraits et les suppléments du Classique, tels que la
+// carte les déclare. Le total vient du domaine, `extrasTotalCents`, et non d'une
+// addition écrite dans la page.
+const classique = carteParIdentifiant('classique')
+
+const retraits = (classique?.removables ?? []).map((retrait) => ({
+  id: retrait.id,
+  label: `Sans ${retrait.label.toLocaleLowerCase('fr-FR')}`,
+}))
+
+const supplements = (classique?.extras ?? []).map((extra) => ({
+  id: extra.id,
+  label: extra.label,
+  priceCents: extra.priceCents,
+}))
+
+const retraitsRetenus = ref<readonly string[]>(['pickles'])
+const supplementsRetenus = ref<readonly string[]>(['bacon'])
+
+const totalDesSupplements = computed(() =>
+  classique === undefined
+    ? cents(0)
+    : extrasTotalCents(classique, {
+        removedIds: retraitsRetenus.value,
+        extraIds: supplementsRetenus.value,
+      }),
+)
 
 const quantite = ref(2)
 
@@ -251,6 +280,46 @@ const annoncer = (libelle: string) => {
         <p class="c-specimen__note">
           L'étiquette n'est pas interactive et ne prend pas le focus : elle qualifie ce qui
           l'entoure, elle ne s'active pas.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-groupe">
+      <h2 id="titre-groupe">Groupe d'options</h2>
+
+      <h3>Retraits et suppléments d'un produit</h3>
+      <div class="c-specimen">
+        <OptionGroup v-model="retraitsRetenus" legend="Retirer" :options="retraits" />
+        <OptionGroup
+          v-model="supplementsRetenus"
+          legend="Ajouter"
+          :options="supplements"
+          :total-cents="totalDesSupplements"
+        />
+        <p class="c-specimen__note">
+          Chaque groupe est un <code>fieldset</code> nommé par sa <code>legend</code> : un lecteur
+          d'écran annonce le nom du groupe avant la première case, puis le rappelle à chaque option.
+          Sans lui, « Bacon » suivrait « Sans cornichons » dans une même liste plate, et rien ne
+          dirait que l'un retire et que l'autre ajoute.
+        </p>
+      </div>
+
+      <h3>Produit sans personnalisation</h3>
+      <div class="c-specimen">
+        <OptionGroup :model-value="[]" legend="Retirer" :options="[]" />
+        <p class="c-specimen__note">
+          Rien n'est rendu : un groupe de zéro option annoncerait une personnalisation que le
+          produit n'offre pas. Les croquettes, les boissons et les desserts ne se modifient pas.
+        </p>
+      </div>
+
+      <h3>Le composant n'additionne pas</h3>
+      <div class="c-specimen">
+        <p class="c-specimen__note">
+          Le total affiché ci-dessus vaut
+          <strong><PriceTag :amount-cents="totalDesSupplements" /></strong>, calculé par
+          <code>extrasTotalCents</code> dans <code>app/domain/pricing.ts</code>. Deux endroits qui
+          additionnent les mêmes montants finissent par ne plus être d'accord, et c'est le ticket
+          qui tranche.
         </p>
       </div>
     </section>
