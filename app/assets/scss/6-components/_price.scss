@@ -1,0 +1,23 @@
+// =============================================================================
+// Components — montant
+// =============================================================================
+
+@layer components {
+  .c-price {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .c-price--inline {
+    font-weight: var(--font-weight-medium);
+  }
+
+  // Total du panier : le seul montant que le client cherche des yeux sans le
+  // lire, d'où le corps le plus grand de l'échelle.
+  .c-price--total {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-price);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+  }
+}

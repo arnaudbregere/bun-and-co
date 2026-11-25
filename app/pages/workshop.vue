@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { cents } from '~/domain/money'
+
 /**
  * Atelier des composants.
  *
@@ -30,6 +32,33 @@ const annoncer = (libelle: string) => {
         automatiques.
       </p>
     </header>
+
+    <section class="o-stack" aria-labelledby="titre-prix">
+      <h2 id="titre-prix">Montant</h2>
+
+      <h3>En ligne</h3>
+      <div class="c-specimen">
+        <p>
+          Burger : <PriceTag :amount-cents="cents(590)" />, supplément bacon :
+          <PriceTag :amount-cents="cents(120)" />, montant nul :
+          <PriceTag :amount-cents="cents(0)" />.
+        </p>
+        <p class="c-specimen__note">
+          Les montants circulent en centimes entiers dans tout le projet. Ce composant est le seul
+          endroit où un montant est divisé par cent, et le seul où il devient une chaîne.
+        </p>
+      </div>
+
+      <h3>Total du panier</h3>
+      <div class="c-specimen">
+        <PriceTag :amount-cents="cents(2470)" variant="total" />
+        <p class="c-specimen__note">
+          Corps de 49 px, le plus grand de l'échelle : c'est le montant que le client cherche des
+          yeux sans le lire. Chiffres à largeur fixe, pour que le total ne tremble pas à chaque
+          ajout.
+        </p>
+      </div>
+    </section>
 
     <section class="o-stack" aria-labelledby="titre-bouton">
       <h2 id="titre-bouton">Bouton</h2>
