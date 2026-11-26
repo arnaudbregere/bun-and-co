@@ -8,7 +8,7 @@ import { waitForHydration } from './hydration'
 
 const ECRANS = [
   { chemin: '/', titre: 'Bun & Co — Commander', h1: 'Bun & Co' },
-  { chemin: '/mode', titre: 'Mode de consommation — Bun & Co', h1: 'Mode de consommation' },
+  { chemin: '/mode', titre: 'Mode de consommation — Bun & Co', h1: 'Sur place ou à emporter ?' },
   { chemin: '/carte', titre: 'Carte — Bun & Co', h1: 'Carte' },
   { chemin: '/produit/classique', titre: 'classique — Bun & Co', h1: 'classique' },
   { chemin: '/panier', titre: 'Panier — Bun & Co', h1: 'Panier' },
@@ -57,7 +57,13 @@ test('le parcours se traverse au clavier, du premier écran au ticket', async ({
   await page.goto('/')
   await waitForHydration(page)
 
-  for (const etape of ['Commander', 'Voir la carte', 'Voir le panier', 'Payer', 'Confirmer']) {
+  await page.getByRole('link', { name: 'Commander' }).click()
+
+  // Le mode de consommation s'actionne par un bouton : le choix écrit la
+  // commande avant de mener à la carte, il ne se contente pas de naviguer.
+  await page.getByRole('button', { name: /Sur place/ }).click()
+
+  for (const etape of ['Voir le panier', 'Payer', 'Confirmer']) {
     await page.getByRole('link', { name: etape }).click()
   }
 

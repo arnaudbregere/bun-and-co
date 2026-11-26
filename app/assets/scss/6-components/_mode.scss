@@ -1,0 +1,31 @@
+// =============================================================================
+// Components — mode de consommation
+// =============================================================================
+// Deux cibles, et rien d'autre à l'écran. Elles occupent la largeur et une
+// hauteur de 7 rem, bien au-delà des 56 px des actions principales : le choix
+// se fait debout, parfois d'une main, et c'est le premier appui du parcours.
+//
+// Les deux cibles sont identiques : seuls leurs libellés les séparent. Rien
+// n'est distingué par la couleur, exigence EF-044.
+
+@layer components {
+  .c-mode__choices {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .c-mode__choice {
+    min-height: 7rem;
+    font-size: var(--font-size-section);
+  }
+
+  // La conséquence du choix se lit comme une phrase, pas comme un libellé
+  // d'action : police d'interface, bas-de-casse, corps du texte courant.
+  .c-mode__consequence {
+    font-family: var(--font-ui);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+}
