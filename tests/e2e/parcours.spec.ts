@@ -80,12 +80,13 @@ test('le lien d’évitement est le premier arrêt de tabulation', async ({ page
   expect(cadre?.width).toBeGreaterThan(1)
 })
 
-test('une seule région d’annonce courtoise sur un écran', async ({ page }) => {
+test('une seule région d’annonce de chaque mode sur un écran', async ({ page }) => {
   await page.goto('/carte')
 
-  // Exigence EF-040 : deux régions annonceraient deux fois le même changement,
-  // ou se voleraient la parole.
+  // Exigences EF-040 et EF-041 : deux régions d'un même mode annonceraient deux
+  // fois le même changement, ou se voleraient la parole.
   await expect(page.locator('[aria-live="polite"]')).toHaveCount(1)
+  await expect(page.locator('[role="alert"]')).toHaveCount(1)
 })
 
 for (const ecran of ECRANS) {

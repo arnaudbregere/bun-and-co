@@ -3,11 +3,11 @@
  * Mise en page commune aux sept écrans.
  *
  * Elle porte trois choses que chaque écran aurait sinon à réécrire : le lien
- * d'évitement, le retour à l'écran précédent et la région d'annonce courtoise.
+ * d'évitement, le retour à l'écran précédent et les régions d'annonce.
  *
- * Une seule région d'annonce pour toute la borne, exigence EF-040. Deux
- * régions annonceraient deux fois le même changement, ou se voleraient la
- * parole.
+ * Une seule région courtoise pour toute la borne, exigence EF-040, et une
+ * seule région d'alerte, exigence EF-041. Deux régions d'un même mode
+ * annonceraient deux fois le même changement, ou se voleraient la parole.
  *
  * Le lien d'évitement est le premier élément focalisable du document, critère
  * WCAG 2.4.1 : sur la carte, il épargne au client au clavier la traversée des
@@ -15,7 +15,7 @@
  */
 
 const { precedent } = useParcours()
-const { message } = useAnnonces()
+const { message, alerte } = useAnnonces()
 </script>
 
 <template>
@@ -33,5 +33,6 @@ const { message } = useAnnonces()
     </div>
 
     <LiveRegion :message="message" />
+    <LiveRegion :message="alerte" mode="alert" />
   </div>
 </template>

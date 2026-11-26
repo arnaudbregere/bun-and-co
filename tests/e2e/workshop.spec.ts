@@ -203,7 +203,9 @@ test('une alerte est portée par une région assertive, invisible à l’écran'
   await page.goto('/workshop')
   await waitForHydration(page)
 
-  const region = page.locator('[role="alert"]')
+  // La recherche est bornée à la section : la mise en page porte elle aussi une
+  // région d'alerte, celle que tout l'écran partage.
+  const region = page.locator('[aria-labelledby="titre-annonce"]').locator('[role="alert"]')
   await expect(region).toHaveText('')
 
   await page.getByRole('button', { name: 'Dépasser la limite' }).click()
