@@ -1,0 +1,64 @@
+// =============================================================================
+// Components — composition de menu
+// =============================================================================
+// Trois groupes de choix uniques : accompagnement, boisson, dessert. Ils
+// reprennent la forme du sélecteur de taille, puisqu'ils répondent à la même
+// question — « lequel ? » — et que deux formes différentes pour une même
+// question obligeraient le client à réapprendre à mi-écran.
+//
+// Des boutons radio natifs : le navigateur donne l'exclusivité du choix, le
+// passage d'une option à l'autre aux flèches, un seul arrêt de tabulation par
+// groupe, et le rendu en contraste élevé.
+
+@layer components {
+  .c-menu__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .c-menu__legend {
+    padding: 0;
+    padding-block-end: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-menu__option {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-height: var(--target-primary);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    cursor: pointer;
+  }
+
+  // L'option retenue se distingue par son trait épais et non par sa seule
+  // couleur, critère WCAG 1.4.1.
+  .c-menu__option:has(.c-menu__input:checked) {
+    border-width: var(--border-bold);
+    box-shadow: var(--shadow-card-pressed);
+  }
+
+  .c-menu__input {
+    width: var(--space-5);
+    height: var(--space-5);
+    accent-color: var(--color-accent);
+  }
+
+  // Le libellé pousse le prix ou l'étiquette au bout de la ligne : les
+  // montants s'alignent alors d'une option à l'autre.
+  .c-menu__label {
+    flex: 1;
+  }
+}

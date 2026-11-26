@@ -49,6 +49,7 @@ export default defineNuxtConfig({
   components: [
     { path: '~/components/atoms', pathPrefix: false },
     { path: '~/components/molecules', pathPrefix: false },
+    { path: '~/components/organisms', pathPrefix: false },
   ],
 
   css: ['~/assets/scss/main.scss'],

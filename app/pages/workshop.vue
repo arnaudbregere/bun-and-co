@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import type { IconName } from '~/components/atoms/BaseIcon.vue'
 import type { CategoryTab } from '~/components/molecules/CategoryTabs.vue'
+import type { MenuDraft } from '~/components/organisms/MenuComposer.vue'
 import { itemCount } from '~/domain/cart'
 import { MENU_SIZE_RULES } from '~/domain/menu-rules'
 import { cents } from '~/domain/money'
 import { cartTotalCents, extrasTotalCents, lineTotalCents, unitPriceCents } from '~/domain/pricing'
-import { ALLERGENS, MENU_SIZES, toCartLineId, type CartLine, type MenuSize } from '~/domain/types'
+import {
+  ALLERGENS,
+  MENU_SIZES,
+  toCartLineId,
+  toProductId,
+  type CartLine,
+  type MenuSize,
+} from '~/domain/types'
 import { PRODUCTS } from '~/services/catalogue-data'
 import { PRODUCT_IMAGES } from '~/services/product-images'
 
@@ -190,6 +198,15 @@ const confirmerLeRetrait = () => {
 
 const quantite = ref(2)
 
+// Composition de menu : deux spécimens, une taille M à compléter et une taille
+// XL dont le dessert manque encore.
+const menuAComposer = ref<MenuDraft>({ size: 'M' })
+const menuXL = ref<MenuDraft>({
+  size: 'XL',
+  sideId: toProductId('potatoes'),
+  drinkId: toProductId('milkshake'),
+})
+
 // Les six entrées de l'exigence EF-006. « Menus » n'est pas une catégorie de
 // produit : un menu se compose à partir d'un burger. L'écart appartient à
 // l'écran de carte, pas à la barre d'onglets, qui reçoit sa liste.
@@ -372,6 +389,30 @@ const annoncer = (libelle: string) => {
           Exigence EF-009 : le produit est présenté désactivé et son ajout est impossible. La carte
           reste atteignable au clavier et porte le mot « indisponible », la couleur ne disant jamais
           seule qu'un produit ne peut pas être commandé.
+        </p>
+      </div>
+    </section>
+    <section class="o-stack" aria-labelledby="titre-menu">
+      <h2 id="titre-menu">Composition de menu</h2>
+
+      <h3>Taille M, à compléter</h3>
+      <div class="c-specimen">
+        <MenuComposer v-model="menuAComposer" :products="PRODUCTS" />
+        <p class="c-specimen__note">
+          Rien n'est présélectionné hors la taille : un accompagnement coché d'avance se
+          retrouverait dans le panier sans que le client l'ait choisi. Les forfaits, les formats et
+          les substitutions viennent de <code>menu-rules.ts</code>, exigences EF-011 à EF-015.
+          Composition en cours : <strong>{{ JSON.stringify(menuAComposer) }}</strong>.
+        </p>
+      </div>
+
+      <h3>Taille XL, dessert à choisir</h3>
+      <div class="c-specimen">
+        <MenuComposer v-model="menuXL" :products="PRODUCTS" />
+        <p class="c-specimen__note">
+          La taille XL comprend un dessert, exigence EF-014 : le groupe n'apparaît qu'à cette
+          taille, et le domaine refuse une composition où il manque. Changer de taille oublie un
+          composant qui n'est plus proposé, plutôt que de le laisser voyager jusqu'au panier.
         </p>
       </div>
     </section>
