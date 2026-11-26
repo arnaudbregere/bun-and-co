@@ -79,6 +79,10 @@
 
   // L'action discrète reste en bas-de-casse : capitaliser un lien de consultation
   // lui donnerait le poids d'une action principale.
+  //
+  // C'est la seule variante qu'un lien peut porter : le retour à l'écran
+  // précédent est une navigation, donc un `a`, et il n'a pas à se déguiser en
+  // bouton plein.
   .c-button--quiet {
     min-height: var(--target-secondary);
     border-color: transparent;

@@ -1,0 +1,36 @@
+// =============================================================================
+// Components — lien d'évitement
+// =============================================================================
+// Premier élément focalisable du document, critère WCAG 2.4.1. Masqué tant
+// qu'il n'a pas le focus, puis posé par-dessus le contenu : le masquer par
+// `display: none` le retirerait du parcours de tabulation, et le laisser
+// visible occuperait une ligne sur chaque écran pour une aide qui ne sert
+// qu'au clavier.
+
+@layer components {
+  .c-skip-link {
+    position: absolute;
+    inset-inline-start: var(--space-4);
+    inset-block-start: var(--space-4);
+    z-index: 2;
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4);
+    border: var(--border-bold) solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-highlight);
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+
+    // Hors focus, le lien est déplacé hors de l'écran plutôt que masqué.
+    &:not(:focus-visible) {
+      clip-path: inset(50%);
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+}

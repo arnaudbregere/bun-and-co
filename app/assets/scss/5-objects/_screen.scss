@@ -1,0 +1,26 @@
+// =============================================================================
+// Objects — écran
+// =============================================================================
+// Structure commune des sept écrans : une zone de retour, un contenu qui
+// occupe la hauteur restante, et ce que la mise en page ajoute en bas.
+//
+// Aucune couleur, aucune bordure : un objet décrit une structure, pas une
+// apparence.
+
+@layer objects {
+  .o-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-height: 100vh;
+    padding-block: var(--space-4);
+  }
+
+  .o-screen__content {
+    flex: 1;
+  }
+
+  .o-screen__back {
+    display: flex;
+  }
+}
