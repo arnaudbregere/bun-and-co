@@ -16,7 +16,16 @@
     padding-block: var(--space-4);
   }
 
+  // Colonne, et non bloc : un écran dont le contenu tient en haut de page doit
+  // pouvoir occuper la hauteur restante pour s'y centrer. La veille en a
+  // besoin, les autres n'y perdent rien.
   .o-screen__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .o-screen__content > * {
     flex: 1;
   }
 

@@ -52,6 +52,12 @@
     --shadow-card: 0 6px 0 var(--color-ink);
     --shadow-card-pressed: 0 2px 0 var(--color-ink);
 
+    // Ombre haute, employée par la seule invite de l'écran de veille, qui bat
+    // entre les deux. L'animation porte sur l'ombre et non sur une échelle :
+    // la boîte du bouton ne bouge pas, donc le doigt ne vise jamais une cible
+    // en mouvement.
+    --shadow-card-raised: 0 14px 0 var(--color-ink);
+
     // --- Focus ------------------------------------------------------------------
     --focus-ring-width: 3px;
     --focus-ring-offset: 2px;
