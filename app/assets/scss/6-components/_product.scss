@@ -1,0 +1,35 @@
+// =============================================================================
+// Components — fiche produit
+// =============================================================================
+// La fiche se lit de haut en bas : la photographie, le prix, ce que le produit
+// contient, ce qu'on peut en retirer, ce qu'on peut y ajouter, puis l'ajout au
+// panier.
+//
+// Le prix figure deux fois, et c'est voulu. En haut, il répond à « combien
+// coûte ce produit » ; sur le bouton, il répond à « combien je paie si
+// j'appuie ». Ce ne sont pas les mêmes questions, et le second montant tient
+// compte des options cochées entre les deux.
+
+@layer components {
+  .c-product__price {
+    margin: 0;
+  }
+
+  // Le visuel de la fiche est servi en 640 px de large : il occupe la largeur
+  // du cadre, sans dépasser la hauteur d'un tiers d'écran, pour que les
+  // options restent visibles sans défilement.
+  .c-product .c-product-image {
+    max-height: 40vh;
+  }
+
+  .c-product__add {
+    width: 100%;
+  }
+
+  // Le montant du bouton se lit comme un prix et non comme un libellé
+  // d'action : il garde la police d'affichage mais quitte les capitales.
+  .c-product__add-price {
+    font-size: var(--font-size-subheading);
+    text-transform: none;
+  }
+}

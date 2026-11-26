@@ -10,7 +10,7 @@ const ECRANS = [
   { chemin: '/', titre: 'Bun & Co — Commander', h1: 'Bun & Co' },
   { chemin: '/mode', titre: 'Mode de consommation — Bun & Co', h1: 'Sur place ou à emporter ?' },
   { chemin: '/carte', titre: 'Carte — Bun & Co', h1: 'Carte' },
-  { chemin: '/produit/classique', titre: 'classique — Bun & Co', h1: 'classique' },
+  { chemin: '/produit/classique', titre: 'Le Classique — Bun & Co', h1: 'Le Classique' },
   { chemin: '/panier', titre: 'Panier — Bun & Co', h1: 'Panier' },
   { chemin: '/paiement', titre: 'Paiement — Bun & Co', h1: 'Paiement' },
   { chemin: '/ticket', titre: 'Commande confirmée — Bun & Co', h1: 'Commande confirmée' },
