@@ -1,0 +1,44 @@
+// =============================================================================
+// Components — carte de l'enseigne
+// =============================================================================
+// La grille des produits, et le panneau qui explique l'entrée « Menus ».
+//
+// Deux colonnes dès que la largeur le permet, et jamais plus de trois : sur un
+// écran portrait de borne, une quatrième colonne réduit la photographie au
+// point qu'on ne reconnaît plus le produit, qui est pourtant ce que le client
+// regarde avant le nom et avant le prix.
+//
+// La grille est une liste : les cartes se comptent, et un lecteur d'écran
+// annonce « 6 éléments » avant de les parcourir. La puce est retirée, la
+// sémantique reste.
+
+@layer components {
+  .c-catalogue__grid {
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Les cartes d'une même rangée partagent leur hauteur : un nom sur deux
+  // lignes ne doit pas décaler le prix de sa voisine.
+  .c-catalogue__grid > li {
+    display: flex;
+  }
+
+  .c-catalogue__grid > li > .c-product-card {
+    flex: 1;
+  }
+
+  .c-catalogue__note {
+    max-width: var(--measure);
+  }
+
+  // La barre de panier colle au bas du cadre : la carte lui réserve la place
+  // qu'elle occupe, pour que la dernière rangée reste atteignable.
+  .c-catalogue {
+    padding-block-end: var(--space-4);
+  }
+}

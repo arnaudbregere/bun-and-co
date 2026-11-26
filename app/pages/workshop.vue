@@ -722,8 +722,10 @@ const annoncer = (libelle: string) => {
         <CartSummary :item-count="0" :total-cents="cents(0)" />
         <p class="c-specimen__note">
           Exigence EF-026 : l'accès est refusé, et il donne sa raison plutôt que de rester
-          silencieusement inopérant. La barre annonce « panier vide » et non « 0 article » : un zéro
-          suivi d'un montant nul se lit comme un prix, pas comme une absence.
+          silencieusement inopérant. La barre affiche « panier vide » et non « 0 article » : un zéro
+          suivi d'un montant nul se lit comme un prix, pas comme une absence. Elle n'annonce rien
+          elle-même : l'application porte une région courtoise unique, et chaque changement du
+          panier y passe par <code>useDraft</code>, exigence EF-040.
         </p>
       </div>
     </section>

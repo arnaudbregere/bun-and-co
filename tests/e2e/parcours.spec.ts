@@ -63,7 +63,12 @@ test('le parcours se traverse au clavier, du premier écran au ticket', async ({
   // commande avant de mener à la carte, il ne se contente pas de naviguer.
   await page.getByRole('button', { name: /Sur place/ }).click()
 
-  for (const etape of ['Voir le panier', 'Payer', 'Confirmer']) {
+  // Depuis la carte, l'accès au panier est refusé tant que le panier est vide,
+  // exigence EF-026. Ajouter un produit demande la fiche produit, demande
+  // #123 : en attendant, le parcours rejoint le panier directement.
+  await page.goto('/panier')
+
+  for (const etape of ['Payer', 'Confirmer']) {
     await page.getByRole('link', { name: etape }).click()
   }
 

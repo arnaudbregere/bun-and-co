@@ -65,29 +65,4 @@ describe('molécule Résumé du panier', () => {
 
     expect(wrapper.emitted('open')).toHaveLength(1)
   })
-
-  describe('annonce courtoise', () => {
-    it('porte le compte et le montant', async () => {
-      const wrapper = monter({ itemCount: 0, totalCents: cents(0) })
-
-      await wrapper.setProps({ itemCount: 3, totalCents: cents(1770) })
-      await wrapper.vm.$nextTick()
-      await wrapper.vm.$nextTick()
-
-      // « 3 articles » sans montant ne dit pas où en est la commande : un
-      // lecteur d'écran n'a pas la barre sous les yeux.
-      const region = wrapper.find('[role="status"]')
-      expect(region.text()).toMatch(/^Panier : 3 articles, 17,70\s€$/)
-    })
-
-    it('annonce le panier vidé', async () => {
-      const wrapper = monter()
-
-      await wrapper.setProps({ itemCount: 0, totalCents: cents(0) })
-      await wrapper.vm.$nextTick()
-      await wrapper.vm.$nextTick()
-
-      expect(wrapper.find('[role="status"]').text()).toBe('Panier vide')
-    })
-  })
 })

@@ -17,9 +17,10 @@
  * L'accès reste atteignable au clavier lorsqu'il est refusé : `aria-disabled`
  * et sa raison, comme partout ailleurs, exigence EF-026 et critère WCAG 3.3.1.
  *
- * La barre possède sa région d'annonce courtoise, exigence EF-040 : c'est le
- * seul endroit où l'état du panier est résumé, donc le seul qui peut l'annoncer
- * sans doubler une autre annonce.
+ * La barre n'annonce rien. L'application porte une région courtoise unique,
+ * tenue par `useAnnonces`, et chaque changement du panier y passe déjà par
+ * `useDraft`, exigence EF-040. Une seconde annonce depuis la barre dirait deux
+ * fois le même ajout.
  *
  * Elle colle au bas du cadre sans en sortir — `position: sticky` et non
  * `fixed` : une barre fixe sort du flux et recouvre le dernier élément de la
@@ -27,7 +28,6 @@
  */
 
 import type { Cents } from '../../domain/money'
-import { formatEuros } from '../../utils/format-euros'
 
 const {
   itemCount,
@@ -52,13 +52,6 @@ const vide = computed(() => itemCount === 0)
 const articles = computed(() =>
   vide.value ? 'Panier vide' : `${itemCount} ${itemCount > 1 ? 'articles' : 'article'}`,
 )
-
-// L'annonce reprend les deux informations de la barre, dans l'ordre où elles
-// s'affichent : un lecteur d'écran n'a pas la barre sous les yeux, et « 3
-// articles » sans montant ne dit pas où en est la commande.
-const annonce = computed(() =>
-  vide.value ? 'Panier vide' : `Panier : ${articles.value}, ${formatEuros(totalCents)}`,
-)
 </script>
 
 <template>
@@ -71,7 +64,5 @@ const annonce = computed(() =>
     <BaseButton :disabled="vide" :reason="emptyReason" @activate="emit('open')">
       {{ label }}
     </BaseButton>
-
-    <LiveRegion :message="annonce" />
   </div>
 </template>
