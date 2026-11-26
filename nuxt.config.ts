@@ -1,4 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { PRODUCTS } from './app/services/catalogue-data'
+
+// Les vingt-sept fiches produit, rendues au build. La liste vient de la carte
+// elle-même : un produit ajouté au catalogue obtient sa fiche sans que
+// personne ait à penser à ce fichier.
+const FICHES_PRODUIT = PRODUCTS.map((produit) => `/produit/${produit.id}`)
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-11-24',
 
@@ -67,10 +74,14 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      // Ni la route du catalogue ni l'atelier ne sont liés par une page :
-      // aucun lien ne les désigne, donc l'exploration ne les trouverait pas. Ils
-      // sont déclarés ici pour être rendus au build.
-      routes: ['/', '/workshop', '/api/catalogue.json'],
+      // L'exploration suit les liens : les six écrans du parcours linéaire s'y
+      // trouvent. Trois routes ne sont désignées par aucun lien et sont donc
+      // déclarées ici — la route du catalogue, l'atelier, et chaque fiche
+      // produit, qui n'existera en fichier que si elle est listée.
+      //
+      // L'hébergement est statique : une fiche absente du rendu rendrait un
+      // 404, puisque aucun processus ne répond à l'exécution.
+      routes: ['/', '/workshop', '/api/catalogue.json', ...FICHES_PRODUIT],
       failOnError: true,
     },
   },
