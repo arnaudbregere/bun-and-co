@@ -6,7 +6,7 @@
 // en pixels égale, le texte y est perçu deux fois plus petit.
 //
 // Échelle modulaire de ratio 1,25, dite tierce majeure :
-//   20 → 25 → 31 → 39 → 49 px
+//   20 → 25 → 31 → 39 → 49 → 61 px
 //
 // Toutes les valeurs sont en `rem`, pour que le zoom à 200 % exigé par le
 // critère WCAG 1.4.4 fonctionne. Aucune taille en `px` dans les composants.
@@ -41,6 +41,7 @@
     --font-size-section: 1.9375rem; // 31 px — titre de catégorie
     --font-size-screen: 2.4375rem; // 39 px — titre d'écran
     --font-size-price: 3.0625rem; // 49 px — total du panier
+    --font-size-display: 3.8125rem; // 61 px — enseigne de l'écran de veille
 
     // --- Graisses ---------------------------------------------------------------
     --font-weight-regular: 400;
