@@ -5,6 +5,7 @@ import type { MenuDraft } from '~/components/organisms/MenuComposer.vue'
 import { itemCount } from '~/domain/cart'
 import { MENU_SIZE_RULES } from '~/domain/menu-rules'
 import { cents } from '~/domain/money'
+import { SECONDES_DE_SURSIS } from '~/domain/session'
 import { cartTotalCents, extrasTotalCents, lineTotalCents, unitPriceCents } from '~/domain/pricing'
 import {
   ALLERGENS,
@@ -196,6 +197,51 @@ const confirmerLeRetrait = () => {
   annoncerAuLecteur('Le Classique retiré du panier')
 }
 
+// Avertissement d'inactivité : l'atelier tient le décompte à la main. Le
+// composant ne compte rien de lui-même, et `useInactivity` ne court pas ici —
+// l'atelier n'est pas un écran du parcours.
+const avertissementOuvert = ref(false)
+const sursisRestant = ref(SECONDES_DE_SURSIS)
+const derniereIssue = ref('Aucune issue.')
+
+let battementDuSursis: ReturnType<typeof setInterval> | undefined
+
+const ouvrirLAvertissement = (depuis: number) => {
+  clearInterval(battementDuSursis)
+
+  sursisRestant.value = depuis
+  avertissementOuvert.value = true
+  derniereIssue.value = 'Aucune issue.'
+
+  battementDuSursis = setInterval(() => {
+    sursisRestant.value -= 1
+    if (sursisRestant.value > 0) return
+
+    clearInterval(battementDuSursis)
+
+    // L'expiration ferme l'état en amont du dialogue, comme le fait
+    // `useInactivity` : la fermeture n'est alors pas une prolongation.
+    avertissementOuvert.value = false
+    derniereIssue.value = 'Sursis épuisé : la borne serait revenue en veille.'
+  }, 1000)
+}
+
+/** Toute fermeture venue du dialogue est une prolongation, exigence EF-036. */
+const avertissement = computed({
+  get: () => avertissementOuvert.value,
+  set: (ouvert) => {
+    if (ouvert) return
+
+    clearInterval(battementDuSursis)
+    avertissementOuvert.value = false
+    derniereIssue.value = 'Session prolongée.'
+  },
+})
+
+onBeforeUnmount(() => {
+  clearInterval(battementDuSursis)
+})
+
 const quantite = ref(2)
 
 // Composition de menu : deux spécimens, une taille M à compléter et une taille
@@ -257,6 +303,46 @@ const annoncer = (libelle: string) => {
       </p>
     </header>
 
+    <section class="o-stack" aria-labelledby="titre-inactivite">
+      <h2 id="titre-inactivite">Avertissement d'inactivité</h2>
+
+      <h3>Sursis entier</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton variant="secondary" @activate="ouvrirLAvertissement(SECONDES_DE_SURSIS)">
+            Simuler quatre-vingt-dix secondes sans interaction
+          </BaseButton>
+        </div>
+
+        <InactivityDialog v-model:open="avertissement" :remaining-seconds="sursisRestant" />
+
+        <p class="c-specimen__note">
+          Exigences EF-035, EF-036 et EF-045. Le dialogue reçoit le focus à son apparition et le
+          rend à son origine à la fermeture : ouvrir au clavier, puis prolonger, ramène le focus sur
+          le bouton ci-dessus. Dans la borne, l'avertissement surgit sans déclencheur, et c'est
+          pourquoi le composant relève lui-même l'élément actif —
+          <code>dialog</code> ne restitue le focus qu'à l'appelant de <code>showModal()</code>.
+          Dernière issue : <strong>{{ derniereIssue }}</strong>
+        </p>
+      </div>
+
+      <h3>Fin du sursis</h3>
+      <div class="c-specimen">
+        <div class="c-button-group">
+          <BaseButton variant="secondary" @activate="ouvrirLAvertissement(5)">
+            Ouvrir à cinq secondes de l'expiration
+          </BaseButton>
+        </div>
+
+        <p class="c-specimen__note">
+          Le décompte est <code>aria-hidden</code> : il change chaque seconde, et une région
+          courtoise redirait vingt fois la même chose par-dessus la question posée. Le message dit
+          le sursis entier une fois, et <code>useInactivity</code> annonce deux paliers, à dix et à
+          cinq secondes. Laisser le décompte atteindre zéro ici ne vide aucun panier : l'atelier
+          n'appelle pas le retour en veille.
+        </p>
+      </div>
+    </section>
     <section class="o-stack" aria-labelledby="titre-confirmation">
       <h2 id="titre-confirmation">Boîte de confirmation</h2>
 

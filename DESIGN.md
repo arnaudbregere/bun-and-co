@@ -290,7 +290,7 @@ détecteur passe sans exception sur les deux pages construites.
 node scripts/verify-contrasts.mjs
 ```
 
-Le script rend 24 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
+Le script rend 25 paires déclarées et 2 groupes à combinaison libre, et sort en erreur dès
 qu'un seuil n'est pas tenu. Il tourne en intégration continue à chaque demande de fusion.
 
 Les deux groupes couvrent l'indicateur de focus sur fond accentué, où une seule des deux

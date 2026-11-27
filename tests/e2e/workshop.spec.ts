@@ -556,6 +556,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
   // Les sections sont rangées par ordre alphabétique, pour qu'un composant
   // ajouté trouve sa place sans discussion.
   await expect(page.getByRole('heading', { level: 2 })).toHaveText([
+    "Avertissement d'inactivité",
     'Boîte de confirmation',
     'Bouton',
     'Carte de produit',

@@ -1,0 +1,59 @@
+// =============================================================================
+// Components — avertissement d'inactivité
+// =============================================================================
+// Le dialogue natif est centré par le navigateur et son fond est peint par le
+// pseudo-élément `::backdrop`. Rien de tout cela n'est réécrit ici : seules les
+// couleurs, les espacements et la largeur sont posés, comme pour la boîte de
+// confirmation.
+//
+// Le décompte est l'unique élément rouge de l'écran à cet instant. Il n'est pas
+// seul à porter l'urgence : le titre pose la question, le message dit ce qui va
+// être effacé, et le chiffre n'ajoute que le temps qui reste — critère WCAG
+// 1.4.1, où rien ne se distingue par la seule couleur.
+
+@layer components {
+  .c-inactivity {
+    width: min(30rem, calc(100vw - var(--space-6)));
+    padding: var(--space-5);
+    border: var(--border-bold) solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-card);
+    color: var(--color-ink);
+    text-align: center;
+  }
+
+  // Le fond assombrit la page sans la masquer : le client doit reconnaître
+  // l'écran qu'il quitte des yeux, et comprendre que l'avertissement s'y pose.
+  .c-inactivity::backdrop {
+    background-color: var(--color-scrim);
+  }
+
+  .c-inactivity__title {
+    margin: 0;
+    font-size: var(--font-size-section);
+  }
+
+  .c-inactivity__message {
+    margin-block: var(--space-3) 0;
+    color: var(--color-ink-muted);
+  }
+
+  // Le chiffre est lu de loin, par un client qui revient vers la borne. Il est
+  // donc au corps du numéro d'appel, et masqué au lecteur d'écran : il change
+  // chaque seconde, et le message dit déjà le sursis.
+  .c-inactivity__countdown {
+    margin-block: var(--space-4) 0;
+    color: var(--color-accent);
+    font-family: var(--font-display);
+    font-size: var(--font-size-display);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .c-inactivity__actions {
+    display: flex;
+    justify-content: center;
+    margin-block-start: var(--space-5);
+  }
+}

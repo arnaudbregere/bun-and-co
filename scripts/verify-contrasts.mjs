@@ -43,6 +43,7 @@ const PAIRS = [
 
   // Texte accentué sur surface claire — seuil 4.5:1
   ['accent', 'background', 4.5, 'prix mis en avant sur le fond général'],
+  ['accent', 'surface', 4.5, 'décompte de l’avertissement d’inactivité sur le dialogue'],
   ['green', 'background', 4.5, 'mention de disponibilité sur le fond général'],
 
   // Composants d'interface et bordures porteuses de sens — seuil 3:1
