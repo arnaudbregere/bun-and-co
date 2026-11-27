@@ -27,12 +27,9 @@
  * faire ensuite.
  */
 
-import type { LineExtra } from '../components/molecules/CartLineItem.vue'
 import { MAX_QUANTITY_PER_LINE } from '../domain/cart'
-import { findProduct } from '../domain/catalogue'
-import { DRINK_SUBSTITUTIONS, MENU_SIZE_RULES, SIDE_SUBSTITUTIONS } from '../domain/menu-rules'
-import { lineTotalCents, unitPriceCents } from '../domain/pricing'
-import type { CartLine, CartLineId, Cents, Product, ProductId, Substitution } from '../domain/types'
+import type { CartLine, CartLineId } from '../domain/types'
+import { lignesAffichees } from '../utils/lignes-panier'
 
 const { panier, articles, totalCentimes, changerQuantite, retirer, vider } = useDraft()
 const { produits } = useCatalogue()
@@ -42,89 +39,7 @@ const RAISON_PANIER_VIDE = 'Ajoutez un article pour payer'
 
 const vide = computed(() => articles.value === 0)
 
-const nomDe = (id: ProductId) => findProduct(produits.value, id)?.name ?? 'Produit'
-
-/**
- * Composant de menu remplacé, avec son supplément.
- *
- * Le composant compris dans le forfait ne produit aucune mention : le client
- * n'a rien remplacé, et l'écrire allongerait la ligne sans l'informer.
- */
-const substitution = (
-  choisi: ProductId,
-  inclus: ProductId,
-  autorisees: readonly Substitution[],
-): LineExtra | undefined => {
-  if (choisi === inclus) return undefined
-
-  const retenue = autorisees.find((candidate) => candidate.productId === choisi)
-  if (retenue === undefined) return undefined
-
-  return { id: choisi, label: nomDe(choisi), priceCents: retenue.surchargeCents }
-}
-
-/**
- * Tout ce qu'une ligne doit afficher, assemblé une fois.
- *
- * Les libellés des retraits et des suppléments viennent du produit, et non des
- * identifiants stockés dans le panier : « Sans cornichons » se lit, « Sans
- * pickles » ne se lit pas.
- */
-interface LigneAffichee {
-  readonly id: CartLineId
-  readonly produit: Product
-  readonly ligne: CartLine
-  readonly menuLabel: string
-  readonly removed: readonly string[]
-  readonly extras: readonly LineExtra[]
-  readonly substitutions: readonly LineExtra[]
-  readonly unitPriceCents: Cents
-  readonly totalPriceCents: Cents
-}
-
-const lignes = computed<readonly LigneAffichee[]>(() =>
-  panier.value.lines.flatMap((ligne) => {
-    const produit = findProduct(produits.value, ligne.productId)
-
-    // Le catalogue arrive après le premier rendu. Une ligne dont le produit
-    // n'est pas encore là est omise, et non rendue avec un prix nul : un
-    // montant faux à l'écran est pire qu'une ligne qui apparaît un instant
-    // plus tard.
-    if (produit === undefined) return []
-
-    const regle = ligne.menu === undefined ? undefined : MENU_SIZE_RULES[ligne.menu.size]
-
-    const remplacements =
-      ligne.menu === undefined || regle === undefined
-        ? []
-        : [
-            substitution(ligne.menu.sideId, regle.defaultSideId, SIDE_SUBSTITUTIONS),
-            substitution(ligne.menu.drinkId, regle.defaultDrinkId, DRINK_SUBSTITUTIONS),
-          ].filter((candidate) => candidate !== undefined)
-
-    return [
-      {
-        id: ligne.id,
-        produit,
-        ligne,
-        menuLabel: ligne.menu === undefined ? '' : `Menu ${ligne.menu.size}`,
-        removed: ligne.customisation.removedIds.map(
-          (retrait) =>
-            produit.removables.find((candidate) => candidate.id === retrait)?.label ?? retrait,
-        ),
-        extras: ligne.customisation.extraIds.flatMap((ajout) => {
-          const supplement = produit.extras.find((candidate) => candidate.id === ajout)
-          return supplement === undefined
-            ? []
-            : [{ id: supplement.id, label: supplement.label, priceCents: supplement.priceCents }]
-        }),
-        substitutions: remplacements,
-        unitPriceCents: unitPriceCents(produit, ligne),
-        totalPriceCents: lineTotalCents(produit, ligne),
-      },
-    ]
-  }),
-)
+const lignes = computed(() => lignesAffichees(produits.value, panier.value.lines))
 
 /**
  * Raison du refus d'augmenter une ligne, vide tant que la limite n'est pas
