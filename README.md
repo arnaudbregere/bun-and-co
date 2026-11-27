@@ -57,6 +57,7 @@ fait échouer `pnpm lint`, donc le pipeline, donc la fusion.
 | `app/domain/catalogue.ts` | métier | consultation pure d'une liste de produits |
 | `app/domain/ports.ts` | métier | contrats avec le monde extérieur |
 | `app/domain/errors.ts` | métier | erreurs du domaine |
+| `app/domain/session.ts` | métier | délais de la borne : inactivité, sursis, retour en veille |
 | `app/utils/format-euros.ts` | interface | conversion d'un montant en euros, seul endroit qui divise par cent |
 | `app/services/catalogue-data.ts` | services | les vingt-sept références de la carte |
 | `app/services/static-catalogue.ts` | services | catalogue servi depuis les données livrées |
@@ -204,7 +205,7 @@ Le navigateur des tests end-to-end s'installe une fois, par
 | 3 — Socle technique | terminé |
 | 4 — Domaine métier | terminé |
 | 5 — Composants | terminé |
-| 6 — Parcours utilisateur | en cours, limite d'inactivité restante |
+| 6 — Parcours utilisateur | terminé |
 | 7 — Audit RGAA | à venir |
 | 8 — Tests end-to-end | à venir |
 | 9 — Build et déploiement | à venir |
