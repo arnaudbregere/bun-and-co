@@ -38,20 +38,10 @@
  * l'arrêt pur, avec le même écueil : une commande exposée au client suivant.
  */
 
-const { commande, oublier } = useReglement()
-const { vider } = useDraft()
+import { SECONDES_APRES_PROLONGATION, SECONDES_AVANT_VEILLE } from '~/domain/session'
 
-/** Durée d'affichage avant le retour en veille, exigence EF-034, en secondes. */
-const SECONDES_AVANT_VEILLE = 15
-
-/**
- * Durée après prolongation, exigence EF-034 et test RGAA 13.1.3.
- *
- * Exactement le décuple de la durée initiale : le test exige « dix fois, au
- * moins », et une valeur ronde choisie à l'œil se serait éloignée du texte
- * sans rien apporter au client.
- */
-const SECONDES_APRES_PROLONGATION = SECONDES_AVANT_VEILLE * 10
+const { commande } = useReglement()
+const { retourEnVeille } = useVeille()
 
 const restant = ref(SECONDES_AVANT_VEILLE)
 
@@ -67,19 +57,6 @@ const prolonger = () => {
 const libelleDeConsommation = computed(() =>
   commande.value?.serviceMode === 'takeaway' ? 'À emporter' : 'Sur place',
 )
-
-/**
- * Rend la borne au client suivant.
- *
- * La commande en cours et la commande confirmée sont toutes deux effacées :
- * une borne ne doit jamais présenter au client suivant ce que le précédent a
- * commandé. Le compte des numéros émis, lui, survit à la session.
- */
-const retourEnVeille = async () => {
-  vider()
-  oublier()
-  await navigateTo('/')
-}
 
 // Le minuteur ne vit que dans le navigateur, et seulement tant que l'écran est
 // monté. Un intervalle laissé derrière soi ferait repartir un écran que le
