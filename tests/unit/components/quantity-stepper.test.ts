@@ -50,10 +50,14 @@ describe('molécule Sélecteur de quantité', () => {
     expect(wrapper.emitted('decrease')).toBeUndefined()
   })
 
-  it('annonce le retrait de la ligne lorsque la quantité vaut un', () => {
+  it('nomme son geste à une unité, et non l’effet du retrait', () => {
     const wrapper = monter({ quantity: 1 })
 
-    expect(boutons(wrapper)[0]?.text()).toContain('Retirer Le Classique du panier')
+    // Demande #140 : la ligne de panier porte déjà « Retirer Le Classique du
+    // panier ». Deux boutons de même nom accessible sur une même ligne
+    // allongent la liste des éléments interactifs sans dire lequel choisir.
+    expect(boutons(wrapper)[0]?.text()).toContain('Retirer la dernière unité de Le Classique')
+    expect(boutons(wrapper)[0]?.text()).not.toContain('du panier')
   })
 
   describe('limite atteinte', () => {

@@ -886,7 +886,10 @@ const annoncer = (libelle: string) => {
         <p class="c-specimen__note">
           À une unité, diminuer ne produit pas une quantité nulle : le composant demande la
           suppression de la ligne, et l'icône passe à la corbeille. C'est l'écran qui en demandera
-          confirmation, exigence EF-024.
+          confirmation, exigence EF-024. Le nom accessible dit alors le geste — « Retirer la
+          dernière unité de Le Fermier » — et non l'effet : la ligne de panier porte déjà un bouton
+          « Retirer Le Fermier du panier », et deux boutons de même nom sur une même ligne
+          allongeraient la liste des éléments interactifs sans dire lequel choisir, demande #140.
         </p>
       </div>
 

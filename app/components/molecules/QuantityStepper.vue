@@ -15,6 +15,13 @@
  * la suppression de la ligne, et c'est l'écran qui en demande confirmation,
  * exigence EF-024.
  *
+ * À une unité, ce bouton nomme son geste — « Retirer la dernière unité de X » —
+ * et non son effet. La ligne de panier porte déjà un bouton « Retirer X du
+ * panier » : deux boutons de même nom accessible sur une même ligne allongent
+ * la liste des éléments interactifs d'un lecteur d'écran sans dire lequel
+ * choisir, demande #140. Le geste décrit distingue les deux sans retirer
+ * d'affordance tactile.
+ *
  * La valeur n'est pas une région d'annonce. L'appelant possède la sienne, et
  * deux régions annonceraient deux fois le même changement.
  */
@@ -57,7 +64,7 @@ const diminuer = () => {
       <span class="u-visually-hidden">
         {{
           quantity <= 1
-            ? `Retirer ${productName} du panier`
+            ? `Retirer la dernière unité de ${productName}`
             : `Diminuer la quantité de ${productName}`
         }}
       </span>
