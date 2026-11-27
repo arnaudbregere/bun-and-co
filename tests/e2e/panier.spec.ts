@@ -43,19 +43,19 @@ const ouvrirLePanier = async (page: Page) => {
 const confirmation = (page: Page) => page.locator('dialog.c-confirm')
 
 /**
- * Le bouton de retrait de la ligne, distingué de celui du sélecteur de
- * quantité.
+ * Le bouton de retrait de la ligne.
  *
- * À une unité, la corbeille du sélecteur porte le même nom accessible que le
- * bouton « Retirer » de la ligne — les deux demandent le même retrait. Les
- * tests désignent donc chacun par sa classe, faute de quoi le rôle et le nom
- * en désignent deux.
+ * Son nom accessible dit l'effet : « Retirer {produit} du panier ». Celui de la
+ * corbeille du sélecteur dit le geste, « Retirer la dernière unité de
+ * {produit} », depuis la demande #140 : les deux boutons se désignent donc par
+ * leur rôle et leur nom, comme un lecteur d'écran les rencontre.
  */
-const retraitDeLaLigne = (page: Page) => page.locator('.c-cart-line__controls > .c-button--quiet')
+const retraitDeLaLigne = (page: Page) =>
+  page.getByRole('button', { name: /^Retirer .+ du panier$/ }).first()
 
 /** La corbeille du sélecteur de quantité, visible à une unité seulement. */
 const corbeilleDuSelecteur = (page: Page) =>
-  page.locator('.c-quantity .c-button--secondary').first()
+  page.getByRole('button', { name: /^Retirer la dernière unité de / }).first()
 
 test('un panier vide propose la carte plutôt qu’un cul-de-sac', async ({ page }) => {
   await ouvrirLePanier(page)
@@ -208,6 +208,26 @@ test('décrémenter depuis une unité demande le retrait, il ne vide pas la lign
   // l'écran confirme.
   await expect(confirmation(page)).toBeVisible()
   await expect(page.locator('.c-cart-line')).toHaveCount(1)
+})
+
+test('deux boutons d’une même ligne ne portent pas le même nom', async ({ page }) => {
+  await ajouter(page)
+  await ouvrirLePanier(page)
+
+  const ligne = page.locator('.c-cart-line').first()
+  const arbre = await ligne.ariaSnapshot()
+  const noms = [...arbre.matchAll(/- button "([^"]+)"/g)].map((trouve) => trouve[1])
+
+  // Critère d'acceptation de la demande #140 : la liste des éléments
+  // interactifs est un mode de navigation courant, et deux entrées identiques
+  // l'allongent sans dire laquelle choisir.
+  expect(noms.length).toBeGreaterThanOrEqual(3)
+  expect(new Set(noms).size, arbre).toBe(noms.length)
+
+  // Les deux retraits mènent au même résultat, et chacun le dit à sa manière :
+  // l'un son effet, l'autre son geste.
+  expect(noms).toContain('Retirer Le Classique du panier')
+  expect(noms).toContain('Retirer la dernière unité de Le Classique')
 })
 
 test('le vidage du panier est confirmé, et nomme ce qu’il détruit', async ({ page }) => {
