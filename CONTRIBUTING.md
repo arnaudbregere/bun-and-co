@@ -89,8 +89,19 @@ pnpm catalogue-route # route du catalogue écrite en fichier statique
 pnpm test:e2e       # parcours utilisateur et audits axe-core
 ```
 
-`layer-order`, `catalogue-route` et `test:e2e` exigent un rendu construit ou un serveur
-démarré.
+`layer-order` et `catalogue-route` lisent un rendu construit, par `pnpm generate`.
+
+`test:e2e` construit ce rendu lui-même et le sert en fichiers statiques, comme GitHub
+Pages le fera. La suite tourne donc en parallèle, sans reprise : le serveur de
+développement compilait ses routes à la demande, et plusieurs navigateurs qui réclamaient
+ensemble des routes jamais compilées dépassaient les délais, demande #138. Trois serveurs
+sont disponibles par la variable `E2E_SERVER` :
+
+| Valeur | Serveur | Usage |
+| --- | --- | --- |
+| absente, ou `build` | `pnpm generate` puis `pnpm serve:static` | le défaut, avant une demande de fusion |
+| `prebuilt` | `pnpm serve:static` | un rendu déjà construit, celui du pipeline |
+| `dev` | `pnpm dev` | les états d'interaction, dont le détecteur de design aura besoin |
 
 Le pipeline exécute ces mêmes commandes, mais une par job et en parallèle : `Format`,
 `Lint`, `Types`, `Unit tests`, `Contrast ratios`, `Component levels`, `Static build`, puis
