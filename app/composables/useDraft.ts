@@ -16,6 +16,7 @@
 // implémentations de production par défaut. Les tests passent alors un stockage
 // en mémoire et une passerelle immédiate, sans navigateur ni réseau.
 
+import { getCurrentInstance } from 'vue'
 import { addLine, clear, itemCount, removeLine, setQuantity } from '../domain/cart'
 import { findProduct } from '../domain/catalogue'
 import { CartLimitError } from '../domain/errors'
@@ -75,15 +76,32 @@ export const useDraft = (dependances: DependancesCommande = {}) => {
   const commande = useState<Draft>(CLE, () => COMMANDE_VIDE)
   const restauree = useState(CLE_RESTAURATION, () => false)
 
-  // La relecture a lieu après le rendu, et une seule fois : la page servie est
-  // préconstruite, donc identique pour tous, et c'est le navigateur qui sait ce
-  // que ce client avait commencé.
-  if (magasin !== undefined && !restauree.value) {
+  /**
+   * Relit la commande laissée par le rafraîchissement, une fois par session.
+   *
+   * La page servie est préconstruite, donc identique pour tous : c'est le
+   * stockage du navigateur qui sait ce que ce client avait commencé, exigence
+   * EF-027.
+   */
+  const restaurer = () => {
+    if (magasin === undefined || restauree.value) return
+
     restauree.value = true
 
     const stockee = magasin.read()
     if (stockee !== undefined) commande.value = stockee
   }
+
+  // La relecture a lieu après le premier rendu, et non pendant. Lue pendant la
+  // mise en place, elle donnait au premier rendu client un panier que le rendu
+  // du serveur n'avait pas : Vue signalait l'écart et réemployait les nœuds du
+  // serveur sans les rectifier, demande #139. Un total faux restait alors
+  // affiché, et sur une borne le montant affiché est ce que le client croit
+  // devoir payer.
+  //
+  // Hors d'un composant — dans un test — il n'y a pas de rendu à attendre :
+  // l'appelant déclenche la relecture lui-même par `restaurer`.
+  if (getCurrentInstance() !== null) onMounted(restaurer)
 
   const ecrire = (panier: Cart, mode: ServiceMode = commande.value.serviceMode) => {
     commande.value = { cart: panier, serviceMode: mode }
@@ -125,6 +143,13 @@ export const useDraft = (dependances: DependancesCommande = {}) => {
   const nomDe = (productId: ProductId) => findProduct(produits.value, productId)?.name ?? 'Produit'
 
   return {
+    /**
+     * Relit le stockage de session, pour un appelant hors composant.
+     *
+     * Dans un écran, la relecture part toute seule après le premier rendu.
+     */
+    restaurer,
+
     commande: computed<Draft>(() => commande.value),
     panier: computed<Cart>(() => commande.value.cart),
     mode: computed<ServiceMode>(() => commande.value.serviceMode),
