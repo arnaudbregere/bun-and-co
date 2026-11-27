@@ -112,5 +112,17 @@ export const useReglement = (dependances: DependancesReglement = {}) => {
 
     /** Le règlement est refusé tant que le panier est vide, exigence EF-026. */
     reglable: computed(() => panier.value.lines.length > 0),
+
+    /**
+     * Oublie la commande confirmée, au retour en veille.
+     *
+     * Le compte des numéros émis survit, lui : il porte l'unicité de
+     * l'exigence EF-032 au sein de la session, et le client suivant ne doit
+     * pas reprendre un numéro déjà appelé au comptoir.
+     */
+    oublier: () => {
+      magasin?.clear()
+      confirmee.value = undefined
+    },
   }
 }

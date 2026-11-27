@@ -1,0 +1,67 @@
+// =============================================================================
+// Components — écran de ticket
+// =============================================================================
+// Un seul message, et une seule information qui compte : le numéro d'appel.
+// C'est ce que le client montre au comptoir, parfois à bout de bras, parfois
+// debout à deux mètres de l'écran. Il reçoit donc le plus grand corps de
+// l'échelle, celui de l'enseigne sur l'écran de veille, et rien ne le lui
+// dispute.
+//
+// L'écran est centré, comme la veille et pour la même raison : il se lit d'un
+// coup d'œil et ne se parcourt pas. Les deux écrans qui bornent le parcours se
+// ressemblent, ce qui n'est pas une coquetterie — le client qui revoit cette
+// mise en page sait qu'il a terminé.
+
+@layer components {
+  .c-ticket {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: center;
+    text-align: center;
+  }
+
+  .c-ticket__lead {
+    margin: 0;
+    font-size: var(--font-size-screen);
+  }
+
+  // Le numéro n'est pas un prix : il garde la police d'affichage et le corps
+  // le plus grand, sans le format monétaire. Les chiffres sont tabulaires pour
+  // que trois chiffres occupent toujours la même largeur, et que le numéro ne
+  // danse pas d'une commande à l'autre.
+  .c-ticket__number {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-display);
+    font-weight: var(--font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .c-ticket__band {
+    width: min(100%, 24rem);
+  }
+
+  .c-ticket__service {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-section);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  // L'attente se lit sans se chercher, mais ne concurrence pas le numéro : le
+  // corps de note suffit à dire ce qui va se passer.
+  .c-ticket__wait {
+    margin: 0;
+    font-size: var(--font-size-note);
+  }
+
+  // Le décompte garde une largeur fixe : sans chiffres tabulaires, la phrase
+  // se décalerait à chaque seconde, et un texte qui bouge se relit mal.
+  .c-ticket__countdown {
+    font-variant-numeric: tabular-nums;
+  }
+}
