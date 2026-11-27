@@ -191,7 +191,7 @@ histoires.
 - **EF-031** : La borne DOIT afficher un récapitulatif complet avant la confirmation du règlement : lignes, personnalisations, quantités, total.
 - **EF-032** : La borne DOIT attribuer à chaque commande confirmée un numéro à trois chiffres, unique au sein de la session.
 - **EF-033** : La borne DOIT afficher le mode de consommation retenu sur le ticket.
-- **EF-034** : La borne DOIT retourner en veille 15 secondes après l'affichage du ticket.
+- **EF-034** : La borne DOIT retourner en veille 15 secondes après l'affichage du ticket. Le client DOIT pouvoir porter ce délai à 150 secondes par une action simple, conformément au test RGAA 13.1.3, qui exige qu'une redirection déclenchée par script puisse être augmentée d'au moins dix fois. La voie de l'avertissement préalable, ouverte par le même test, n'est pas praticable ici : elle réclame au moins 20 secondes pour réagir, soit davantage que le délai lui-même.
 
 ### Limite de temps
 

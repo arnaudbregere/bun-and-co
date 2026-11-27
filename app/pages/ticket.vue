@@ -21,11 +21,21 @@
  * demande interdit. Le décompte est donc `aria-hidden`, et une phrase unique,
  * fixe, dit au lecteur d'écran ce qui va se passer.
  *
- * Le délai de quinze secondes vient de l'exigence EF-034 et n'est pas
- * ajustable. Le critère WCAG 2.2.1 l'autorise au titre de l'exception
- * « essentiel » : laisser le ticket d'un client à l'écran exposerait sa
- * commande au client suivant. Le bouton de sortie immédiate reste offert, et
- * c'est lui qui rend le délai supportable à qui lit lentement.
+ * Le retour en veille est une redirection déclenchée par script, donc le test
+ * RGAA 13.1.3 s'applique. Il ouvre quatre voies, et une seule est praticable
+ * ici : porter le délai au décuple par une action simple, d'où le bouton
+ * « Plus de temps » et les cent cinquante secondes.
+ *
+ * La voie de l'avertissement préalable, que la limite d'inactivité emprunte
+ * aux exigences EF-035 et EF-036, réclame au moins vingt secondes pour
+ * réagir — davantage que le délai lui-même. Celle de l'arrêt pur laisserait
+ * la borne figée sur le ticket d'un client parti, et l'exigence EF-038
+ * interdit justement toute limite d'inactivité sur cet écran : rien ne
+ * viendrait la débloquer. Celle des vingt heures viderait l'exigence EF-034
+ * de son sens.
+ *
+ * La prolongation ne vaut qu'une fois. La renouveler sans fin reviendrait à
+ * l'arrêt pur, avec le même écueil : une commande exposée au client suivant.
  */
 
 const { commande, oublier } = useReglement()
@@ -34,7 +44,25 @@ const { vider } = useDraft()
 /** Durée d'affichage avant le retour en veille, exigence EF-034, en secondes. */
 const SECONDES_AVANT_VEILLE = 15
 
+/**
+ * Durée après prolongation, exigence EF-034 et test RGAA 13.1.3.
+ *
+ * Exactement le décuple de la durée initiale : le test exige « dix fois, au
+ * moins », et une valeur ronde choisie à l'œil se serait éloignée du texte
+ * sans rien apporter au client.
+ */
+const SECONDES_APRES_PROLONGATION = SECONDES_AVANT_VEILLE * 10
+
 const restant = ref(SECONDES_AVANT_VEILLE)
+
+const prolonge = ref(false)
+
+const prolonger = () => {
+  if (prolonge.value) return
+
+  prolonge.value = true
+  restant.value = SECONDES_APRES_PROLONGATION
+}
 
 const libelleDeConsommation = computed(() =>
   commande.value?.serviceMode === 'takeaway' ? 'À emporter' : 'Sur place',
@@ -110,9 +138,22 @@ useHead({ title: 'Commande confirmée — Bun & Co' })
           <span class="c-ticket__countdown" aria-hidden="true">{{ restant }} s</span>
         </p>
 
-        <p>
+        <div class="c-ticket__actions">
+          <!-- Test RGAA 13.1.3 : le délai avant la redirection peut être porté
+               au décuple par une action simple. Le bouton reste atteignable au
+               clavier une fois la prolongation consommée, et dit pourquoi il
+               ne répond plus. -->
+          <BaseButton
+            variant="secondary"
+            :disabled="prolonge"
+            reason="Délai déjà prolongé"
+            @activate="prolonger"
+          >
+            Plus de temps
+          </BaseButton>
+
           <BaseButton @activate="retourEnVeille">Nouvelle commande</BaseButton>
-        </p>
+        </div>
       </template>
 
       <template #fallback>
