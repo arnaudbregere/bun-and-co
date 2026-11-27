@@ -1,0 +1,124 @@
+// =============================================================================
+// Components — écran de paiement
+// =============================================================================
+// Le récapitulatif se lit, il ne se manipule pas. Les lignes y sont donc plus
+// serrées qu'au panier, où chaque ligne portait un sélecteur de quantité et un
+// bouton de retrait : sans ces commandes, la hauteur d'une ligne n'a plus à
+// réserver de cible tactile, et la commande entière tient sous les yeux au
+// moment de décider.
+//
+// Les boutons radio du mode de règlement reprennent exactement la forme de la
+// composition de menu. C'est la même question — « lequel ? » — et deux formes
+// pour une même question obligeraient le client à réapprendre à mi-parcours.
+
+@layer components {
+  .c-payment__service {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-payment__lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // La ligne pose son nom et son prix aux deux bouts, et laisse les mentions
+  // de personnalisation passer à la ligne entre les deux.
+  .c-payment__line {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-2);
+    align-items: baseline;
+    padding-block-end: var(--space-3);
+    border-block-end: 2px solid var(--color-border);
+  }
+
+  .c-payment__name {
+    font-weight: var(--font-weight-bold);
+  }
+
+  // Les mentions occupent les deux colonnes : elles décrivent la ligne, elles
+  // ne sont pas une seconde colonne de prix.
+  .c-payment__details {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding-inline-start: var(--space-4);
+    font-size: var(--font-size-note);
+  }
+
+  .c-payment__total {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-payment__modes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .c-payment__legend {
+    padding: 0;
+    padding-block-end: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-display);
+  }
+
+  .c-payment__mode {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    min-height: var(--target-primary);
+    padding-block: var(--space-2);
+    padding-inline: var(--space-3);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    background-color: var(--color-surface);
+    cursor: pointer;
+  }
+
+  // Le mode retenu se distingue par son trait épais et son ombre, et non par
+  // sa seule couleur, critère WCAG 1.4.1.
+  .c-payment__mode:has(.c-payment__input:checked) {
+    border-width: var(--border-bold);
+    box-shadow: var(--shadow-card-pressed);
+  }
+
+  .c-payment__input {
+    width: var(--space-5);
+    height: var(--space-5);
+    accent-color: var(--color-accent);
+  }
+
+  .c-payment__label {
+    flex: 1;
+  }
+
+  // La mention du paiement simulé n'est pas une note de bas de page : elle
+  // répond à la question que le client se pose devant une borne qui demande
+  // à être payée, et doit donc se lire sans être cherchée.
+  .c-payment__simulated {
+    margin: 0;
+    font-size: var(--font-size-note);
+  }
+}

@@ -9,7 +9,7 @@
 // une API se fait en écrivant une seconde implémentation, sans toucher une seule
 // règle métier.
 
-import type { Draft, Product } from './types'
+import type { Draft, Order, Product } from './types'
 
 /**
  * Accès en lecture au catalogue.
@@ -39,3 +39,33 @@ export interface DraftStore {
   write(draft: Draft): void
   clear(): void
 }
+
+/**
+ * Persistance de la commande confirmée, et mémoire des numéros déjà émis.
+ *
+ * Les deux vivent dans le même port parce qu'ils répondent à la même question :
+ * ce que la session sait des commandes confirmées. `issuedCount` ne compte pas
+ * les commandes conservées, mais celles qui ont été émises ; `nextOrderNumber`
+ * en dérive le numéro suivant, et l'unicité de l'exigence EF-032 tient à ce
+ * compte, non au contenu.
+ *
+ * La portée est la session, comme pour la commande en cours : la borne
+ * recommence à la première valeur de la plage au client suivant, et deux
+ * clients d'une même session ne reçoivent jamais le même numéro.
+ */
+export interface OrderStore {
+  read(): Order | undefined
+  write(order: Order): void
+  clear(): void
+  issuedCount(): number
+}
+
+/**
+ * Lecture de l'heure, en ISO 8601.
+ *
+ * Une fonction et non une interface : il n'y a qu'une opération, et déclarer
+ * un objet à méthode unique ajouterait une forme sans ajouter de sens. Le
+ * domaine ne lit jamais l'horloge lui-même — `confirmOrder` reçoit
+ * l'horodatage en argument — et ce port sert à la couche qui le lui fournit.
+ */
+export type Clock = () => string

@@ -76,7 +76,9 @@ test('le parcours se traverse au clavier, du premier écran au ticket', async ({
   // Le paiement est un bouton et non un lien : il est refusé tant que le
   // panier est vide, et un lien ne porte pas d'état indisponible.
   await page.getByRole('button', { name: /Payer/ }).click()
-  await page.getByRole('link', { name: 'Confirmer' }).click()
+  // La confirmation est un bouton et non un lien : elle écrit la commande
+  // avant de mener au ticket, elle ne se contente pas de naviguer.
+  await page.getByRole('button', { name: 'Confirmer' }).click()
 
   await expect(page).toHaveURL(/\/ticket\/?$/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Commande confirmée')
