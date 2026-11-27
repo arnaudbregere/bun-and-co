@@ -403,7 +403,11 @@ test('les tailles de menu se parcourent aux flèches, un seul arrêt de tabulati
   await page.goto('/workshop')
   await waitForHydration(page)
 
-  const groupe = page.getByRole('group', { name: 'Taille du menu' })
+  // La recherche est bornée à la section : la composition de menu montre elle
+  // aussi un sélecteur de taille, dans ses deux spécimens.
+  const groupe = page
+    .locator('[aria-labelledby="titre-taille"]')
+    .getByRole('group', { name: 'Taille du menu' })
   const tailles = groupe.getByRole('radio')
   await expect(tailles).toHaveCount(3)
 
@@ -555,6 +559,7 @@ test('la hiérarchie des titres de l’atelier est continue', async ({ page }) =
     'Boîte de confirmation',
     'Bouton',
     'Carte de produit',
+    'Composition de menu',
     "Étiquette d'état",
     "Groupe d'options",
     'Icône',

@@ -23,10 +23,12 @@
  * client atteint son panier sans perdre la fiche qu'il consulte.
  */
 
+import type { MenuDraft } from '../../components/organisms/MenuComposer.vue'
 import { findProduct } from '../../domain/catalogue'
+import { MENU_SIZE_RULES } from '../../domain/menu-rules'
 import { ZERO_CENTS } from '../../domain/money'
 import { extrasTotalCents, unitPriceCents } from '../../domain/pricing'
-import { toProductId, type Allergen } from '../../domain/types'
+import { toProductId, type Allergen, type MenuComposition } from '../../domain/types'
 import { formatEuros } from '../../utils/format-euros'
 
 const route = useRoute()
@@ -35,7 +37,7 @@ const identifiant = computed(() => toProductId(String(route.params.id)))
 
 const { produits } = useCatalogue()
 const { ajouter, articles, totalCentimes } = useDraft()
-const { annoncer } = useAnnonces()
+const { annoncer, alerter } = useAnnonces()
 const { visuelDe } = useVisuels()
 
 const produit = computed(() => findProduct(produits.value, identifiant.value))
@@ -51,6 +53,46 @@ const personnalisation = computed(() => ({
   extraIds: ajoutes.value,
 }))
 
+/** Un menu se compose à partir d'un burger, et de lui seul. */
+const composable = computed(() => produit.value?.category === 'burgers')
+
+const enMenu = ref(false)
+
+const composition = ref<MenuDraft>({ size: 'M' })
+
+/**
+ * Étape de la composition qui manque encore, nommée pour être dite au client,
+ * exigence EF-016. « Formulaire invalide » n'indique pas quoi faire.
+ */
+const etapeManquante = computed(() => {
+  if (!enMenu.value) return undefined
+
+  const { sideId, drinkId, dessertId } = composition.value
+
+  if (sideId === undefined) return 'un accompagnement'
+  if (drinkId === undefined) return 'une boisson'
+  if (MENU_SIZE_RULES[composition.value.size].includesDessert && dessertId === undefined) {
+    return 'un dessert'
+  }
+
+  return undefined
+})
+
+/**
+ * Composition complète, ou `undefined` tant qu'il manque une étape.
+ *
+ * Le domaine refuserait une composition partielle en levant : la page ne la lui
+ * soumet pas, et dit plutôt ce qui manque.
+ */
+const menu = computed<MenuComposition | undefined>(() => {
+  if (!enMenu.value || etapeManquante.value !== undefined) return undefined
+
+  const { size, sideId, drinkId, dessertId } = composition.value
+  if (sideId === undefined || drinkId === undefined) return undefined
+
+  return { size, sideId, drinkId, ...(dessertId === undefined ? {} : { dessertId }) }
+})
+
 const supplementsCentimes = computed(() =>
   produit.value === undefined
     ? ZERO_CENTS
@@ -60,7 +102,10 @@ const supplementsCentimes = computed(() =>
 const prixCentimes = computed(() =>
   produit.value === undefined
     ? ZERO_CENTS
-    : unitPriceCents(produit.value, { customisation: personnalisation.value }),
+    : unitPriceCents(produit.value, {
+        customisation: personnalisation.value,
+        ...(menu.value === undefined ? {} : { menu: menu.value }),
+      }),
 )
 
 /**
@@ -97,9 +142,23 @@ const ajouterAuPanier = async () => {
   const reference = produit.value
   if (reference === undefined || !reference.available) return
 
+  // Exigence EF-016 : un menu incomplet est refusé, et le refus nomme l'étape
+  // qui manque. Exigence EF-041 : il passe par la région d'alerte.
+  const manque = etapeManquante.value
+  if (manque !== undefined) {
+    alerter(`Menu incomplet : choisissez ${manque}.`)
+    return
+  }
+
   // L'ajout est annoncé par `useDraft`, qui connaît l'état du panier après
   // l'opération. La fiche ne redit rien.
-  if (ajouter({ productId: reference.id, customisation: personnalisation.value })) {
+  if (
+    ajouter({
+      productId: reference.id,
+      customisation: personnalisation.value,
+      ...(menu.value === undefined ? {} : { menu: menu.value }),
+    })
+  ) {
     await navigateTo('/carte')
   }
 }
@@ -148,6 +207,42 @@ useHead({ title: () => `${produit.value?.name ?? 'Produit'} — Bun & Co` })
         :options="optionsDeSupplement"
         :total-cents="supplementsCentimes"
       />
+
+      <template v-if="composable">
+        <fieldset class="c-menu__group">
+          <legend class="c-menu__legend">Formule</legend>
+
+          <label class="c-menu__option">
+            <input
+              class="c-menu__input"
+              type="radio"
+              name="formule"
+              value="seul"
+              :checked="!enMenu"
+              @change="enMenu = false"
+            />
+            <span class="c-menu__label">Le burger seul</span>
+          </label>
+
+          <label class="c-menu__option">
+            <input
+              class="c-menu__input"
+              type="radio"
+              name="formule"
+              value="menu"
+              :checked="enMenu"
+              @change="enMenu = true"
+            />
+            <span class="c-menu__label">En menu</span>
+          </label>
+        </fieldset>
+
+        <MenuComposer v-if="enMenu" v-model="composition" :products="produits" />
+
+        <p v-if="etapeManquante !== undefined" class="c-product__missing">
+          Il reste {{ etapeManquante }} à choisir pour composer votre menu.
+        </p>
+      </template>
 
       <p v-if="!produit.available">
         Ce produit est indisponible aujourd'hui. Choisissez-en un autre à la carte.
