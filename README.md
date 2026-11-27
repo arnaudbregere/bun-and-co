@@ -204,7 +204,7 @@ Le navigateur des tests end-to-end s'installe une fois, par
 | 3 — Socle technique | terminé |
 | 4 — Domaine métier | terminé |
 | 5 — Composants | terminé |
-| 6 — Parcours utilisateur | en cours, paiement, ticket et inactivité restants |
+| 6 — Parcours utilisateur | en cours, limite d'inactivité restante |
 | 7 — Audit RGAA | à venir |
 | 8 — Tests end-to-end | à venir |
 | 9 — Build et déploiement | à venir |
