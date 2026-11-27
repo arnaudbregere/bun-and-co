@@ -103,6 +103,34 @@ test('le compte des numéros émis survit au retour en veille', async ({ page })
   expect(premier).not.toBe(second)
 })
 
+test('le délai se prolonge au décuple, test RGAA 13.1.3', async ({ page }) => {
+  await avecUnTicket(page)
+
+  const decompte = page.locator('.c-ticket__countdown')
+  await expect(decompte).toHaveText('15 s')
+
+  // Le test 13.1.3 exige que l'utilisateur puisse augmenter la limite de temps
+  // avant la redirection « de dix fois, au moins ». 15 s portées à 150 s.
+  await page.getByRole('button', { name: /Plus de temps/ }).click()
+  await expect(decompte).toHaveText('150 s')
+})
+
+test('la prolongation ne vaut qu’une fois, et le bouton le dit', async ({ page }) => {
+  await avecUnTicket(page)
+
+  const prolonger = page.getByRole('button', { name: /Plus de temps/ })
+  await prolonger.click()
+
+  // Le bouton reste atteignable au clavier une fois consommé, critère
+  // WCAG 3.3.1 : il annonce pourquoi il ne répond plus plutôt que de
+  // disparaître du parcours de tabulation.
+  await expect(prolonger).toHaveAttribute('aria-disabled', 'true')
+  await expect(prolonger).toContainText('Délai déjà prolongé')
+
+  await prolonger.click({ force: true })
+  await expect(page.locator('.c-ticket__countdown')).not.toHaveText('150 s')
+})
+
 test('le ticket revient seul en veille', async ({ page }) => {
   await avecUnTicket(page)
 

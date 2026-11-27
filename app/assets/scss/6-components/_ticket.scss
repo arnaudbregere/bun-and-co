@@ -64,4 +64,15 @@
   .c-ticket__countdown {
     font-variant-numeric: tabular-nums;
   }
+
+  // Les deux sorties côte à côte, et la prolongation en second rang : sortir
+  // est le geste attendu, prolonger est le recours. Elles passent l'une sous
+  // l'autre sur un cadre étroit plutôt que de rétrécir sous la cible minimale
+  // de 44 pixels, exigence EF-043.
+  .c-ticket__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
 }
