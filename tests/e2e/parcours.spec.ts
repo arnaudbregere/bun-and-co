@@ -64,13 +64,19 @@ test('le parcours se traverse au clavier, du premier écran au ticket', async ({
   await page.getByRole('button', { name: /Sur place/ }).click()
 
   // Depuis la carte, l'accès au panier est refusé tant que le panier est vide,
-  // exigence EF-026. Ajouter un produit demande la fiche produit, demande
-  // #123 : en attendant, le parcours rejoint le panier directement.
-  await page.goto('/panier')
+  // exigence EF-026. Le parcours passe donc par la fiche d'un produit, qui
+  // remplit le panier avant de l'ouvrir.
+  await page.getByRole('tab', { name: 'Burgers' }).click()
+  await page.getByRole('button', { name: /Le Classique/ }).click()
+  await page.getByRole('button', { name: /Ajouter au panier/ }).click()
 
-  for (const etape of ['Payer', 'Confirmer']) {
-    await page.getByRole('link', { name: etape }).click()
-  }
+  await page.getByRole('button', { name: /Voir le panier/ }).click()
+  await expect(page).toHaveURL(/\/panier$/)
+
+  // Le paiement est un bouton et non un lien : il est refusé tant que le
+  // panier est vide, et un lien ne porte pas d'état indisponible.
+  await page.getByRole('button', { name: /Payer/ }).click()
+  await page.getByRole('link', { name: 'Confirmer' }).click()
 
   await expect(page).toHaveURL(/\/ticket\/?$/)
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Commande confirmée')

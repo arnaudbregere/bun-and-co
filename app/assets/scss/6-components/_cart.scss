@@ -1,0 +1,31 @@
+// =============================================================================
+// Components — écran du panier
+// =============================================================================
+// L'écran empile ce qui existe déjà : des lignes de panier, un vidage, un
+// retour à la carte, et la barre de résumé qui porte le paiement. Il n'invente
+// aucune forme, et ce fichier ne fait donc que poser l'espacement entre ces
+// blocs.
+//
+// La liste perd ses puces : chaque ligne porte déjà son nom, son prix et ses
+// commandes, et une puce devant un bloc de cette taille se lit comme une
+// décoration. La sémantique de liste reste dans le balisage, où les lecteurs
+// d'écran la trouvent — « 2 sur 5 » avant chaque ligne.
+
+@layer components {
+  .c-cart__lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  // Le vidage est une action destructrice sur toute la commande : il est posé
+  // sous les lignes, à l'écart du retour à la carte, pour qu'un appui qui vise
+  // « Continuer ma commande » ne tombe pas dessus.
+  .c-cart__clear {
+    margin: 0;
+    text-align: right;
+  }
+}
