@@ -87,6 +87,7 @@ pnpm layer-order    # ordre des couches dans le CSS construit
 pnpm component-levels # niveaux d'Atomic Design dans les gabarits
 pnpm catalogue-route # route du catalogue écrite en fichier statique
 pnpm test:e2e       # parcours utilisateur et audits axe-core
+E2E_SERVER=dev pnpm test:e2e tests/e2e/hydratation.spec.ts  # écarts serveur/client
 ```
 
 `layer-order` et `catalogue-route` lisent un rendu construit, par `pnpm generate`.
@@ -106,7 +107,7 @@ sont disponibles par la variable `E2E_SERVER` :
 Le pipeline exécute ces mêmes commandes, mais une par job et en parallèle : `Format`,
 `Lint`, `Types`, `Unit tests`, `Contrast ratios`, `Component levels`, `Static build`, puis
 `Style layer order`, `Catalogue route` et `Design detector`, qui lisent le rendu construit,
-et `End-to-end tests`. Les noms des jobs sont en anglais, comme le reste de l'outillage
+`End-to-end tests`, et `Hydration`. Les noms des jobs sont en anglais, comme le reste de l'outillage
 GitHub.
 
 Les trois jobs qui lisent le rendu attendent `Static build` et récupèrent sa sortie par un

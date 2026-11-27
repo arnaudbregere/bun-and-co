@@ -178,3 +178,21 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # Vue checks server/client divergence in development only: the production
+  # render drops the check, so a built site would report a green that proves
+  # nothing (issue #139). This job therefore serves the development server,
+  # which is also what lot 8 needs for the interaction-state detector rules.
+  hydration:
+    name: Hydration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+
+      - name: Install the browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - run: pnpm test:e2e tests/e2e/hydratation.spec.ts
+        env:
+          E2E_SERVER: dev

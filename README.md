@@ -196,6 +196,11 @@ pnpm test:e2e       # parcours utilisateur et audits axe-core
 Le navigateur des tests end-to-end s'installe une fois, par
 `pnpm exec playwright install chromium`.
 
+Les écarts serveur/client ont leur propre fichier, `tests/e2e/hydratation.spec.ts`, et leur
+propre job `Hydration`. Vue ne signale ces écarts qu'en développement : le fichier
+s'abstient donc hors de `E2E_SERVER=dev`, plutôt que de rendre un vert qui ne prouverait
+rien.
+
 `pnpm test:e2e` construit le site et le sert en fichiers statiques : c'est ce que
 l'hébergement fera, et aucune route n'est compilée à la demande pendant que les tests
 tournent. La suite passe donc en parallèle, sans reprise. `E2E_SERVER=dev` rend le serveur

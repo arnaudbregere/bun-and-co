@@ -6,8 +6,12 @@
 //
 // Exigence EF-027 : la commande survit à un rafraîchissement de page. La page
 // servie est préconstruite, donc identique pour tous ; c'est le stockage du
-// navigateur qui sait ce que ce client avait commencé, et le composable le relit
-// au premier appel.
+// navigateur qui sait ce que ce client avait commencé.
+//
+// Dans un écran, la relecture part après le premier rendu, pour que ce rendu
+// coïncide avec celui du serveur, demande #139. Hors d'un composant il n'y a
+// pas de rendu à attendre : ces tests appellent `restaurer` eux-mêmes, ce que
+// l'écran n'a pas à faire.
 //
 // Exigence EF-028 : la commande ne survit jamais à une session antérieure.
 // C'est le choix du stockage de session qui le garantit, et il est vérifié là
@@ -57,7 +61,11 @@ const magasinRempli: DraftStore = {
 
 describe('composable Commande en cours, restauration', () => {
   it('reprend la commande laissée par le rafraîchissement', async () => {
-    const { articles, mode, totalCentimes } = useDraft({ magasin: magasinRempli, catalogue })
+    const { articles, mode, totalCentimes, restaurer } = useDraft({
+      magasin: magasinRempli,
+      catalogue,
+    })
+    restaurer()
     await flushPromises()
 
     expect(articles.value).toBe(2)
@@ -69,11 +77,15 @@ describe('composable Commande en cours, restauration', () => {
     // Le second écran lit l'état déjà restauré. Relire à chaque appel
     // écraserait, au retour sur la carte, ce que le client vient de changer au
     // panier.
-    const { vider } = useDraft({ magasin: magasinRempli, catalogue })
-    vider()
+    const premier = useDraft({ magasin: magasinRempli, catalogue })
+    premier.restaurer()
+    premier.vider()
 
-    const { articles } = useDraft({ magasin: magasinRempli, catalogue })
+    const second = useDraft({ magasin: magasinRempli, catalogue })
+    second.restaurer()
     await flushPromises()
+
+    const { articles } = second
 
     expect(articles.value).toBe(0)
   })
