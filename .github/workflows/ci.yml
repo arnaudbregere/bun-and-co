@@ -145,18 +145,31 @@ jobs:
       - name: Detect on the workshop
         run: .claude/skills/impeccable/scripts/impeccable detect .output/public/workshop/index.html --no-advisory
 
+  # The suite runs against the built site, not the development server, which
+  # compiled routes on demand and timed out under parallel load (issue #138).
+  # The build this job serves is the artifact the deployment will ship, so the
+  # journeys are checked on the very files that go to production.
   end-to-end-tests:
     name: End-to-end tests
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - uses: actions/download-artifact@v4
+        with:
+          name: static-site
+          path: .output/public
 
       # One browser only: a kiosk is a single device, with a known browser.
       - name: Install the browser
         run: pnpm exec playwright install --with-deps chromium
 
       - run: pnpm test:e2e
+        env:
+          # The site is already built and downloaded: serve it as is, rather
+          # than building a second copy.
+          E2E_SERVER: prebuilt
 
       - name: Keep the report on failure
         if: failure()

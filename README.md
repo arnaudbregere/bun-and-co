@@ -173,6 +173,7 @@ nvm use
 pnpm install
 pnpm dev            # serveur de développement
 pnpm generate       # rendu statique
+pnpm serve:static   # sert le rendu construit, comme un hébergeur statique
 ```
 
 Vérifications. Chacune est un job distinct dans l'intégration continue, exécuté en
@@ -194,6 +195,12 @@ pnpm test:e2e       # parcours utilisateur et audits axe-core
 
 Le navigateur des tests end-to-end s'installe une fois, par
 `pnpm exec playwright install chromium`.
+
+`pnpm test:e2e` construit le site et le sert en fichiers statiques : c'est ce que
+l'hébergement fera, et aucune route n'est compilée à la demande pendant que les tests
+tournent. La suite passe donc en parallèle, sans reprise. `E2E_SERVER=dev` rend le serveur
+de développement à qui a besoin des états d'interaction, et `E2E_SERVER=prebuilt` sert un
+rendu déjà construit, ce que fait le pipeline.
 
 ## Avancement
 

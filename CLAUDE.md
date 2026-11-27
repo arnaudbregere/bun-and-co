@@ -147,8 +147,15 @@ Le détecteur Impeccable analyse une page rendue, pas un fichier source. Un `det
 sur des fichiers `.vue` ne déclenche que les règles à base d'expressions régulières et rend
 un rapport incomplet, que son propre avertissement qualifie de sous-estimation. Il
 s'exécute donc à deux endroits : sur le HTML produit par `nuxt generate`, à chaque demande
-de fusion à partir du lot 3 ; et sur le serveur de développement dans le job end-to-end, au
-lot 8, pour les règles qui dépendent des états d'interaction.
+de fusion à partir du lot 3 ; et sur le serveur de développement au lot 8, pour les règles
+qui dépendent des états d'interaction, serveur que `E2E_SERVER=dev` rend à la suite
+end-to-end.
+
+Cette suite tourne par défaut contre le rendu construit, servi en fichiers statiques par
+`scripts/serve-static.mjs`. Le serveur de développement compilait ses routes à la demande,
+et la suite échouait en parallèle pour cette seule raison, demande #138. Aucune reprise
+n'est configurée : une reprise aurait maintenu le pipeline vert pendant que la suite locale
+échouait.
 
 ## Points d'accroche de l'agent
 
